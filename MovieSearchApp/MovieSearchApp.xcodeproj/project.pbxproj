@@ -54,14 +54,30 @@
 		4EBFBFE8294AFBA600064937 /* MovieSearchApp */ = {
 			isa = PBXGroup;
 			children = (
-				4EBFBFE9294AFBA600064937 /* AppDelegate.swift */,
-				4EBFBFEB294AFBA600064937 /* SceneDelegate.swift */,
-				4EBFBFED294AFBA600064937 /* ViewController.swift */,
+				4EBFC00A294B0B3300064937 /* Resources */,
+				4EBFC00B294B0B3900064937 /* Sources */,
+			);
+			path = MovieSearchApp;
+			sourceTree = "<group>";
+		};
+		4EBFC00A294B0B3300064937 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
 				4EBFBFF2294AFBA700064937 /* Assets.xcassets */,
 				4EBFBFF4294AFBA700064937 /* LaunchScreen.storyboard */,
 				4EBFBFF7294AFBA700064937 /* Info.plist */,
 			);
-			path = MovieSearchApp;
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		4EBFC00B294B0B3900064937 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				4EBFBFE9294AFBA600064937 /* AppDelegate.swift */,
+				4EBFBFEB294AFBA600064937 /* SceneDelegate.swift */,
+				4EBFBFED294AFBA600064937 /* ViewController.swift */,
+			);
+			path = Sources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -277,7 +293,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8VU5Z7JG7C;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = MovieSearchApp/Info.plist;
+				INFOPLIST_FILE = MovieSearchApp/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
@@ -305,7 +321,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8VU5Z7JG7C;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = MovieSearchApp/Info.plist;
+				INFOPLIST_FILE = MovieSearchApp/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
