@@ -10,13 +10,11 @@ import Foundation
 struct Endpoint {
     let url: String
     let method: HttpMethod
-    let requestBody: Encodable?
     let queryParameters: Encodable?
     
-    init(url: String, method: HttpMethod, requestBody: Encodable? = nil, queryParameters: Encodable? = nil) {
+    init(url: String, method: HttpMethod, queryParameters: Encodable? = nil) {
         self.url = url
         self.method = method
-        self.requestBody = requestBody
         self.queryParameters = queryParameters
     }
 }
