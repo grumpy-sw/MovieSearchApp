@@ -73,11 +73,19 @@
 		4EBFC00B294B0B3900064937 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				4EBFBFE9294AFBA600064937 /* AppDelegate.swift */,
-				4EBFBFEB294AFBA600064937 /* SceneDelegate.swift */,
+				4EBFC00C294C199600064937 /* Application */,
 				4EBFBFED294AFBA600064937 /* ViewController.swift */,
 			);
 			path = Sources;
+			sourceTree = "<group>";
+		};
+		4EBFC00C294C199600064937 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				4EBFBFE9294AFBA600064937 /* AppDelegate.swift */,
+				4EBFBFEB294AFBA600064937 /* SceneDelegate.swift */,
+			);
+			path = Application;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
