@@ -10,8 +10,6 @@ import Foundation
 enum EndpointStorage {
     fileprivate enum Constants {
         static let baseURL = "https://api.themoviedb.org/3"
-        static let apiKey = "c34bb382e26143a054947d411d07d1a1"
-        
         static let moviePath = "/movie"
         static let tvPath = "/tv"
         static let personPath = "/person"
