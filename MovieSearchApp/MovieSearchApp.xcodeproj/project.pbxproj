@@ -17,6 +17,7 @@
 		4EBFC017294C263600064937 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EBFC016294C263600064937 /* Endpoint.swift */; };
 		4EBFC01A294C2B0000064937 /* MediaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EBFC019294C2B0000064937 /* MediaType.swift */; };
 		4EBFC01C294C2B3700064937 /* TimeWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EBFC01B294C2B3700064937 /* TimeWindow.swift */; };
+		4EBFC01E294C312F00064937 /* APIProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EBFC01D294C312F00064937 /* APIProvider.swift */; };
 		4EBFC021294C3B1600064937 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EBFC020294C3B1600064937 /* NetworkError.swift */; };
 		4EBFC024294C3B5100064937 /* Encodable+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EBFC023294C3B5100064937 /* Encodable+.swift */; };
 /* End PBXBuildFile section */
@@ -34,6 +35,7 @@
 		4EBFC016294C263600064937 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		4EBFC019294C2B0000064937 /* MediaType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaType.swift; sourceTree = "<group>"; };
 		4EBFC01B294C2B3700064937 /* TimeWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeWindow.swift; sourceTree = "<group>"; };
+		4EBFC01D294C312F00064937 /* APIProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIProvider.swift; sourceTree = "<group>"; };
 		4EBFC020294C3B1600064937 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		4EBFC023294C3B5100064937 /* Encodable+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -128,6 +130,7 @@
 		4EBFC011294C25FE00064937 /* APIProvider */ = {
 			isa = PBXGroup;
 			children = (
+				4EBFC01D294C312F00064937 /* APIProvider.swift */,
 			);
 			path = APIProvider;
 			sourceTree = "<group>";
@@ -236,6 +239,7 @@
 				4EBFC017294C263600064937 /* Endpoint.swift in Sources */,
 				4EBFBFEC294AFBA600064937 /* SceneDelegate.swift in Sources */,
 				4EBFC01A294C2B0000064937 /* MediaType.swift in Sources */,
+				4EBFC01E294C312F00064937 /* APIProvider.swift in Sources */,
 				4EBFC021294C3B1600064937 /* NetworkError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
