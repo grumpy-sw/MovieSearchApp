@@ -77,7 +77,6 @@ extension APIProvider {
     
     private func generateURL(by endpoint: Endpoint) -> Result<URL, NetworkError> {
         let fullPath = "\(endpoint.url)"
-        print(fullPath)
         guard var urlComponents = URLComponents(string: fullPath) else {
             return .failure(.urlComponentError)
         }
