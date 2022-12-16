@@ -8,7 +8,7 @@
 import Foundation
 
 struct TrendingQuery: Encodable {
-    let apiKey: String
+    let apiKey: String = Constants.apiKey
     let language: String = "ko-KR"
     let region: String = "KR"
     

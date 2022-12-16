@@ -28,11 +28,11 @@ extension EndpointStorage {
     var endpoint: Endpoint {
         switch self {
         case .trendingAPI(let media, let timeWindow):
-            return Endpoint(url: "\(Constants.baseURL)\(Constants.trendingPath)\(media.rawValue)\(timeWindow.rawValue)", method: .get)
+            return Endpoint(url: "\(Constants.baseURL)\(Constants.trendingPath)\(media.path)\(timeWindow.path)", method: .get, queryParameters: TrendingQuery())
         case .upcomingAPI(let media):
-            return Endpoint(url: "\(Constants.baseURL)\(media.rawValue)\(Constants.upcomingPath)", method: .get)
+            return Endpoint(url: "\(Constants.baseURL)\(media.path)\(Constants.upcomingPath)", method: .get)
         case .popularAPI(let media):
-            return Endpoint(url: "\(Constants.baseURL)\(media.rawValue)\(Constants.popularPath)", method: .get)
+            return Endpoint(url: "\(Constants.baseURL)\(media.path)\(Constants.popularPath)", method: .get)
         }
     }
 }

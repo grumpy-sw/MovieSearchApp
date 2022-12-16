@@ -10,4 +10,13 @@ import Foundation
 enum TimeWindow: String {
     case day
     case week
+    
+    var path: String {
+        switch self {
+        case .day:
+            return "/day"
+        case .week:
+            return "/week"
+        }
+    }
 }
