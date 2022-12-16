@@ -14,6 +14,8 @@
 		4EBFBFF6294AFBA700064937 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4EBFBFF4294AFBA700064937 /* LaunchScreen.storyboard */; };
 		4EBFC013294C261300064937 /* HttpMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EBFC012294C261300064937 /* HttpMethod.swift */; };
 		4EBFC017294C263600064937 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EBFC016294C263600064937 /* Endpoint.swift */; };
+		4EBFC01A294C2B0000064937 /* MediaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EBFC019294C2B0000064937 /* MediaType.swift */; };
+		4EBFC01C294C2B3700064937 /* TimeWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EBFC01B294C2B3700064937 /* TimeWindow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		4EBFBFF7294AFBA700064937 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4EBFC012294C261300064937 /* HttpMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpMethod.swift; sourceTree = "<group>"; };
 		4EBFC016294C263600064937 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
+		4EBFC019294C2B0000064937 /* MediaType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaType.swift; sourceTree = "<group>"; };
+		4EBFC01B294C2B3700064937 /* TimeWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeWindow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				4EBFC00C294C199600064937 /* Application */,
+				4EBFC018294C2AF200064937 /* Domain */,
 				4EBFC00E294C25C200064937 /* Infrastructure */,
 				4EBFBFED294AFBA600064937 /* ViewController.swift */,
 			);
@@ -116,6 +121,15 @@
 			children = (
 			);
 			path = APIProvider;
+			sourceTree = "<group>";
+		};
+		4EBFC018294C2AF200064937 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				4EBFC019294C2B0000064937 /* MediaType.swift */,
+				4EBFC01B294C2B3700064937 /* TimeWindow.swift */,
+			);
+			path = Domain;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -189,10 +203,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				4EBFC013294C261300064937 /* HttpMethod.swift in Sources */,
+				4EBFC01C294C2B3700064937 /* TimeWindow.swift in Sources */,
 				4EBFBFEE294AFBA600064937 /* ViewController.swift in Sources */,
 				4EBFBFEA294AFBA600064937 /* AppDelegate.swift in Sources */,
 				4EBFC017294C263600064937 /* Endpoint.swift in Sources */,
 				4EBFBFEC294AFBA600064937 /* SceneDelegate.swift in Sources */,
+				4EBFC01A294C2B0000064937 /* MediaType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
