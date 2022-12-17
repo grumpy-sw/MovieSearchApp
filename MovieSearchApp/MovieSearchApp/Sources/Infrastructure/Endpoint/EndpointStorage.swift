@@ -17,11 +17,13 @@ enum EndpointStorage {
         static let trendingPath = "/trending"
         static let upcomingPath = "/upcoming"
         static let popularPath = "/popular"
+        static let searchPath = "/search"
     }
     
     case trendingAPI(_ media: MediaType, _ timeWindow: TimeWindow)
     case upcomingAPI(_ media: MediaType)
     case popularAPI(_ media: MediaType)
+    case searchAPI(_ media: MediaType, _ query: String, _ page: Int)
 }
 
 extension EndpointStorage {
@@ -33,6 +35,9 @@ extension EndpointStorage {
             return Endpoint(url: "\(Constants.baseURL)\(media.path)\(Constants.upcomingPath)", method: .get, queryParameters: MoviesQuery())
         case .popularAPI(let media):
             return Endpoint(url: "\(Constants.baseURL)\(media.path)\(Constants.popularPath)", method: .get, queryParameters: MoviesQuery())
+        case .searchAPI(let media, let query, let page):
+            return Endpoint(url: "\(Constants.baseURL)\(Constants.searchPath)\(media.path)", method: .get, queryParameters: MovieQuery(page: page, query: query))
+            
         }
     }
 }
