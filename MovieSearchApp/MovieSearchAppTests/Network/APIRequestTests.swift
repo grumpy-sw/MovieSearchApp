@@ -32,7 +32,7 @@ class APIRequestTests: QuickSpec {
                         self?.provider?.request(endpoint: (self?.trending)!) { result in
                             switch result {
                             case .success(let data):
-                                let trending = try! self?.decoder.decode(Trending.self, from: data)
+                                let trending = try! self?.decoder.decode(MoviesResponse.self, from: data)
                                 
                                 expect(trending?.page).to(equal(1))
                                 expect(trending?.totalPages).to(equal(1000))
@@ -52,7 +52,7 @@ class APIRequestTests: QuickSpec {
                         self?.provider?.request(endpoint: (self?.upcoming)!) { result in
                             switch result {
                             case .success(let data):
-                                let trending = try! self?.decoder.decode(Trending.self, from: data)
+                                let trending = try! self?.decoder.decode(MoviesResponse.self, from: data)
                                 
                                 expect(trending?.page).to(equal(1))
                                 expect(trending?.totalPages).to(equal(1))
@@ -72,7 +72,7 @@ class APIRequestTests: QuickSpec {
                         self?.provider?.request(endpoint: (self?.popular)!) { result in
                             switch result {
                             case .success(let data):
-                                let trending = try! self?.decoder.decode(Trending.self, from: data)
+                                let trending = try! self?.decoder.decode(MoviesResponse.self, from: data)
                                 
                                 expect(trending?.page).to(equal(1))
                                 expect(trending?.totalPages).to(equal(822))

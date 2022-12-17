@@ -1,5 +1,5 @@
 //
-//  TrendingQuery.swift
+//  MoviesQuery.swift
 //  MovieSearchApp
 //
 //  Created by 박세웅 on 2022/12/16.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TrendingQuery: Encodable {
+struct MoviesQuery: Encodable {
     let apiKey: String = Constants.apiKey
     let language: String = "ko-KR"
     let region: String = "KR"
