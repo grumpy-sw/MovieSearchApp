@@ -15,6 +15,7 @@ class APIRequestTests: QuickSpec {
     var provider: APIProvider?
     var trending: Endpoint?
     var upcoming: Endpoint?
+    var popular: Endpoint?
     let decoder = JSONDecoder()
     
     override func spec() {
@@ -23,6 +24,7 @@ class APIRequestTests: QuickSpec {
                 self.provider = APIProvider()
                 self.trending = EndpointStorage.trendingAPI(.movie, .day).endpoint
                 self.upcoming = EndpointStorage.upcomingAPI(.movie).endpoint
+                self.popular = EndpointStorage.popularAPI(.movie).endpoint
             }
             context("Movie Trending API를 호출한다.") {
                 it("결과를 성공적으로 Decode 해야 한다.") {
@@ -64,7 +66,25 @@ class APIRequestTests: QuickSpec {
                 }
             }
             
-            
+            context("Movie Popular API를 호출한다.") {
+                it("결과를 성공적으로 Decode 해야 한다.") {
+                    waitUntil(timeout: .seconds(2)) { [weak self] done in
+                        self?.provider?.request(endpoint: (self?.popular)!) { result in
+                            switch result {
+                            case .success(let data):
+                                let trending = try! self?.decoder.decode(Trending.self, from: data)
+                                
+                                expect(trending?.page).to(equal(1))
+                                expect(trending?.totalPages).to(equal(822))
+                                expect(trending?.totalResults).to(equal(16433))
+                                done()
+                            case .failure(_):
+                                break
+                            }
+                        }
+                    }
+                }
+            }
             
         }
     }

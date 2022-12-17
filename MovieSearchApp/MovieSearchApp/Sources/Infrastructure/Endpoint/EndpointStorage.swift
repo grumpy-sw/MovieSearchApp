@@ -32,7 +32,7 @@ extension EndpointStorage {
         case .upcomingAPI(let media):
             return Endpoint(url: "\(Constants.baseURL)\(media.path)\(Constants.upcomingPath)", method: .get, queryParameters: TrendingQuery())
         case .popularAPI(let media):
-            return Endpoint(url: "\(Constants.baseURL)\(media.path)\(Constants.popularPath)", method: .get)
+            return Endpoint(url: "\(Constants.baseURL)\(media.path)\(Constants.popularPath)", method: .get, queryParameters: TrendingQuery())
         }
     }
 }
