@@ -24,6 +24,7 @@ enum EndpointStorage {
     case upcomingAPI(_ media: MediaType)
     case popularAPI(_ media: MediaType)
     case searchAPI(_ media: MediaType, _ query: String, _ page: Int)
+    case detailAPI(_ media: MediaType, _ movieId: Int)
 }
 
 extension EndpointStorage {
@@ -37,7 +38,8 @@ extension EndpointStorage {
             return Endpoint(url: "\(Constants.baseURL)\(media.path)\(Constants.popularPath)", method: .get, queryParameters: MoviesQuery())
         case .searchAPI(let media, let query, let page):
             return Endpoint(url: "\(Constants.baseURL)\(Constants.searchPath)\(media.path)", method: .get, queryParameters: MovieQuery(page: page, query: query))
-            
+        case .detailAPI(let media, let movieId):
+            return Endpoint(url: "\(Constants.baseURL)\(media.path)/\(movieId)", method: .get, queryParameters: MoviesQuery())
         }
     }
 }
