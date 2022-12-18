@@ -26,7 +26,7 @@ class APIRequestTests: QuickSpec {
                 self.trending = EndpointStorage.trendingAPI(.movie, .day).endpoint
                 self.upcoming = EndpointStorage.upcomingAPI(.movie).endpoint
                 self.popular = EndpointStorage.popularAPI(.movie).endpoint
-                self.search = EndpointStorage.searchAPI(.movie, "아이언", 1).endpoint
+                self.search = EndpointStorage.searchAPI(.movie, "탑건: 매버릭", 1).endpoint
             }
             context("Movie Trending API를 호출한다.") {
                 it("결과를 성공적으로 Decode 해야 한다.") {
@@ -58,7 +58,6 @@ class APIRequestTests: QuickSpec {
                                 
                                 expect(upcoming?.page).to(equal(1))
                                 expect(upcoming?.totalPages).to(equal(1))
-                                expect(upcoming?.totalResults).to(equal(12))
                                 done()
                             case .failure(_):
                                 break
@@ -78,7 +77,6 @@ class APIRequestTests: QuickSpec {
                                 
                                 expect(popular?.page).to(equal(1))
                                 expect(popular?.totalPages).to(equal(822))
-                                expect(popular?.totalResults).to(equal(16433))
                                 done()
                             case .failure(_):
                                 break
@@ -91,13 +89,14 @@ class APIRequestTests: QuickSpec {
             context("Movie Search API를 호출한다.") {
                 it("결과를 성공적으로 Decode 해야 한다.") {
                     waitUntil(timeout: .seconds(2)) { [weak self] done in
-                        self?.provider?.request(endpoint: (self?.popular)!) { result in
+                        self?.provider?.request(endpoint: (self?.search)!) { result in
                             switch result {
                             case .success(let data):
                                 let movies = try! self?.decoder.decode(MoviesResponse.self, from: data)
                                 
                                 expect(movies?.page).to(equal(1))
-                                expect(movies?.movies.count).to(equal(20))
+                                expect(movies?.movies.count).to(equal(1))
+                                expect(movies?.movies.first!.title).to(equal("탑건: 매버릭"))
                                 done()
                             case .failure(_):
                                 break
