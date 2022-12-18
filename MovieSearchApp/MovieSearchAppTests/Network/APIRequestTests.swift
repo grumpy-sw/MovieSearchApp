@@ -17,6 +17,7 @@ class APIRequestTests: QuickSpec {
     var upcoming: Endpoint?
     var popular: Endpoint?
     var search: Endpoint?
+    var detail: Endpoint?
     let decoder = JSONDecoder()
     
     override func spec() {
@@ -27,6 +28,7 @@ class APIRequestTests: QuickSpec {
                 self.upcoming = EndpointStorage.upcomingAPI(.movie).endpoint
                 self.popular = EndpointStorage.popularAPI(.movie).endpoint
                 self.search = EndpointStorage.searchAPI(.movie, "탑건: 매버릭", 1).endpoint
+                self.detail = EndpointStorage.detailAPI(.movie, 361743).endpoint
             }
             context("Movie Trending API를 호출한다.") {
                 it("결과를 성공적으로 Decode 해야 한다.") {
@@ -97,6 +99,7 @@ class APIRequestTests: QuickSpec {
                                 expect(movies?.page).to(equal(1))
                                 expect(movies?.movies.count).to(equal(1))
                                 expect(movies?.movies.first!.title).to(equal("탑건: 매버릭"))
+                                expect(movies?.movies.first!.id).to(equal(361743))
                                 done()
                             case .failure(_):
                                 break
@@ -106,6 +109,26 @@ class APIRequestTests: QuickSpec {
                 }
             }
             
+            context("Movie Detail API를 호출한다.") {
+                it("결과를 성공적으로 Decode 해야 한다.") {
+                    waitUntil(timeout: .seconds(2)) { [weak self] done in
+                        self?.provider?.request(endpoint: (self?.detail)!) { result in
+                            switch result {
+                            case .success(let data):
+                                let movie = try! self?.decoder.decode(MovieDetail.self, from: data)
+                                
+                                expect(movie?.budget).to(equal(170000000))
+                                expect(movie?.originalTitle).to(equal("Top Gun: Maverick"))
+                                expect(movie?.runtime).to(equal(131))
+                                expect(movie?.status).to(equal("Released"))
+                                done()
+                            case .failure(_):
+                                break
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
