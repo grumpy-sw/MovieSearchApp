@@ -20,6 +20,8 @@ class MainViewController: UIViewController {
     }
     
     private let mainView = MainView()
+    let viewModel: MainViewModel
+    
     var dataSource: UICollectionViewDiffableDataSource<MovieCollection, Movie>! = nil
     var currentSnapshot: NSDiffableDataSourceSnapshot<MovieCollection, Movie>! = nil
     
@@ -28,6 +30,15 @@ class MainViewController: UIViewController {
     }
     
     fileprivate var _collections = [MovieCollection]()
+    
+    init(viewModel: MainViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func loadView() {
         self.view = mainView
