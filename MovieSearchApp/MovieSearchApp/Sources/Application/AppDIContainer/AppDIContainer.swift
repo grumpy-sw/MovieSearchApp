@@ -11,7 +11,10 @@ final class AppDIContainer {
     
     // MARK: - Network
     var apiProvider: APIProvider = APIProvider(session: .shared)
-    var imageProvoder: APIProvider = APIProvider(session: .shared)
+    var imageProvider: APIProvider = APIProvider(session: .shared)
     
-    
+    func makeSceneDIContainer() -> SceneDIContainer {
+        let dependencies = SceneDIContainer.Dependencies(apiProvider: apiProvider, imageProvider: imageProvider)
+        return SceneDIContainer(dependencies: dependencies)
+    }
 }

@@ -30,6 +30,7 @@
 		4EC546C4295057DE00A6E4C9 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC546C3295057DE00A6E4C9 /* MainViewModel.swift */; };
 		4EC546C7295066F200A6E4C9 /* AppDIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC546C6295066F200A6E4C9 /* AppDIContainer.swift */; };
 		4EC546C92950690F00A6E4C9 /* AppFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC546C82950690F00A6E4C9 /* AppFlowCoordinator.swift */; };
+		4EC546CB2950699C00A6E4C9 /* SceneDIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC546CA2950699C00A6E4C9 /* SceneDIContainer.swift */; };
 		4EEBFD43294C4A7300188F1F /* MoviesQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EEBFD42294C4A7300188F1F /* MoviesQuery.swift */; };
 		4EEBFD45294C4AEC00188F1F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EEBFD44294C4AEC00188F1F /* Constants.swift */; };
 		4EEBFD48294CB41000188F1F /* APIRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EEBFD47294CB41000188F1F /* APIRequestTests.swift */; };
@@ -78,6 +79,7 @@
 		4EC546C3295057DE00A6E4C9 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		4EC546C6295066F200A6E4C9 /* AppDIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDIContainer.swift; sourceTree = "<group>"; };
 		4EC546C82950690F00A6E4C9 /* AppFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlowCoordinator.swift; sourceTree = "<group>"; };
+		4EC546CA2950699C00A6E4C9 /* SceneDIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDIContainer.swift; sourceTree = "<group>"; };
 		4EEBFD42294C4A7300188F1F /* MoviesQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesQuery.swift; sourceTree = "<group>"; };
 		4EEBFD44294C4AEC00188F1F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		4EEBFD47294CB41000188F1F /* APIRequestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequestTests.swift; sourceTree = "<group>"; };
@@ -285,6 +287,7 @@
 			isa = PBXGroup;
 			children = (
 				4EC546C6295066F200A6E4C9 /* AppDIContainer.swift */,
+				4EC546CA2950699C00A6E4C9 /* SceneDIContainer.swift */,
 			);
 			path = AppDIContainer;
 			sourceTree = "<group>";
@@ -527,6 +530,7 @@
 				4EC546C7295066F200A6E4C9 /* AppDIContainer.swift in Sources */,
 				4EEBFD4E294CEF6D00188F1F /* Movie.swift in Sources */,
 				4EBFBFEA294AFBA600064937 /* AppDelegate.swift in Sources */,
+				4EC546CB2950699C00A6E4C9 /* SceneDIContainer.swift in Sources */,
 				4EBFC024294C3B5100064937 /* Encodable+.swift in Sources */,
 				4EBEC7FE294F5986002CD321 /* Genre.swift in Sources */,
 				4EEBFD45294C4AEC00188F1F /* Constants.swift in Sources */,
