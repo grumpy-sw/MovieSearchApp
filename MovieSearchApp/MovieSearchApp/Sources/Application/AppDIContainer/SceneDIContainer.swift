@@ -23,12 +23,34 @@ final class SceneDIContainer {
     // MARK: - Persistent Storage (For Search History)
     
     // MARK: - Use Cases
+    func makeMainViewUseCase() -> MainViewUseCase {
+        return DefaultMainViewUseCase(mainViewRepository: makeMainViewRepository())
+    }
+    
     
     // MARK: - Repositories
+    func makeMainViewRepository() -> MainViewRepository {
+        return DefaultMainViewRepository(dependencies)
+    }
     
     // MARK: - MainView(Movie Collections)
+    func makeMainViewController() -> MainViewController {
+        return MainViewController(viewModel: makeMainViewModel())
+    }
+    
+    func makeMainViewModel() -> MainViewModel {
+        return MainViewModel()
+    }
     
     // MARK: - Movies List
     
     // MARK: - Movie Detail
+    
+    // MARK: - Coordinator
+    func makeAppCoordinator(navigationController: UINavigationController) -> FlowCoordinator {
+        return FlowCoordinator(navigationController, self)
+    }
+    
 }
+
+extension SceneDIContainer: FlowCoordinatorDependencies {}
