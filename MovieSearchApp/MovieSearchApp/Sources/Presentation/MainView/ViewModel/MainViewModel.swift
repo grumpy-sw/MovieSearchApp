@@ -13,5 +13,22 @@ protocol MainViewModelOutput {}
 protocol MainViewModelable: MainViewModelInput, MainViewModelOutput {}
 
 final class MainViewModel {
-    let apiProvider = APIProvider(session: .shared)
+    let mainViewUseCase: MainViewUseCase
+    
+    init(_ mainViewUseCase: MainViewUseCase) {
+        self.mainViewUseCase = mainViewUseCase
+    }
+    
+    func loadPopular() {
+        
+        mainViewUseCase.executeFetchPopular(query: MoviesQuery(), media: .movie) { result in
+            switch result {
+            case .success(let data):
+                print("## \(data)")
+            case .failure(let error):
+                print(error.errorDescription)
+            }
+        }
+        
+    }
 }

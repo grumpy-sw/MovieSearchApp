@@ -39,7 +39,7 @@ final class SceneDIContainer {
     }
     
     func makeMainViewModel() -> MainViewModel {
-        return MainViewModel()
+        return MainViewModel(makeMainViewUseCase())
     }
     
     // MARK: - Movies List
