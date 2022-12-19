@@ -11,7 +11,13 @@ import RxSwift
 import RxRelay
 
 class MainViewController: UIViewController {
-
+    
+    enum SectionCategory: Int {
+        case popular = 0
+        case trending
+        case upcoming
+    }
+    
     struct MovieCollection: Hashable {
         let title: String
         let movies: [Movie]
@@ -89,14 +95,6 @@ extension MainViewController {
         dataSource.supplementaryViewProvider = { (view, kind, index) in
             return self.mainView.collectionView.dequeueConfiguredReusableSupplementary(using: supplementaryRegistration, for: index)
         }
-        
-//        currentSnapshot = NSDiffableDataSourceSnapshot<MovieCollection, Movie>()
-//        collections.forEach {
-//            let collection = $0
-//            currentSnapshot.appendSections([collection])
-//            currentSnapshot.appendItems(collection.movies)
-//        }
-//        dataSource.apply(currentSnapshot, animatingDifferences: true)
     }
 }
 
@@ -118,6 +116,15 @@ extension MainViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] movies in
                 self?.configureSnapshot(with: movies, of: "Upcoming")
+            })
+            .disposed(by: disposeBag)
+        
+        mainView.collectionView.rx.itemSelected
+            .subscribe(onNext: { [weak self] content in
+                if let section = SectionCategory(rawValue: content.section) {
+                    guard let list = self?.matchCollectionType(section) else { return }
+                    print(list[content.item].id)
+                }
             })
             .disposed(by: disposeBag)
     }
@@ -147,5 +154,16 @@ extension MainViewController {
         currentSnapshot.appendSections([collection])
         currentSnapshot.appendItems(collection.movies)
         dataSource.apply(currentSnapshot, animatingDifferences: true)
+    }
+    
+    private func matchCollectionType(_ section: SectionCategory) -> [Movie] {
+        switch section {
+        case .popular:
+            return viewModel.popularMovies.value
+        case .trending:
+            return viewModel.trendingMovies.value
+        case .upcoming:
+            return viewModel.upcomingMovies.value
+        }
     }
 }
