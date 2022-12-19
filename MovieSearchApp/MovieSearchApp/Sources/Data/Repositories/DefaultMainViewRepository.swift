@@ -17,8 +17,8 @@ final class DefaultMainViewRepository {
 }
 
 extension DefaultMainViewRepository: MainViewRepository {
-    public func fetchPopularList(query: MoviesQuery, media: MediaType, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask? {
-        dataTransferService.apiProvider.request(endpoint: EndpointStorage.popularAPI(media).endpoint) { [weak self] result in
+    public func fetchPopularList(media: MediaType, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask? {
+        dataTransferService.apiProvider.request(endpoint: EndpointStorage.popularAPI(media).endpoint) { result in
             switch result {
             case .success(let data):
                 completion(.success(data))
@@ -28,7 +28,7 @@ extension DefaultMainViewRepository: MainViewRepository {
         }
     }
     
-    public func fetchTrendingList(query: MoviesQuery, media: MediaType, timeWindow: TimeWindow, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask? {
+    public func fetchTrendingList(media: MediaType, timeWindow: TimeWindow, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask? {
         dataTransferService.apiProvider.request(endpoint: EndpointStorage.trendingAPI(media, timeWindow).endpoint) { result in
             switch result {
             case .success(let data):
@@ -39,7 +39,7 @@ extension DefaultMainViewRepository: MainViewRepository {
         }
     }
     
-    public func fetchUpcomingList(query: MoviesQuery, media: MediaType, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask? {
+    public func fetchUpcomingList(media: MediaType, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask? {
         dataTransferService.apiProvider.request(endpoint: EndpointStorage.upcomingAPI(.movie).endpoint) { result in
             switch result {
             case .success(let data):

@@ -8,9 +8,9 @@
 import Foundation
 
 protocol MainViewUseCase {
-    func executeFetchPopular(query: MoviesQuery, media: MediaType, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask?
-    func executeFetchTrending(query: MoviesQuery, media: MediaType, timeWindow: TimeWindow, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask?
-    func executeFetchUpcoming(query: MoviesQuery, media: MediaType, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask?
+    func executeFetchPopular(media: MediaType, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask?
+    func executeFetchTrending(media: MediaType, timeWindow: TimeWindow, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask?
+    func executeFetchUpcoming(media: MediaType, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask?
 }
 
 final class DefaultMainViewUseCase: MainViewUseCase {
@@ -21,20 +21,20 @@ final class DefaultMainViewUseCase: MainViewUseCase {
         self.mainViewRepository = mainViewRepository
     }
     
-    func executeFetchPopular(query: MoviesQuery, media: MediaType, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask? {
-        mainViewRepository.fetchPopularList(query: query, media: media) { result in
+    func executeFetchPopular(media: MediaType, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask? {
+        mainViewRepository.fetchPopularList(media: media) { result in
             completion(result)
         }
     }
     
-    func executeFetchTrending(query: MoviesQuery, media: MediaType, timeWindow: TimeWindow, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask? {
-        mainViewRepository.fetchTrendingList(query: query, media: media, timeWindow: timeWindow) { result in
+    func executeFetchTrending(media: MediaType, timeWindow: TimeWindow, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask? {
+        mainViewRepository.fetchTrendingList(media: media, timeWindow: timeWindow) { result in
             completion(result)
         }
     }
     
-    func executeFetchUpcoming(query: MoviesQuery, media: MediaType, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask? {
-        mainViewRepository.fetchUpcomingList(query: query, media: media) { result in
+    func executeFetchUpcoming(media: MediaType, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask? {
+        mainViewRepository.fetchUpcomingList(media: media) { result in
             completion(result)
         }
     }

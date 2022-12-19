@@ -21,7 +21,7 @@ final class MainViewModel {
     
     func loadPopular() {
         
-        mainViewUseCase.executeFetchPopular(query: MoviesQuery(), media: .movie) { result in
+        mainViewUseCase.executeFetchPopular(media: .movie) { result in
             switch result {
             case .success(let data):
                 print("## \(data)")
