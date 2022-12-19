@@ -66,6 +66,13 @@ extension MainViewController {
         let cellRegistration = UICollectionView.CellRegistration<MovieCollectionCell, Movie> { (cell, indexPath, movie) in
             cell.updateImage(movie.posterPath ?? "")
             cell.titleLabel.text = movie.title
+            
+            var genres: [GenreCategory] = []
+            
+            movie.genreIds?.forEach {
+                genres.append(GenreCategory(rawValue: $0)!)
+            }
+            cell.genreLabel.text = genres.map{ $0.desciption }.joined(separator: ",")
         }
         
         dataSource = UICollectionViewDiffableDataSource<MovieCollection, Movie>(collectionView: mainView.collectionView) { [weak self] (collectionView: UICollectionView, indexPath: IndexPath, movie: Movie) -> UICollectionViewCell? in

@@ -15,12 +15,18 @@ final class MovieCollectionCell: UICollectionViewCell {
     }
     
     let imageView = UIImageView().then {
+        $0.clipsToBounds = true
         $0.layer.borderColor = UIColor.black.cgColor
         $0.layer.borderWidth = 1
         $0.layer.cornerRadius = 4
         $0.backgroundColor = UIColor.cornflowerBlue
     }
     let titleLabel = UILabel().then {
+        $0.font = UIFont.preferredFont(forTextStyle: .subheadline)
+        $0.adjustsFontForContentSizeCategory = true
+        $0.numberOfLines = 0
+    }
+    let genreLabel = UILabel().then {
         $0.font = UIFont.preferredFont(forTextStyle: .caption1)
         $0.adjustsFontForContentSizeCategory = true
         $0.numberOfLines = 0
@@ -41,6 +47,7 @@ extension MovieCollectionCell {
     func setSubViews() {
         contentView.addSubview(imageView)
         contentView.addSubview(titleLabel)
+        contentView.addSubview(genreLabel)
     }
     
     func setLayoutConstraints() {
@@ -54,6 +61,11 @@ extension MovieCollectionCell {
         
         titleLabel.snp.makeConstraints {
             $0.top.equalTo(imageView.snp.bottom).offset(spacing)
+            $0.leading.trailing.equalToSuperview()
+        }
+        
+        genreLabel.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(spacing)
             $0.leading.trailing.equalToSuperview()
         }
     }
