@@ -63,14 +63,15 @@ class MainViewController: UIViewController {
 extension MainViewController {
     func generateCollections() {
         _collections = [
-            MovieCollection(title: "What's Popular", movies: []),
-            MovieCollection(title: "Trending", movies: []),
-            MovieCollection(title: "Upcoming", movies: [])
+            MovieCollection(title: "What's Popular", movies: [Movie.generateSampleData(), Movie.generateSampleData(), Movie.generateSampleData()]),
+            MovieCollection(title: "Trending", movies: [Movie.generateSampleData(), Movie.generateSampleData(), Movie.generateSampleData()]),
+            MovieCollection(title: "Upcoming", movies: [Movie.generateSampleData(), Movie.generateSampleData(), Movie.generateSampleData()])
         ]
     }
     
     func configureDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<MovieCollectionCell, Movie> { (cell, indexPath, movie) in
+            cell.updateImage(movie.posterPath ?? "")
             cell.titleLabel.text = movie.title
         }
         
@@ -96,38 +97,5 @@ extension MainViewController {
             currentSnapshot.appendItems(collection.movies)
         }
         dataSource.apply(currentSnapshot, animatingDifferences: true)
-    }
-}
-
-extension MainViewController {
-    private func testCall1() async -> [Movie] {
-        let popular = EndpointStorage.popularAPI(.movie).endpoint
-        
-        var movies: [Movie] = []
-        
-        
-        await apiProvider.request(endpoint: popular) { [weak self] result in
-            switch result {
-            case .success(let data):
-                let popularItems = try! self?.decoder.decode(MoviesResponse.self, from: data)
-                movies = popularItems!.movies
-            case .failure(let error):
-                print(error.errorDescription)
-                
-            }
-        }
-        return movies
-    }
-    
-    private func testCall2() {
-        let trending = EndpointStorage.trendingAPI(.movie, .week).endpoint
-    }
-    
-    private func testCall3() {
-        let upcoming = EndpointStorage.upcomingAPI(.movie)
-    }
-    
-    private func testCall4() {
-        
     }
 }

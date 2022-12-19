@@ -23,6 +23,7 @@ final class MovieCollectionCell: UICollectionViewCell {
     let titleLabel = UILabel().then {
         $0.font = UIFont.preferredFont(forTextStyle: .caption1)
         $0.adjustsFontForContentSizeCategory = true
+        $0.numberOfLines = 0
     }
     
     override init(frame: CGRect) {
@@ -46,14 +47,29 @@ extension MovieCollectionCell {
         let spacing = CGFloat(10)
         
         imageView.snp.makeConstraints {
-            $0.leading.trailing.top.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
+            $0.top.equalToSuperview().offset(spacing * 2)
+            $0.bottom.equalToSuperview().offset(-spacing)
         }
         
         titleLabel.snp.makeConstraints {
             $0.top.equalTo(imageView.snp.bottom).offset(spacing)
             $0.leading.trailing.equalToSuperview()
         }
-        
+    }
+    
+    func updateImage(_ posterPath: String) {
+        self.imageView.image = nil
+        let provider = APIProvider()
+        let endpoint = EndpointStorage.fetchImageAPI(posterPath, 300).endpoint
+        //print(endpoint.url)
+        provider.request(endpoint: endpoint) { [weak self] result in
+            if case let .success(data) = result {
+                DispatchQueue.main.async {
+                    self?.imageView.image = UIImage(data: data)
+                }
+            }
+        }
     }
 }
 
