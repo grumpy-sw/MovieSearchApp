@@ -17,35 +17,35 @@ final class DefaultMainViewRepository {
 }
 
 extension DefaultMainViewRepository: MainViewRepository {
-    public func fetchPopularList(query: MoviesQuery, media: MediaType) {
-        dataTransferService.apiProvider.request(endpoint: EndpointStorage.popularAPI(media).endpoint) { result in
+    public func fetchPopularList(query: MoviesQuery, media: MediaType, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask? {
+        dataTransferService.apiProvider.request(endpoint: EndpointStorage.popularAPI(media).endpoint) { [weak self] result in
             switch result {
             case .success(let data):
-                print(data)
+                completion(.success(data))
             case .failure(let error):
-                print(error.errorDescription)
+                completion(.failure(error))
             }
         }
     }
     
-    public func fetchTrendingList(query: MoviesQuery, media: MediaType, timeWindow: TimeWindow) {
+    public func fetchTrendingList(query: MoviesQuery, media: MediaType, timeWindow: TimeWindow, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask? {
         dataTransferService.apiProvider.request(endpoint: EndpointStorage.trendingAPI(media, timeWindow).endpoint) { result in
             switch result {
             case .success(let data):
-                print(data)
+                completion(.success(data))
             case .failure(let error):
-                print(error.errorDescription)
+                completion(.failure(error))
             }
         }
     }
     
-    public func fetchUpcomingList(query: MoviesQuery, media: MediaType) {
+    public func fetchUpcomingList(query: MoviesQuery, media: MediaType, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask? {
         dataTransferService.apiProvider.request(endpoint: EndpointStorage.upcomingAPI(.movie).endpoint) { result in
             switch result {
             case .success(let data):
-                print(data)
+                completion(.success(data))
             case .failure(let error):
-                print(error.errorDescription)
+                completion(.failure(error))
             }
         }
         
