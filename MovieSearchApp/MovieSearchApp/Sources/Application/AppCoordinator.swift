@@ -1,5 +1,5 @@
 //
-//  AppFlowCoordinator.swift
+//  AppCoordinator.swift
 //  MovieSearchApp
 //
 //  Created by 박세웅 on 2022/12/19.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class AppFlowCoordinator {
+final class AppCoordinator {
     
     var navigationController: UINavigationController
     private let appDIContainer: AppDIContainer
@@ -18,6 +18,8 @@ final class AppFlowCoordinator {
     }
     
     func start() {
-        
+        let sceneDIContainer = appDIContainer.makeSceneDIContainer()
+        let flow = sceneDIContainer.makeAppCoordinator(navigationController: navigationController)
+        flow.start()
     }
 }
