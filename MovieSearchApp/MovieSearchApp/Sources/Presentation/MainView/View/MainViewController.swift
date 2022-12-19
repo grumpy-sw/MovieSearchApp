@@ -19,14 +19,6 @@ class MainViewController: UIViewController {
         }
     }
     
-    struct ThumbnailItem: Hashable {
-        let url: String
-        let identifier = UUID()
-        func hash(into hasher: inout Hasher) {
-            hasher.combine(identifier)
-        }
-    }
-    
     private let mainView = MainView()
     var dataSource: UICollectionViewDiffableDataSource<MovieCollection, Movie>! = nil
     var currentSnapshot: NSDiffableDataSourceSnapshot<MovieCollection, Movie>! = nil
@@ -54,10 +46,6 @@ class MainViewController: UIViewController {
             target: self,
             action: nil)
     }
-    
-    
-    let apiProvider = APIProvider(session: .shared)
-    let decoder = JSONDecoder()
 }
 
 extension MainViewController {
