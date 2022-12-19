@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import RxCocoa
+import RxSwift
+import RxRelay
 
 class MainViewController: UIViewController {
 
@@ -21,15 +24,9 @@ class MainViewController: UIViewController {
     
     private let mainView = MainView()
     let viewModel: MainViewModel
-    
+    let disposeBag = DisposeBag()
     var dataSource: UICollectionViewDiffableDataSource<MovieCollection, Movie>! = nil
     var currentSnapshot: NSDiffableDataSourceSnapshot<MovieCollection, Movie>! = nil
-    
-    var collections: [MovieCollection] {
-        return _collections
-    }
-    
-    fileprivate var _collections = [MovieCollection]()
     
     init(viewModel: MainViewModel) {
         self.viewModel = viewModel
@@ -47,8 +44,8 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .systemBackground
-        generateCollections()
         configureDataSource()
+        
         
         title = "MovieSearchApp"
         navigationItem.rightBarButtonItem = .init(
@@ -56,18 +53,15 @@ class MainViewController: UIViewController {
             style: .plain,
             target: self,
             action: nil)
+        
+        bind()
+        
+        viewModel.viewDidLoad()
+        
     }
 }
 
 extension MainViewController {
-    func generateCollections() {
-        _collections = [
-            MovieCollection(title: "What's Popular", movies: [Movie.generateSampleData(), Movie.generateSampleData(), Movie.generateSampleData()]),
-            MovieCollection(title: "Trending", movies: [Movie.generateSampleData(), Movie.generateSampleData(), Movie.generateSampleData()]),
-            MovieCollection(title: "Upcoming", movies: [Movie.generateSampleData(), Movie.generateSampleData(), Movie.generateSampleData()])
-        ]
-    }
-    
     func configureDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<MovieCollectionCell, Movie> { (cell, indexPath, movie) in
             cell.updateImage(movie.posterPath ?? "")
@@ -89,12 +83,62 @@ extension MainViewController {
             return self.mainView.collectionView.dequeueConfiguredReusableSupplementary(using: supplementaryRegistration, for: index)
         }
         
-        currentSnapshot = NSDiffableDataSourceSnapshot<MovieCollection, Movie>()
-        collections.forEach {
-            let collection = $0
-            currentSnapshot.appendSections([collection])
-            currentSnapshot.appendItems(collection.movies)
+//        currentSnapshot = NSDiffableDataSourceSnapshot<MovieCollection, Movie>()
+//        collections.forEach {
+//            let collection = $0
+//            currentSnapshot.appendSections([collection])
+//            currentSnapshot.appendItems(collection.movies)
+//        }
+//        dataSource.apply(currentSnapshot, animatingDifferences: true)
+    }
+}
+
+extension MainViewController {
+    private func bind() {
+        viewModel.popularMovies
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] movies in
+                self?.configureSnapshot(with: movies, of: "What's Popular")
+            })
+            .disposed(by: disposeBag)
+        viewModel.trendingMovies
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] movies in
+                self?.configureSnapshot(with: movies, of: "Today's Trend")
+            })
+            .disposed(by: disposeBag)
+        viewModel.upcomingMovies
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] movies in
+                self?.configureSnapshot(with: movies, of: "Upcoming")
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func configureSnapshot(with movies: [Movie], of title: String) {
+        guard !movies.isEmpty else {
+            return
         }
+        if currentSnapshot == nil {
+            configureInitialSnapshot(with: movies, of: title)
+        } else {
+            appendSnapshot(with: movies, of: title)
+        }
+    }
+    
+    private func configureInitialSnapshot(with movies: [Movie], of title: String) {
+        currentSnapshot = NSDiffableDataSourceSnapshot<MovieCollection, Movie>()
+        let collection = MovieCollection(title: title, movies: movies)
+        currentSnapshot.appendSections([collection])
+        currentSnapshot.appendItems(collection.movies)
+        dataSource.apply(currentSnapshot, animatingDifferences: true)
+    }
+    
+    private func appendSnapshot(with movies: [Movie], of title: String) {
+        
+        let collection = MovieCollection(title: title, movies: movies)
+        currentSnapshot.appendSections([collection])
+        currentSnapshot.appendItems(collection.movies)
         dataSource.apply(currentSnapshot, animatingDifferences: true)
     }
 }
