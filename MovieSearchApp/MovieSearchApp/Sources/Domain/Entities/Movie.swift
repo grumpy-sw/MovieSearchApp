@@ -7,7 +7,9 @@
 
 import Foundation
 
-struct Movie: Item, Decodable {
+struct Movie: Item, Decodable, Hashable {
+    let identifier = UUID()
+    
     var id: Int?
     var popularity: Double?
     let adult: Bool?
@@ -37,5 +39,9 @@ struct Movie: Item, Decodable {
         case voteAverage = "vote_average"
         
         case id, popularity, adult, overview, title, video
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(identifier)
     }
 }
