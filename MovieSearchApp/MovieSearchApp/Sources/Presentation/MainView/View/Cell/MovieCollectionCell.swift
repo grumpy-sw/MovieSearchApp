@@ -62,7 +62,6 @@ extension MovieCollectionCell {
         self.imageView.image = nil
         let provider = APIProvider()
         let endpoint = EndpointStorage.fetchImageAPI(posterPath, 300).endpoint
-        //print(endpoint.url)
         provider.request(endpoint: endpoint) { [weak self] result in
             if case let .success(data) = result {
                 DispatchQueue.main.async {
