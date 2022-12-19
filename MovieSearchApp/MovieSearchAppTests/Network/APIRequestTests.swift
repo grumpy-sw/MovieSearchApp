@@ -18,10 +18,12 @@ class APIRequestTests: QuickSpec {
     var popular: Endpoint?
     var search: Endpoint?
     var detail: Endpoint?
+    var foster: Endpoint?
+    
     let decoder = JSONDecoder()
     
     override func spec() {
-        describe("API Provider를 사용하여 일일 영화 트렌드 API를 호출한다.") {
+        describe("API Provider를 사용하여 영화 API를 호출한다.") {
             beforeEach {
                 self.provider = APIProvider()
                 self.trending = EndpointStorage.trendingAPI(.movie, .day).endpoint
@@ -29,6 +31,7 @@ class APIRequestTests: QuickSpec {
                 self.popular = EndpointStorage.popularAPI(.movie).endpoint
                 self.search = EndpointStorage.searchAPI(.movie, "탑건: 매버릭", 1).endpoint
                 self.detail = EndpointStorage.detailAPI(.movie, 361743).endpoint
+                self.foster = EndpointStorage.fetchImageAPI("/jeqXUwNilvNqNXqAHsdwm5pEfae.jpg", 200).endpoint
             }
             context("Movie Trending API를 호출한다.") {
                 it("결과를 성공적으로 Decode 해야 한다.") {
@@ -59,7 +62,7 @@ class APIRequestTests: QuickSpec {
                                 let upcoming = try! self?.decoder.decode(MoviesResponse.self, from: data)
                                 
                                 expect(upcoming?.page).to(equal(1))
-                                expect(upcoming?.totalPages).to(equal(1))
+                                expect(upcoming?.totalPages).to(equal(2))
                                 done()
                             case .failure(_):
                                 break
@@ -121,6 +124,24 @@ class APIRequestTests: QuickSpec {
                                 expect(movie?.originalTitle).to(equal("Top Gun: Maverick"))
                                 expect(movie?.runtime).to(equal(131))
                                 expect(movie?.status).to(equal("Released"))
+                                done()
+                            case .failure(_):
+                                break
+                            }
+                        }
+                    }
+                }
+            }
+            
+            context("FosterPath로 이미지를 내려받는다.") {
+                it("원하는 Size의 이미지를 성공적으로 받아야 한다.") {
+                    waitUntil(timeout: .seconds(2)) { [weak self] done in
+                        self?.provider?.request(endpoint: (self?.foster)!) { result in
+                            switch result {
+                            case .success(let data):
+                                let expectedImage = UIImage(data: data)
+                                
+                                expect(expectedImage?.size.width).to(equal(200))
                                 done()
                             case .failure(_):
                                 break
