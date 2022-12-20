@@ -27,6 +27,9 @@ final class SceneDIContainer {
         return DefaultMainViewUseCase(mainViewRepository: makeMainViewRepository())
     }
     
+    func makeSearchMoviesUseCase() -> SearchMoviesUseCase {
+        return DefaultSearchMoviesUseCase(makeMoviesRepository())
+    }
     
     // MARK: - Repositories
     func makeMainViewRepository() -> MainViewRepository {
