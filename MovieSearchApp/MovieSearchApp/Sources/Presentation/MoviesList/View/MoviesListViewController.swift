@@ -25,7 +25,7 @@ final class MoviesListViewController: UIViewController {
     private var query: String
     
     private lazy var searchBar = UISearchBar().then {
-        $0.frame = .init(x: 0, y: 0, width: UIScreen.main.bounds.size.width * 0.8, height: 0)
+        $0.frame = .init(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 0)
         $0.placeholder = "검색"
         $0.isTranslucent = false
         $0.backgroundImage = UIImage()
@@ -53,9 +53,8 @@ final class MoviesListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: searchBar)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: searchBar)
         searchBar.text = query
-        navigationItem.rightBarButtonItem = cancelSearchButton
         
         configureDataSource()
         viewModel.viewDidLoad()
@@ -64,19 +63,6 @@ final class MoviesListViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         self.coordinator?.dismissMoviesListViewController(self)
-    }
-    
-    @objc func showSearchBar() {
-        title = nil
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: searchBar)
-        self.navigationItem.rightBarButtonItem = cancelSearchButton
-        print(searchBar.bounds.width)
-    }
-    
-    @objc func hideSearchBar() {
-        self.navigationItem.leftBarButtonItem = nil
-        title = query
-        self.navigationItem.rightBarButtonItem = searchIconButton
     }
 }
 
