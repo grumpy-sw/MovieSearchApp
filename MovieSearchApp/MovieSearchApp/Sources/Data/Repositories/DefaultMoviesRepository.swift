@@ -18,8 +18,8 @@ final class DefaultMoviesRepository {
 
 extension DefaultMoviesRepository: MoviesRepository {
     
-    public func fetchMoviesList(query: MovieQuery, page: Int, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask? {
-        dataTransferService.apiProvider.request(endpoint: EndpointStorage.searchAPI(.movie, query.query, page).endpoint) { result in
+    public func fetchMoviesList(query: String, page: Int, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask? {
+        dataTransferService.apiProvider.request(endpoint: EndpointStorage.searchAPI(.movie, query, page).endpoint) { result in
             switch result {
             case .success(let data):
                 completion(.success(data))

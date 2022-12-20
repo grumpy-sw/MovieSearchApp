@@ -9,5 +9,5 @@ import Foundation
 
 protocol MoviesRepository {
     @discardableResult
-    func fetchMoviesList(query: MovieQuery, page: Int, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask?
+    func fetchMoviesList(query: String, page: Int, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask?
 }
