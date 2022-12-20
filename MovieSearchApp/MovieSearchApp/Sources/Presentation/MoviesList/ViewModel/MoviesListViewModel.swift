@@ -17,5 +17,13 @@ protocol MoviesListViewModelOutput {
 protocol MoviesListViewModelable: MoviesListViewModelInput, MoviesListViewModelOutput {}
 
 final class MoviesListViewModel: MoviesListViewModelable {
+    private let searchMoviesUseCase: SearchMoviesUseCase
+    let decoder = JSONDecoder()
     
+    init(_ searchMoviesUseCase: SearchMoviesUseCase) {
+        self.searchMoviesUseCase = searchMoviesUseCase
+    }
+    
+    func viewDidLoad() {
+    }
 }

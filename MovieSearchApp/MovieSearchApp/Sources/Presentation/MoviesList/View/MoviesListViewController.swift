@@ -11,14 +11,35 @@ private enum Section: Hashable {
     case main
 }
 
+protocol MoviesListFlowDependencies: AnyObject {
+    func presentMovieDetailViewController(_ id: Int)
+    func dismissMoviesListViewController(_ viewController: MoviesListViewController)
+}
+
 final class MoviesListViewController: UIViewController {
     
+    private weak var coordinator: MoviesListFlowDependencies?
     let viewModel: MoviesListViewModel
     private let moviesListView = MoviesListView()
     private var dataSource: UICollectionViewDiffableDataSource<Section, Movie>! = nil
+    private var query: String
     
-    init(viewModel: MoviesListViewModel) {
+    private lazy var searchBar = UISearchBar().then {
+        $0.frame = .init(x: 0, y: 0, width: UIScreen.main.bounds.size.width * 0.8, height: 0)
+        $0.placeholder = "검색"
+        $0.isTranslucent = false
+        $0.backgroundImage = UIImage()
+    }
+    
+    private lazy var searchIconButton = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: nil)
+    
+    private lazy var cancelSearchButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: nil)
+    
+    
+    init(_ coordinator: MoviesListFlowDependencies, _ viewModel: MoviesListViewModel, _ query: String) {
+        self.coordinator = coordinator
         self.viewModel = viewModel
+        self.query = query
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -32,7 +53,30 @@ final class MoviesListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: searchBar)
+        searchBar.text = query
+        navigationItem.rightBarButtonItem = cancelSearchButton
+        
         configureDataSource()
+        viewModel.viewDidLoad()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.coordinator?.dismissMoviesListViewController(self)
+    }
+    
+    @objc func showSearchBar() {
+        title = nil
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: searchBar)
+        self.navigationItem.rightBarButtonItem = cancelSearchButton
+        print(searchBar.bounds.width)
+    }
+    
+    @objc func hideSearchBar() {
+        self.navigationItem.leftBarButtonItem = nil
+        title = query
+        self.navigationItem.rightBarButtonItem = searchIconButton
     }
 }
 
