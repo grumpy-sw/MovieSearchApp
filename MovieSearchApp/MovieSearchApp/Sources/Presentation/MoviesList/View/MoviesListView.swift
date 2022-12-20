@@ -14,7 +14,6 @@ final class MoviesListView: UIView {
     lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout()).then {
         $0.showsVerticalScrollIndicator = false
         $0.showsHorizontalScrollIndicator = false
-        $0.backgroundColor = .systemYellow
     }
     
     override init(frame: CGRect) {
