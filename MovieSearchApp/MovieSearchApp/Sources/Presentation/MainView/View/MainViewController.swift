@@ -29,19 +29,18 @@ class MainViewController: UIViewController {
     }
     
     private let mainView = MainView()
-    private lazy var searchBar: UISearchBar = {
-        let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width - 100, height: 0))
-        searchBar.placeholder = "검색"
-        searchBar.sizeToFit()
-        searchBar.isTranslucent = false
-        searchBar.backgroundImage = UIImage()
-        
-        return searchBar
-    }()
+    private lazy var searchBar = UISearchBar().then {
+        $0.frame = .init(x: 0, y: 0, width: UIScreen.main.bounds.size.width * 0.8, height: 0)
+        $0.placeholder = "검색"
+        //$0.sizeToFit()
+        //$0.searchTextField.backgroundColor = .clear
+        $0.isTranslucent = false
+        $0.backgroundImage = UIImage()
+    }
     
     private lazy var searchIconButton = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: #selector(showSearchBar))
     
-    private lazy var cancelSearchButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(hideSearchBar))
+    private lazy var cancelSearchButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(hideSearchBar))
     
     let viewModel: MainViewModel
     let disposeBag = DisposeBag()
@@ -64,22 +63,25 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .systemBackground
+
         configureDataSource()
         
         title = "MovieSearchApp"
         navigationItem.rightBarButtonItem = searchIconButton
-    
+        
         viewModel.viewDidLoad()
         bind()
     }
     
     @objc func showSearchBar() {
+        title = nil
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: searchBar)
         self.navigationItem.rightBarButtonItem = cancelSearchButton
-        title = nil
+        print(searchBar.bounds.width)
     }
     
     @objc func hideSearchBar() {
+        print(#function)
         self.navigationItem.leftBarButtonItem = nil
         title = "MovieSearchApp"
         self.navigationItem.rightBarButtonItem = searchIconButton
@@ -120,6 +122,16 @@ extension MainViewController {
 
 extension MainViewController {
     private func bind() {
+        
+        searchBar.rx.searchButtonClicked
+            .asObservable()
+            .observe(on: MainScheduler.instance)
+            .bind(with: self) { [weak self] _,_  in
+                self?.searchBar.endEditing(true)
+                self?.hideSearchBar()
+            }
+            .disposed(by: disposeBag)
+        
         viewModel.popularMovies
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] movies in
@@ -147,6 +159,8 @@ extension MainViewController {
                 }
             })
             .disposed(by: disposeBag)
+        
+        
     }
     
     private func configureSnapshot(with movies: [Movie], of title: String) {
