@@ -10,6 +10,11 @@ import RxCocoa
 import RxSwift
 import RxRelay
 
+enum MoviesListFetching {
+    case firstPage
+    case nextPage
+}
+
 private enum Section: Hashable {
     case main
 }
@@ -28,6 +33,9 @@ final class MoviesListViewController: UIViewController {
     private var query: String
     private let disposeBag = DisposeBag()
     private var currentSnapshot = NSDiffableDataSourceSnapshot<Section, Movie>()
+    
+    private var fetching: MoviesListFetching = .firstPage
+    private var currentPage: Int = 0
     
     private lazy var searchBar = UISearchBar().then {
         $0.frame = .init(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 0)
@@ -62,8 +70,10 @@ final class MoviesListViewController: UIViewController {
         searchBar.text = query
         
         configureDataSource()
-        viewModel.viewDidLoad(with: query)
+        viewModel.viewDidLoad()
+        viewModel.searchButtonClicked(by: query)
         bind()
+        
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -78,7 +88,6 @@ extension MoviesListViewController {
         // MARK: - Cell Registration
         let cellRegistration = UICollectionView.CellRegistration<MoviesListItemCell, Movie> { (cell, indexPath, movie) in
             cell.updateCell(with: movie)
-
             cell.accessories = [.disclosureIndicator()]
         }
 
@@ -96,7 +105,7 @@ extension MoviesListViewController {
             .observe(on: MainScheduler.instance)
             .bind(with: self) { [weak self] _,_  in
                 self?.searchBar.endEditing(true)
-                self?.viewModel.fetchMoviesList(by: self?.searchBar.text ?? "")
+                self?.viewModel.searchButtonClicked(by: self?.searchBar.text ?? "")
             }
             .disposed(by: disposeBag)
         
@@ -106,17 +115,45 @@ extension MoviesListViewController {
                 self?.configureSnapshot(with: movies)
             })
             .disposed(by: disposeBag)
+        
+        moviesListView.collectionView.rx.didEndDecelerating
+            .asObservable()
+            .observe(on: MainScheduler.instance)
+            .bind(with: self) { [weak self] _, _ in
+                self?.viewModel.didEndDecelerating()
+            }
+            .disposed(by: disposeBag)
+        
+        viewModel.currentPageCount
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] count in
+                self?.currentPage = count
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.moviesListFetching
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] result in
+                self?.fetching = result
+            })
+            .disposed(by: disposeBag)
     }
     
     private func configureSnapshot(with movies: [Movie]) {
         guard !movies.isEmpty else {
             return
         }
-        configureInitialSnapshot(with: movies)
-        
+        print("## snapshot type \(fetching)")
+        switch fetching {
+        case .firstPage:
+            configureInitialSnapshot(with: movies)
+        case .nextPage:
+            appendSnapshot(with: movies)
+        }
     }
     
     private func configureInitialSnapshot(with movies: [Movie]) {
+        print(#function)
         currentSnapshot = NSDiffableDataSourceSnapshot<Section, Movie>()
         currentSnapshot.appendSections([.main])
         currentSnapshot.appendItems(movies)
@@ -124,8 +161,11 @@ extension MoviesListViewController {
     }
     
     private func appendSnapshot(with movies: [Movie]) {
+        print(#function)
+        let appendItems = Array(movies[(currentPage * 20)..<movies.count])
+        
         currentSnapshot.appendSections([.main])
-        currentSnapshot.appendItems(movies)
+        currentSnapshot.appendItems(appendItems)
         dataSource.apply(currentSnapshot, animatingDifferences: true)
     }
 }
