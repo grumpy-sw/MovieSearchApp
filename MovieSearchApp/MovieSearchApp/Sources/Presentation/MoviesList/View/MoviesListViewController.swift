@@ -96,36 +96,34 @@ extension MoviesListViewController {
             .observe(on: MainScheduler.instance)
             .bind(with: self) { [weak self] _,_  in
                 self?.searchBar.endEditing(true)
+                self?.viewModel.fetchMoviesList(by: self?.searchBar.text ?? "")
             }
             .disposed(by: disposeBag)
         
         viewModel.queriedMovies
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] movies in
-                self?.configureSnapshot(with: movies, of: "What's Popular")
+                self?.configureSnapshot(with: movies)
             })
             .disposed(by: disposeBag)
     }
     
-    private func configureSnapshot(with movies: [Movie], of title: String) {
+    private func configureSnapshot(with movies: [Movie]) {
         guard !movies.isEmpty else {
             return
         }
-        if currentSnapshot == nil {
-            configureInitialSnapshot(with: movies, of: title)
-        } else {
-            appendSnapshot(with: movies, of: title)
-        }
+        configureInitialSnapshot(with: movies)
+        
     }
     
-    private func configureInitialSnapshot(with movies: [Movie], of title: String) {
+    private func configureInitialSnapshot(with movies: [Movie]) {
         currentSnapshot = NSDiffableDataSourceSnapshot<Section, Movie>()
         currentSnapshot.appendSections([.main])
         currentSnapshot.appendItems(movies)
         dataSource.apply(currentSnapshot, animatingDifferences: true)
     }
     
-    private func appendSnapshot(with movies: [Movie], of title: String) {
+    private func appendSnapshot(with movies: [Movie]) {
         currentSnapshot.appendSections([.main])
         currentSnapshot.appendItems(movies)
         dataSource.apply(currentSnapshot, animatingDifferences: true)

@@ -165,8 +165,6 @@ extension MainViewController {
                 }
             })
             .disposed(by: disposeBag)
-        
-        
     }
     
     private func configureSnapshot(with movies: [Movie], of title: String) {
