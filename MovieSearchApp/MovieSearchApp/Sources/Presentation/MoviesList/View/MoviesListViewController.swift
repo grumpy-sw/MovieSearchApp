@@ -124,15 +124,13 @@ extension MoviesListViewController {
             }
             .disposed(by: disposeBag)
         
-        viewModel.currentPageCount
-            .observe(on: MainScheduler.instance)
+        viewModel.currentPageCount.asObservable()
             .subscribe(onNext: { [weak self] count in
                 self?.currentPage = count
             })
             .disposed(by: disposeBag)
         
-        viewModel.moviesListFetching
-            .observe(on: MainScheduler.instance)
+        viewModel.moviesListFetching.asObservable()
             .subscribe(onNext: { [weak self] result in
                 self?.fetching = result
             })
@@ -143,7 +141,8 @@ extension MoviesListViewController {
         guard !movies.isEmpty else {
             return
         }
-        print("## snapshot type \(fetching)")
+        print("## snapshot type \(fetching), current Page: \(currentPage)")
+        
         switch fetching {
         case .firstPage:
             configureInitialSnapshot(with: movies)
@@ -162,10 +161,11 @@ extension MoviesListViewController {
     
     private func appendSnapshot(with movies: [Movie]) {
         print(#function)
-        let appendItems = Array(movies[(currentPage * 20)..<movies.count])
+        let appendItems = Array(movies[((currentPage - 1) * 20)..<movies.count])
         
-        currentSnapshot.appendSections([.main])
+        //currentSnapshot.appendSections([.main])
         currentSnapshot.appendItems(appendItems)
+        
         dataSource.apply(currentSnapshot, animatingDifferences: true)
     }
 }

@@ -17,8 +17,8 @@ protocol MoviesListViewModelInput {
 protocol MoviesListViewModelOutput {
     var queriedMovies: BehaviorRelay<[Movie]> { get }
     var errorOcurred: Observable<NetworkError> { get }
-    var currentPageCount: Observable<Int> { get }
-    var moviesListFetching: Observable<MoviesListFetching> { get }
+    var currentPageCount: BehaviorRelay<Int> { get }
+    var moviesListFetching: BehaviorRelay<MoviesListFetching> { get }
     var isEmpty: Bool { get }
 }
 
@@ -32,8 +32,8 @@ final class MoviesListViewModel: MoviesListViewModelable {
     var queriedMovies: BehaviorRelay<[Movie]> = .init(value: [])
     var isEmpty: Bool { return queriedMovies.value.isEmpty }
     var errorOcurred: Observable<NetworkError> = .empty()
-    var currentPageCount: Observable<Int> = .of(1)
-    var moviesListFetching: Observable<MoviesListFetching> = .of(.firstPage)
+    var currentPageCount: BehaviorRelay<Int> = .init(value: 1)
+    var moviesListFetching: BehaviorRelay<MoviesListFetching> = .init(value: .firstPage)
     
     var currentPage: Int = 1
     var totalPageCount: Int = 1
@@ -49,15 +49,17 @@ final class MoviesListViewModel: MoviesListViewModelable {
     func viewDidLoad() {}
     
     func searchButtonClicked(by query: String) {
-        queriedMovies = .init(value: [])
-        moviesListFetching = Observable.of(.firstPage)
+        currentPage = 1
+        //queriedMovies = .init(value: [])
+        queriedMovies.accept([])
+        moviesListFetching.accept(.firstPage)
         fetchMoviesList(by: query)
     }
     
     func didEndDecelerating() {
         if hasMorePages {
             currentPage += 1
-            moviesListFetching = Observable.of(.nextPage)
+            moviesListFetching.accept(.nextPage)
             fetchMoviesList(by: query)
         }
     }
@@ -79,7 +81,7 @@ final class MoviesListViewModel: MoviesListViewModelable {
     func appendPage(_ response: MoviesResponse) {
         currentPage = response.page
         totalPageCount = response.totalPages
-        currentPageCount = Observable.of(response.page)
+        currentPageCount.accept(currentPage)
         queriedMovies.accept(queriedMovies.value + response.movies)
     }
 }
