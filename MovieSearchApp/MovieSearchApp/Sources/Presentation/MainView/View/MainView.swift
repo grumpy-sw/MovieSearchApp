@@ -66,6 +66,4 @@ extension MainView {
             $0.directionalEdges.equalToSuperview()
         }
     }
-    
-    
 }
