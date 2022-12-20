@@ -29,6 +29,20 @@ class MainViewController: UIViewController {
     }
     
     private let mainView = MainView()
+    private lazy var searchBar: UISearchBar = {
+        let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width - 100, height: 0))
+        searchBar.placeholder = "검색"
+        searchBar.sizeToFit()
+        searchBar.isTranslucent = false
+        searchBar.backgroundImage = UIImage()
+        
+        return searchBar
+    }()
+    
+    private lazy var searchIconButton = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: #selector(showSearchBar))
+    
+    private lazy var cancelSearchButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(hideSearchBar))
+    
     let viewModel: MainViewModel
     let disposeBag = DisposeBag()
     var dataSource: UICollectionViewDiffableDataSource<MovieCollection, Movie>! = nil
@@ -52,19 +66,26 @@ class MainViewController: UIViewController {
         self.view.backgroundColor = .systemBackground
         configureDataSource()
         
-        
         title = "MovieSearchApp"
-        navigationItem.rightBarButtonItem = .init(
-            image: UIImage(systemName: "magnifyingglass"),
-            style: .plain,
-            target: self,
-            action: nil)
+        navigationItem.rightBarButtonItem = searchIconButton
         
         bind()
         
         viewModel.viewDidLoad()
-        
     }
+    
+    @objc func showSearchBar() {
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: searchBar)
+        self.navigationItem.rightBarButtonItem = cancelSearchButton
+        title = nil
+    }
+    
+    @objc func hideSearchBar() {
+        self.navigationItem.leftBarButtonItem = nil
+        title = "MovieSearchApp"
+        self.navigationItem.rightBarButtonItem = searchIconButton
+    }
+    
 }
 
 extension MainViewController {
