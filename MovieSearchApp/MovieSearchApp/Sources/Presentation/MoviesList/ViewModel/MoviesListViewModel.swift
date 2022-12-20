@@ -6,3 +6,16 @@
 //
 
 import Foundation
+import RxSwift
+import RxRelay
+
+protocol MoviesListViewModelInput {
+}
+protocol MoviesListViewModelOutput {
+}
+
+protocol MoviesListViewModelable: MoviesListViewModelInput, MoviesListViewModelOutput {}
+
+final class MoviesListViewModel: MoviesListViewModelable {
+    
+}

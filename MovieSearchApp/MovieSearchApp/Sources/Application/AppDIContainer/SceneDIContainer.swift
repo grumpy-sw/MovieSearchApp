@@ -43,6 +43,14 @@ final class SceneDIContainer {
     }
     
     // MARK: - Movies List
+    func makeMoviesListViewController() -> MoviesListViewController {
+        return MoviesListViewController(viewModel: makeMoviesListViewModel())
+    }
+    
+    func makeMoviesListViewModel() -> MoviesListViewModel {
+        return MoviesListViewModel()
+    }
+    
     
     // MARK: - Movie Detail
     

@@ -13,8 +13,19 @@ private enum Section: Hashable {
 
 final class MoviesListViewController: UIViewController {
     
+    let viewModel: MoviesListViewModel
     private let moviesListView = MoviesListView()
     private var dataSource: UICollectionViewDiffableDataSource<Section, Movie>! = nil
+    
+    init(viewModel: MoviesListViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func loadView() {
         self.view = moviesListView
     }
