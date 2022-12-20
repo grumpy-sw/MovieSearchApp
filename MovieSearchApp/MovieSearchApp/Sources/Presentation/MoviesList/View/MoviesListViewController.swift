@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import RxCocoa
+import RxSwift
+import RxRelay
 
 private enum Section: Hashable {
     case main
@@ -23,6 +26,8 @@ final class MoviesListViewController: UIViewController {
     private let moviesListView = MoviesListView()
     private var dataSource: UICollectionViewDiffableDataSource<Section, Movie>! = nil
     private var query: String
+    private let disposeBag = DisposeBag()
+    private var currentSnapshot = NSDiffableDataSourceSnapshot<Section, Movie>()
     
     private lazy var searchBar = UISearchBar().then {
         $0.frame = .init(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 0)
@@ -57,7 +62,8 @@ final class MoviesListViewController: UIViewController {
         searchBar.text = query
         
         configureDataSource()
-        viewModel.viewDidLoad()
+        viewModel.viewDidLoad(with: query)
+        bind()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -68,23 +74,60 @@ final class MoviesListViewController: UIViewController {
 
 extension MoviesListViewController {
     private func configureDataSource() {
-//
-//        // MARK: - Cell Registration
-//        let cellRegistration = UICollectionView.CellRegistration<MoviesListItemCell, Movie> { (cell, indexPath, movie) in
-//            cell.updateCell(with: movie)
-//
-//            cell.accessories = [.disclosureIndicator()]
-//        }
-//
-//        dataSource = UICollectionViewDiffableDataSource<Section, Movie>(collectionView: moviesListView.collectionView) {
-//            (collectionView: UICollectionView, indexPath: IndexPath, item: Movie) -> UICollectionViewCell? in
-//            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
-//        }
-//
-//        // initial data
-//        var snapshot = NSDiffableDataSourceSnapshot<Section, Movie>()
-//        snapshot.appendSections([.main])
-//        snapshot.appendItems(Item.all)
-//        dataSource.apply(snapshot, animatingDifferences: false)
+
+        // MARK: - Cell Registration
+        let cellRegistration = UICollectionView.CellRegistration<MoviesListItemCell, Movie> { (cell, indexPath, movie) in
+            cell.updateCell(with: movie)
+
+            cell.accessories = [.disclosureIndicator()]
+        }
+
+        dataSource = UICollectionViewDiffableDataSource<Section, Movie>(collectionView: moviesListView.collectionView) {
+            (collectionView: UICollectionView, indexPath: IndexPath, item: Movie) -> UICollectionViewCell? in
+            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
+        }
+    }
+}
+
+extension MoviesListViewController {
+    func bind() {
+        searchBar.rx.searchButtonClicked
+            .asObservable()
+            .observe(on: MainScheduler.instance)
+            .bind(with: self) { [weak self] _,_  in
+                self?.searchBar.endEditing(true)
+            }
+            .disposed(by: disposeBag)
+        
+        viewModel.queriedMovies
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] movies in
+                self?.configureSnapshot(with: movies, of: "What's Popular")
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func configureSnapshot(with movies: [Movie], of title: String) {
+        guard !movies.isEmpty else {
+            return
+        }
+        if currentSnapshot == nil {
+            configureInitialSnapshot(with: movies, of: title)
+        } else {
+            appendSnapshot(with: movies, of: title)
+        }
+    }
+    
+    private func configureInitialSnapshot(with movies: [Movie], of title: String) {
+        currentSnapshot = NSDiffableDataSourceSnapshot<Section, Movie>()
+        currentSnapshot.appendSections([.main])
+        currentSnapshot.appendItems(movies)
+        dataSource.apply(currentSnapshot, animatingDifferences: true)
+    }
+    
+    private func appendSnapshot(with movies: [Movie], of title: String) {
+        currentSnapshot.appendSections([.main])
+        currentSnapshot.appendItems(movies)
+        dataSource.apply(currentSnapshot, animatingDifferences: true)
     }
 }
