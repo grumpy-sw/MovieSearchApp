@@ -33,6 +33,10 @@ final class SceneDIContainer {
         return DefaultMainViewRepository(dependencies)
     }
     
+    func makeMoviesRepository() -> MoviesRepository {
+        return DefaultMoviesRepository(dependencies)
+    }
+    
     // MARK: - MainView(Movie Collections)
     func makeMainViewController() -> MainViewController {
         return MainViewController(viewModel: makeMainViewModel())
