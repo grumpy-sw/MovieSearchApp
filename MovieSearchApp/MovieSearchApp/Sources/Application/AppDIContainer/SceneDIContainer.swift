@@ -41,8 +41,8 @@ final class SceneDIContainer {
     }
     
     // MARK: - MainView(Movie Collections)
-    func makeMainViewController() -> MainViewController {
-        return MainViewController(viewModel: makeMainViewModel())
+    func makeMainViewController(_ coordinator: MainViewFlowDependencies) -> MainViewController {
+        return MainViewController(coordinator, makeMainViewModel())
     }
     
     func makeMainViewModel() -> MainViewModel {
@@ -50,19 +50,19 @@ final class SceneDIContainer {
     }
     
     // MARK: - Movies List
-    func makeMoviesListViewController() -> MoviesListViewController {
-        return MoviesListViewController(viewModel: makeMoviesListViewModel())
+    func makeMoviesListViewController(_ coordinator: MoviesListFlowDependencies, _ query: String) -> MoviesListViewController {
+        return MoviesListViewController(coordinator, makeMoviesListViewModel(), query)
     }
     
     func makeMoviesListViewModel() -> MoviesListViewModel {
-        return MoviesListViewModel()
+        return MoviesListViewModel(makeSearchMoviesUseCase())
     }
     
     
     // MARK: - Movie Detail
     
     // MARK: - Coordinator
-    func makeAppCoordinator(navigationController: UINavigationController) -> FlowCoordinator {
+    func makeAppCoordinator(_ navigationController: UINavigationController) -> FlowCoordinator {
         return FlowCoordinator(navigationController, self)
     }
     

@@ -10,6 +10,11 @@ import RxCocoa
 import RxSwift
 import RxRelay
 
+protocol MainViewFlowDependencies: AnyObject {
+    func presentMoviesListViewController(_ query: String)
+    func presentMovieDetailViewController(_ id: Int)
+}
+
 class MainViewController: UIViewController {
     
     enum SectionCategory: Int {
@@ -42,12 +47,14 @@ class MainViewController: UIViewController {
     
     private lazy var cancelSearchButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(hideSearchBar))
     
+    private weak var coordinator: MainViewFlowDependencies?
     let viewModel: MainViewModel
     let disposeBag = DisposeBag()
     var dataSource: UICollectionViewDiffableDataSource<MovieCollection, Movie>! = nil
     var currentSnapshot: NSDiffableDataSourceSnapshot<MovieCollection, Movie>! = nil
     
-    init(viewModel: MainViewModel) {
+    init(_ coordinator: MainViewFlowDependencies, _ viewModel: MainViewModel) {
+        self.coordinator = coordinator
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -77,16 +84,13 @@ class MainViewController: UIViewController {
         title = nil
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: searchBar)
         self.navigationItem.rightBarButtonItem = cancelSearchButton
-        print(searchBar.bounds.width)
     }
     
     @objc func hideSearchBar() {
-        print(#function)
         self.navigationItem.leftBarButtonItem = nil
         title = "MovieSearchApp"
         self.navigationItem.rightBarButtonItem = searchIconButton
     }
-    
 }
 
 extension MainViewController {
@@ -127,8 +131,10 @@ extension MainViewController {
             .asObservable()
             .observe(on: MainScheduler.instance)
             .bind(with: self) { [weak self] _,_  in
+                self?.coordinator?.presentMoviesListViewController(self?.searchBar.text ?? "")
                 self?.searchBar.endEditing(true)
                 self?.hideSearchBar()
+                
             }
             .disposed(by: disposeBag)
         

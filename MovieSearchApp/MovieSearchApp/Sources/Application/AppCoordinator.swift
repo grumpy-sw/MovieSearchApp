@@ -11,6 +11,7 @@ final class AppCoordinator {
     
     var navigationController: UINavigationController
     private let appDIContainer: AppDIContainer
+    var flow: FlowCoordinator?
     
     init(navigationController: UINavigationController, appDIContainer: AppDIContainer) {
         self.navigationController = navigationController
@@ -19,7 +20,7 @@ final class AppCoordinator {
     
     func start() {
         let sceneDIContainer = appDIContainer.makeSceneDIContainer()
-        let flow = sceneDIContainer.makeAppCoordinator(navigationController: navigationController)
-        flow.start()
+        flow = sceneDIContainer.makeAppCoordinator(navigationController)
+        flow?.start()
     }
 }
