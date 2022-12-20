@@ -68,10 +68,9 @@ class MainViewController: UIViewController {
         
         title = "MovieSearchApp"
         navigationItem.rightBarButtonItem = searchIconButton
-        
-        bind()
-        
+    
         viewModel.viewDidLoad()
+        bind()
     }
     
     @objc func showSearchBar() {
@@ -144,7 +143,7 @@ extension MainViewController {
             .subscribe(onNext: { [weak self] content in
                 if let section = SectionCategory(rawValue: content.section) {
                     guard let list = self?.matchCollectionType(section) else { return }
-                    print(list[content.item].id)
+                    print(list[content.item].title!)
                 }
             })
             .disposed(by: disposeBag)

@@ -22,6 +22,7 @@ protocol MainViewModelOutput {
 protocol MainViewModelable: MainViewModelInput, MainViewModelOutput {}
 
 final class MainViewModel: MainViewModelable {
+    
     var popularMovies: BehaviorRelay<[Movie]> = .init(value: [])
     var trendingMovies: BehaviorRelay<[Movie]> = .init(value: [])
     var upcomingMovies: BehaviorRelay<[Movie]> = .init(value: [])
@@ -35,9 +36,17 @@ final class MainViewModel: MainViewModelable {
     }
     
     func viewDidLoad() {
-        fetchPopularMoviesList()
-        fetchTrendingMoviesList()
-        fetchUpcomingMoviesList()
+        DispatchQueue.global().sync {
+            fetchPopularMoviesList()
+            
+        }
+        DispatchQueue.global().sync {
+            fetchTrendingMoviesList()
+            
+        }
+        DispatchQueue.global().sync {
+            fetchUpcomingMoviesList()
+        }
     }
     
     func fetchPopularMoviesList() {
