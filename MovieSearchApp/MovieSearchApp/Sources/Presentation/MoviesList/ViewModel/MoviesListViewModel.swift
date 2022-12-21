@@ -12,13 +12,14 @@ import RxRelay
 protocol MoviesListViewModelInput {
     func viewDidLoad()
     func searchButtonClicked(by query: String)
-    func didEndDecelerating()
+    func willDisplayCell(at index: Int)
 }
 protocol MoviesListViewModelOutput {
     var queriedMovies: BehaviorRelay<[Movie]> { get }
     var errorOcurred: Observable<NetworkError> { get }
     var currentPageCount: BehaviorRelay<Int> { get }
     var moviesListFetching: BehaviorRelay<MoviesListFetching> { get }
+    
     var isEmpty: Bool { get }
 }
 
@@ -39,7 +40,7 @@ final class MoviesListViewModel: MoviesListViewModelable {
     var totalPageCount: Int = 1
     var hasMorePages: Bool { currentPage < totalPageCount }
     var nextPage: Int { hasMorePages ? currentPage + 1 : currentPage }
-    
+    var isLoading: Bool = false
     let decoder = JSONDecoder()
     
     init(_ searchMoviesUseCase: SearchMoviesUseCase) {
@@ -50,14 +51,16 @@ final class MoviesListViewModel: MoviesListViewModelable {
     
     func searchButtonClicked(by query: String) {
         currentPage = 1
-        //queriedMovies = .init(value: [])
         queriedMovies.accept([])
         moviesListFetching.accept(.firstPage)
         fetchMoviesList(by: query)
     }
-    
-    func didEndDecelerating() {
-        if hasMorePages {
+    func willDisplayCell(at index: Int) {
+        guard hasMorePages else {
+            return
+        }
+        
+        if index > queriedMovies.value.count - 4, !isLoading {
             currentPage += 1
             moviesListFetching.accept(.nextPage)
             fetchMoviesList(by: query)
@@ -66,6 +69,7 @@ final class MoviesListViewModel: MoviesListViewModelable {
     
     func fetchMoviesList(by query: String) {
         self.query = query
+        isLoading = true
         searchMoviesUseCase.execute(requestQuery: query, page: currentPage) { [weak self] result in
             switch result {
             case .success(let data):
@@ -75,6 +79,7 @@ final class MoviesListViewModel: MoviesListViewModelable {
             case .failure(let error):
                 print(error.errorDescription)
             }
+            self?.isLoading = false
         }
     }
     

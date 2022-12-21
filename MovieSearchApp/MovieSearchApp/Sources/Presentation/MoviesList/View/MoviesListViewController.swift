@@ -104,6 +104,7 @@ extension MoviesListViewController {
             .observe(on: MainScheduler.instance)
             .bind(with: self) { [weak self] _,_  in
                 self?.searchBar.endEditing(true)
+                self?.moviesListView.collectionView.scrollToItem(at: .init(item: 0, section: 0), at: .top, animated: true)
                 self?.viewModel.searchButtonClicked(by: self?.searchBar.text ?? "")
             }
             .disposed(by: disposeBag)
@@ -115,11 +116,11 @@ extension MoviesListViewController {
             })
             .disposed(by: disposeBag)
         
-        moviesListView.collectionView.rx.didEndDecelerating
+        moviesListView.collectionView.rx.willDisplayCell
             .asObservable()
             .observe(on: MainScheduler.instance)
-            .bind(with: self) { [weak self] _, _ in
-                self?.viewModel.didEndDecelerating()
+            .bind(with: self) { [weak self] _, cell in
+                self?.viewModel.willDisplayCell(at: cell.at.item)
             }
             .disposed(by: disposeBag)
         
@@ -134,13 +135,19 @@ extension MoviesListViewController {
                 self?.fetching = result
             })
             .disposed(by: disposeBag)
+        
+        moviesListView.collectionView.rx.itemSelected
+            .asObservable()
+            .observe(on: MainScheduler.instance)
+            .bind(with: self) { [weak self] obj, indexPath in
+                print(self?.moviesListView.collectionView.cellForItem(at: indexPath)?.frame.height)
+            }
     }
     
     private func configureSnapshot(with movies: [Movie]) {
         guard !movies.isEmpty else {
             return
         }
-        print("## snapshot type \(fetching), current Page: \(currentPage)")
         
         switch fetching {
         case .firstPage:
@@ -151,7 +158,6 @@ extension MoviesListViewController {
     }
     
     private func configureInitialSnapshot(with movies: [Movie]) {
-        print(#function)
         currentSnapshot = NSDiffableDataSourceSnapshot<Section, Movie>()
         currentSnapshot.appendSections([.main])
         currentSnapshot.appendItems(movies)
@@ -159,7 +165,6 @@ extension MoviesListViewController {
     }
     
     private func appendSnapshot(with movies: [Movie]) {
-        print(#function)
         let appendItems = Array(movies[((currentPage - 1) * 20)..<movies.count])
         
         //currentSnapshot.appendSections([.main])
