@@ -14,5 +14,11 @@ protocol MovieDetailViewModelOutput { }
 protocol MovieDetailViewModelable: MovieDetailViewModelInput, MovieDetailViewModelOutput { }
 
 final class MovieDetailViewModel: MovieDetailViewModelable {
+    private let movieDetailUseCase: MovieDetailUseCase
+    private let movieId: Int
     
+    init(_ movieId: Int, _ movieDetailUseCase: MovieDetailUseCase) {
+        self.movieId = movieId
+        self.movieDetailUseCase = movieDetailUseCase
+    }
 }
