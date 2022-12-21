@@ -10,12 +10,14 @@ import UIKit
 protocol FlowCoordinatorDependencies {
     func makeMainViewController(_ coordinator: MainViewFlowDependencies) -> MainViewController
     func makeMoviesListViewController(_ coordinator: MoviesListFlowDependencies, _ query: String) -> MoviesListViewController
+    func makeMovieDetailViewController(_ coordinator: MovieDetailFlowDependencies, _ movieId: Int) -> MovieDetailViewController
 }
 
 final class FlowCoordinator {
     private weak var navigationController: UINavigationController?
     private weak var mainViewController: MainViewController?
     private weak var moviesListViewController: MoviesListViewController?
+    private var movieDetailViewControllers: [MovieDetailViewController] = []
     private let dependencies: FlowCoordinatorDependencies
     
     init(_ navigationController: UINavigationController, _ dependencies: FlowCoordinatorDependencies) {
@@ -45,11 +47,17 @@ extension FlowCoordinator: MainViewFlowDependencies, MoviesListFlowDependencies,
     }
     
     func presentMovieDetailViewController(_ id: Int) {
-        
+        let vc = dependencies.makeMovieDetailViewController(self, id)
+        self.movieDetailViewControllers.append(vc)
+        self.navigationController?.pushViewController(vc, animated: false)
     }
     
     func dismissMoviesListViewController(_ viewController: MoviesListViewController) {
         self.moviesListViewController = nil
+    }
+    
+    func dismissMoviesDetailViewController() {
+        self.movieDetailViewControllers.removeLast()
     }
 }
 

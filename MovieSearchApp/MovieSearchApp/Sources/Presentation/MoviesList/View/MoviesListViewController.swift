@@ -140,8 +140,11 @@ extension MoviesListViewController {
             .asObservable()
             .observe(on: MainScheduler.instance)
             .bind(with: self) { [weak self] obj, indexPath in
-                print(self?.moviesListView.collectionView.cellForItem(at: indexPath)?.frame.height)
+                if let movieId = self?.viewModel.queriedMovies.value[indexPath.item].id {
+                    self?.coordinator?.presentMovieDetailViewController(movieId)
+                }
             }
+            .disposed(by: disposeBag)
     }
     
     private func configureSnapshot(with movies: [Movie]) {
