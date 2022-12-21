@@ -88,7 +88,6 @@ extension MoviesListViewController {
         // MARK: - Cell Registration
         let cellRegistration = UICollectionView.CellRegistration<MoviesListItemCell, Movie> { (cell, indexPath, movie) in
             cell.updateCell(with: movie)
-            cell.accessories = [.disclosureIndicator()]
         }
 
         dataSource = UICollectionViewDiffableDataSource<Section, Movie>(collectionView: moviesListView.collectionView) {
