@@ -9,8 +9,8 @@ import Foundation
 
 struct MoviesQuery: Encodable {
     let apiKey: String = Constants.apiKey
-    let language: String = "ko-KR"
-    let region: String = "KR"
+    let language: String = "en-US"
+    let region: String = "US"
     
     enum CodingKeys: String, CodingKey {
         case apiKey = "api_key"

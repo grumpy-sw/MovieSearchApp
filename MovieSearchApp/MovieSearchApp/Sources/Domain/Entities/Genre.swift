@@ -35,43 +35,43 @@ enum GenreCategory: Int, Decodable {
     var desciption: String {
         switch self {
         case .action:
-            return "액션"
+            return "Action"
         case .adventure:
-            return "모험"
+            return "Adventure"
         case .animation:
-            return "애니메이션"
+            return "Animation"
         case .comedy:
-            return "코미디"
+            return "Comedy"
         case .crime:
-            return "범죄"
+            return "Crime"
         case .documentary:
-            return "다큐멘터리"
+            return "Documentary"
         case .drama:
-            return "드라마"
+            return "Drama"
         case .family:
-            return "가족"
+            return "Family"
         case .fantasy:
-            return "판타지"
+            return "Fantasy"
         case .history:
-            return "역사"
+            return "History"
         case .horror:
-            return "공포"
+            return "Horror"
         case .music:
-            return "음악"
+            return "Music"
         case .mystery:
-            return "미스터리"
+            return "Mystery"
         case .romance:
-            return "로맨스"
+            return "Romance"
         case .scienceFiction:
             return "SF"
         case .tvMovie:
-            return "TV 영화"
+            return "TV Movie"
         case .thriller:
-            return "스릴러"
+            return "Thriller"
         case .war:
-            return "전쟁"
+            return "War"
         case .western:
-            return "서부"
+            return "Western"
         }
     }
 }

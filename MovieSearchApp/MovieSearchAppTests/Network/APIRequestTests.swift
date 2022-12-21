@@ -62,7 +62,6 @@ class APIRequestTests: QuickSpec {
                                 let upcoming = try! self?.decoder.decode(MoviesResponse.self, from: data)
                                 
                                 expect(upcoming?.page).to(equal(1))
-                                expect(upcoming?.totalPages).to(equal(2))
                                 done()
                             case .failure(_):
                                 break
@@ -81,7 +80,6 @@ class APIRequestTests: QuickSpec {
                                 let popular = try! self?.decoder.decode(MoviesResponse.self, from: data)
                                 
                                 expect(popular?.page).to(equal(1))
-                                expect(popular?.totalPages).to(equal(822))
                                 done()
                             case .failure(_):
                                 break
@@ -101,7 +99,7 @@ class APIRequestTests: QuickSpec {
                                 
                                 expect(movies?.page).to(equal(1))
                                 expect(movies?.movies.count).to(equal(1))
-                                expect(movies?.movies.first!.title).to(equal("탑건: 매버릭"))
+                                expect(movies?.movies.first!.title).to(equal("Top Gun: Maverick"))
                                 expect(movies?.movies.first!.id).to(equal(361743))
                                 done()
                             case .failure(_):

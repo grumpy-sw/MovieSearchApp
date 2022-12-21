@@ -12,8 +12,8 @@ struct MovieQuery: Encodable {
     let query: String
     
     let apiKey: String = Constants.apiKey
-    let language: String = "ko-KR"
-    let region: String = "KR"
+    let language: String = "en-US"
+    let region: String = "US"
     
     
     
