@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Crew {
+struct Crew: Decodable {
     let name: String
     let job: String
 }

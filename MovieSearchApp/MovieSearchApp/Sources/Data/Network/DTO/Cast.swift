@@ -7,8 +7,15 @@
 
 import Foundation
 
-struct Cast {
+struct Cast: Decodable {
     let name: String
+    let profilePath: String?
     let character: String
-    let profilePath: String
+
+    enum CodingKeys: String, CodingKey {
+        case name
+        case profilePath = "profile_path"
+        case character
+    }
 }
+
