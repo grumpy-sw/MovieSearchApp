@@ -36,7 +36,8 @@ extension FlowCoordinator {
     }
 }
 
-extension FlowCoordinator: MainViewFlowDependencies, MoviesListFlowDependencies {
+extension FlowCoordinator: MainViewFlowDependencies, MoviesListFlowDependencies, MovieDetailFlowDependencies {
+    
     func presentMoviesListViewController(_ query: String) {
         let vc = dependencies.makeMoviesListViewController(self, query)
         self.moviesListViewController = vc

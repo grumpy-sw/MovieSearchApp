@@ -31,6 +31,10 @@ final class SceneDIContainer {
         return DefaultSearchMoviesUseCase(makeMoviesRepository())
     }
     
+    func makeMovieDetailUseCase() -> MovieDetailUseCase {
+        return DefaultMovieDetailUseCase(makeMovieDetailRepository())
+    }
+    
     // MARK: - Repositories
     func makeMainViewRepository() -> MainViewRepository {
         return DefaultMainViewRepository(dependencies)
@@ -38,6 +42,10 @@ final class SceneDIContainer {
     
     func makeMoviesRepository() -> MoviesRepository {
         return DefaultMoviesRepository(dependencies)
+    }
+    
+    func makeMovieDetailRepository() -> MovieDetailRepository {
+        return DefaultMovieDetailRepository(dependencies)
     }
     
     // MARK: - MainView(Movie Collections)
@@ -58,8 +66,15 @@ final class SceneDIContainer {
         return MoviesListViewModel(makeSearchMoviesUseCase())
     }
     
-    
     // MARK: - Movie Detail
+    func makeMovieDetailViewController(_ coordinator: MovieDetailFlowDependencies, _ movieId: Int) -> MovieDetailViewController {
+        return MovieDetailViewController(coordinator, makeMovieDetailViewModel(movieId))
+    }
+    
+    func makeMovieDetailViewModel(_ movieId: Int) -> MovieDetailViewModel {
+        return MovieDetailViewModel(movieId, makeMovieDetailUseCase())
+    }
+    
     
     // MARK: - Coordinator
     func makeAppCoordinator(_ navigationController: UINavigationController) -> FlowCoordinator {
