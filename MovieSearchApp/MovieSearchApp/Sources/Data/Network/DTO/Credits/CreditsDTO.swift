@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct Credits: Decodable {
+struct CreditsDTO: Decodable {
     let id: Int
-    let cast: [Cast]
-    let crew: [Crew]
+    let cast: [CastDTO]
+    let crew: [CrewDTO]
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Cast: Decodable {
+struct CastDTO: Decodable {
     let name: String
     let profilePath: String?
     let character: String

@@ -21,27 +21,27 @@ class DecodeModelTests: QuickSpec {
             }
             context("Asset의 credits파일로 테스트를 시작한다.") {
                 it("Credits 타입으로 Decode 되어야 한다.") {
-                    var decodedCredits: Credits? = nil
+                    var decodedCredits: CreditsDTO? = nil
                     do {
-                        decodedCredits = try self.decoder.decode(Credits.self, from: self.creditsJsonData!)
+                        decodedCredits = try self.decoder.decode(CreditsDTO.self, from: self.creditsJsonData!)
                     } catch(let error) {
                         print(error.localizedDescription)
                     }
                     expect(decodedCredits!.id).to(equal(361743))
                 }
                 it("프로퍼티인 cast가 [Cast] 타입으로 Decode 되어야 한다.") {
-                    var decodedCast: [Cast]? = nil
+                    var decodedCast: [CastDTO]? = nil
                     do {
-                        decodedCast = try self.decoder.decode(Credits.self, from: self.creditsJsonData!).cast
+                        decodedCast = try self.decoder.decode(CreditsDTO.self, from: self.creditsJsonData!).cast
                     } catch(let error) {
                         print(error.localizedDescription)
                     }
                     expect(decodedCast!.count).to(beGreaterThan(0))
                 }
                 it("프로퍼티인 crew가 [Crew] 타입으로 Decode 되어야 한다.") {
-                    var decodedCrew: [Crew]? = nil
+                    var decodedCrew: [CrewDTO]? = nil
                     do {
-                        decodedCrew = try self.decoder.decode(Credits.self, from: self.creditsJsonData!).crew
+                        decodedCrew = try self.decoder.decode(CreditsDTO.self, from: self.creditsJsonData!).crew
                     } catch(let error) {
                         print(error.localizedDescription)
                     }
