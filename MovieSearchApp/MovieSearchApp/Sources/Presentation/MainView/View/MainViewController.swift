@@ -36,9 +36,7 @@ class MainViewController: UIViewController {
     private let mainView = MainView()
     private lazy var searchBar = UISearchBar().then {
         $0.frame = .init(x: 0, y: 0, width: UIScreen.main.bounds.size.width * 0.8, height: 0)
-        $0.placeholder = "검색"
-        //$0.sizeToFit()
-        //$0.searchTextField.backgroundColor = .clear
+        $0.placeholder = "Search"
         $0.isTranslucent = false
         $0.backgroundImage = UIImage()
     }
@@ -161,7 +159,9 @@ extension MainViewController {
             .subscribe(onNext: { [weak self] content in
                 if let section = SectionCategory(rawValue: content.section) {
                     guard let list = self?.matchCollectionType(section) else { return }
-                    print(list[content.item].title!)
+                    if let movieId = list[content.item].id {
+                        self?.coordinator?.presentMovieDetailViewController(movieId)
+                    }
                 }
             })
             .disposed(by: disposeBag)
