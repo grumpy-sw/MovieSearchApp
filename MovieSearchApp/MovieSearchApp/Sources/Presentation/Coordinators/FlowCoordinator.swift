@@ -43,13 +43,13 @@ extension FlowCoordinator: MainViewFlowDependencies, MoviesListFlowDependencies,
     func presentMoviesListViewController(_ query: String) {
         let vc = dependencies.makeMoviesListViewController(self, query)
         self.moviesListViewController = vc
-        self.navigationController?.pushViewController(vc, animated: false)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func presentMovieDetailViewController(_ id: Int) {
         let vc = dependencies.makeMovieDetailViewController(self, id)
         self.movieDetailViewControllers.append(vc)
-        self.navigationController?.pushViewController(vc, animated: false)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func dismissMoviesListViewController(_ viewController: MoviesListViewController) {
