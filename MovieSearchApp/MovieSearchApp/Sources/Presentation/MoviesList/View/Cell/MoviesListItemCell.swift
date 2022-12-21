@@ -109,8 +109,12 @@ extension MoviesListItemCell {
         }
     }
     
-    func updateImage(_ posterPath: String) {
+    func updateImage(_ posterPath: String?) {
         self.imageView.image = nil
+        guard let posterPath = posterPath else {
+            return
+        }
+
         let provider = APIProvider()
         let endpoint = EndpointStorage.fetchImageAPI(posterPath, 200).endpoint
         provider.request(endpoint: endpoint) { [weak self] result in
@@ -123,10 +127,8 @@ extension MoviesListItemCell {
     }
     
     func updateCell(with Item: Movie) {
-        guard let posterPath = Item.posterPath else {
-            return
-        }
-        updateImage(posterPath)
+        
+        updateImage(Item.posterPath)
         titleLabel.text = Item.title
         releaseDateLabel.text = Item.releaseDate
         overviewLabel.text = Item.overview

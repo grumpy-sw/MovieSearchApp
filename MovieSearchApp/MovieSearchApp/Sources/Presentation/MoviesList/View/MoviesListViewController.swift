@@ -166,9 +166,7 @@ extension MoviesListViewController {
     
     private func appendSnapshot(with movies: [Movie]) {
         let appendItems = Array(movies[((currentPage - 1) * 20)..<movies.count])
-        
-        //currentSnapshot.appendSections([.main])
-        currentSnapshot.appendItems(appendItems)
+        currentSnapshot.appendItems(appendItems, toSection: .main)
         
         dataSource.apply(currentSnapshot, animatingDifferences: true)
     }
