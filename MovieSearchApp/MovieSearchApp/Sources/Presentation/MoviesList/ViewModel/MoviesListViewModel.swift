@@ -16,7 +16,7 @@ protocol MoviesListViewModelInput {
     func itemSelected(_ index: Int)
 }
 protocol MoviesListViewModelOutput {
-    var queriedMovies: BehaviorRelay<[Movie]> { get }
+    var queriedMovies: BehaviorRelay<[MovieCard]> { get }
     var errorOcurred: Observable<NetworkError> { get }
     var currentPageCount: BehaviorRelay<Int> { get }
     var selectedMovieId: BehaviorRelay<Int?> { get }
@@ -32,7 +32,7 @@ final class MoviesListViewModel: MoviesListViewModelable {
     private let searchMoviesUseCase: SearchMoviesUseCase
     var query: String = ""
     
-    var queriedMovies: BehaviorRelay<[Movie]> = .init(value: [])
+    var queriedMovies: BehaviorRelay<[MovieCard]> = .init(value: [])
     var isEmpty: Bool { return queriedMovies.value.isEmpty }
     var errorOcurred: Observable<NetworkError> = .empty()
     var currentPageCount: BehaviorRelay<Int> = .init(value: 1)
@@ -80,8 +80,8 @@ final class MoviesListViewModel: MoviesListViewModelable {
         _ = searchMoviesUseCase.execute(requestQuery: query, page: currentPage) { [weak self] result in
             switch result {
             case .success(let data):
-                if let response = try? self?.decoder.decode(MoviesResponse.self, from: data) {
-                    self?.appendPage(response)
+                if let response = try? self?.decoder.decode(MoviesListDTO.self, from: data) {
+                    self?.appendPage(response.toDomain())
                 }
             case .failure(let error):
                 print(error.errorDescription)
@@ -90,7 +90,7 @@ final class MoviesListViewModel: MoviesListViewModelable {
         }
     }
     
-    func appendPage(_ response: MoviesResponse) {
+    func appendPage(_ response: MoviesList) {
         currentPage = response.page
         totalPageCount = response.totalPages
         currentPageCount.accept(currentPage)

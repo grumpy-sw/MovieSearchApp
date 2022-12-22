@@ -23,9 +23,9 @@ enum SectionCategory: Int {
 
 class MainViewController: UIViewController {
     
-    struct MovieCollection: Hashable {
+    struct CollectionSectionModel: Hashable {
         let title: String
-        let movies: [Movie]
+        let movies: [MoviePage]
         
         let identifier = UUID()
         func hash(into hasher: inout Hasher) {
@@ -48,8 +48,8 @@ class MainViewController: UIViewController {
     private weak var coordinator: MainViewFlowDependencies?
     let viewModel: MainViewModel
     let disposeBag = DisposeBag()
-    var dataSource: UICollectionViewDiffableDataSource<MovieCollection, Movie>! = nil
-    var currentSnapshot: NSDiffableDataSourceSnapshot<MovieCollection, Movie>! = nil
+    var dataSource: UICollectionViewDiffableDataSource<CollectionSectionModel, MoviePage>! = nil
+    var currentSnapshot: NSDiffableDataSourceSnapshot<CollectionSectionModel, MoviePage>! = nil
     
     init(_ coordinator: MainViewFlowDependencies, _ viewModel: MainViewModel) {
         self.coordinator = coordinator
@@ -94,19 +94,19 @@ class MainViewController: UIViewController {
 
 extension MainViewController {
     func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<MovieCollectionCell, Movie> { (cell, indexPath, movie) in
-            cell.updateImage(movie.posterPath ?? "")
+        let cellRegistration = UICollectionView.CellRegistration<MovieCollectionCell, MoviePage> { (cell, indexPath, movie) in
+            cell.updateImage(movie.posterPath)
             cell.titleLabel.text = movie.title
             
             var genres: [GenreCategory] = []
             
-            movie.genreIds?.forEach {
+            movie.genreIds.forEach {
                 genres.append(GenreCategory(rawValue: $0)!)
             }
             cell.genreLabel.text = genres.map{ $0.desciption }.joined(separator: ",")
         }
         
-        dataSource = UICollectionViewDiffableDataSource<MovieCollection, Movie>(collectionView: mainView.collectionView) { [weak self] (collectionView: UICollectionView, indexPath: IndexPath, movie: Movie) -> UICollectionViewCell? in
+        dataSource = UICollectionViewDiffableDataSource<CollectionSectionModel, MoviePage>(collectionView: mainView.collectionView) { [weak self] (collectionView: UICollectionView, indexPath: IndexPath, movie: MoviePage) -> UICollectionViewCell? in
             return self?.mainView.collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: movie)
         }
         
@@ -176,7 +176,7 @@ extension MainViewController {
             .disposed(by: disposeBag)
     }
     
-    private func configureSnapshot(with movies: [Movie], of title: String) {
+    private func configureSnapshot(with movies: [MoviePage], of title: String) {
         guard !movies.isEmpty else {
             return
         }
@@ -187,23 +187,23 @@ extension MainViewController {
         }
     }
     
-    private func configureInitialSnapshot(with movies: [Movie], of title: String) {
-        currentSnapshot = NSDiffableDataSourceSnapshot<MovieCollection, Movie>()
-        let collection = MovieCollection(title: title, movies: movies)
+    private func configureInitialSnapshot(with movies: [MoviePage], of title: String) {
+        currentSnapshot = NSDiffableDataSourceSnapshot<CollectionSectionModel, MoviePage>()
+        let collection = CollectionSectionModel(title: title, movies: movies)
         currentSnapshot.appendSections([collection])
         currentSnapshot.appendItems(collection.movies)
         dataSource.apply(currentSnapshot, animatingDifferences: true)
     }
     
-    private func appendSnapshot(with movies: [Movie], of title: String) {
+    private func appendSnapshot(with movies: [MoviePage], of title: String) {
         
-        let collection = MovieCollection(title: title, movies: movies)
+        let collection = CollectionSectionModel(title: title, movies: movies)
         currentSnapshot.appendSections([collection])
         currentSnapshot.appendItems(collection.movies)
         dataSource.apply(currentSnapshot, animatingDifferences: true)
     }
     
-    private func matchCollectionType(_ section: SectionCategory) -> [Movie] {
+    private func matchCollectionType(_ section: SectionCategory) -> [MoviePage] {
         switch section {
         case .popular:
             return viewModel.popularMovies.value

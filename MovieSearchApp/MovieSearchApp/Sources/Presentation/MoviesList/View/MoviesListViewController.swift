@@ -29,10 +29,10 @@ final class MoviesListViewController: UIViewController {
     private weak var coordinator: MoviesListFlowDependencies?
     let viewModel: MoviesListViewModel
     private let moviesListView = MoviesListView()
-    private var dataSource: UICollectionViewDiffableDataSource<Section, Movie>! = nil
+    private var dataSource: UICollectionViewDiffableDataSource<Section, MovieCard>! = nil
     private var query: String
     private let disposeBag = DisposeBag()
-    private var currentSnapshot = NSDiffableDataSourceSnapshot<Section, Movie>()
+    private var currentSnapshot = NSDiffableDataSourceSnapshot<Section, MovieCard>()
     
     private var fetching: MoviesListFetching = .firstPage
     private var currentPage: Int = 0
@@ -86,12 +86,12 @@ extension MoviesListViewController {
     private func configureDataSource() {
 
         // MARK: - Cell Registration
-        let cellRegistration = UICollectionView.CellRegistration<MoviesListItemCell, Movie> { (cell, indexPath, movie) in
+        let cellRegistration = UICollectionView.CellRegistration<MoviesListItemCell, MovieCard> { (cell, indexPath, movie) in
             cell.updateCell(with: movie)
         }
 
-        dataSource = UICollectionViewDiffableDataSource<Section, Movie>(collectionView: moviesListView.collectionView) {
-            (collectionView: UICollectionView, indexPath: IndexPath, item: Movie) -> UICollectionViewCell? in
+        dataSource = UICollectionViewDiffableDataSource<Section, MovieCard>(collectionView: moviesListView.collectionView) {
+            (collectionView: UICollectionView, indexPath: IndexPath, item: MovieCard) -> UICollectionViewCell? in
             return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
         }
     }
@@ -151,7 +151,7 @@ extension MoviesListViewController {
             .disposed(by: disposeBag)
     }
     
-    private func configureSnapshot(with movies: [Movie]) {
+    private func configureSnapshot(with movies: [MovieCard]) {
         guard !movies.isEmpty else {
             return
         }
@@ -164,14 +164,14 @@ extension MoviesListViewController {
         }
     }
     
-    private func configureInitialSnapshot(with movies: [Movie]) {
-        currentSnapshot = NSDiffableDataSourceSnapshot<Section, Movie>()
+    private func configureInitialSnapshot(with movies: [MovieCard]) {
+        currentSnapshot = NSDiffableDataSourceSnapshot<Section, MovieCard>()
         currentSnapshot.appendSections([.main])
         currentSnapshot.appendItems(movies)
         dataSource.apply(currentSnapshot, animatingDifferences: true)
     }
     
-    private func appendSnapshot(with movies: [Movie]) {
+    private func appendSnapshot(with movies: [MovieCard]) {
         let appendItems = Array(movies[((currentPage - 1) * 20)..<movies.count])
         currentSnapshot.appendItems(appendItems, toSection: .main)
         

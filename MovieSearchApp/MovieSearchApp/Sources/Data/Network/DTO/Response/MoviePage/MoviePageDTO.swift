@@ -23,3 +23,16 @@ struct MoviePageDTO: Decodable {
         case genreIds = "genreIds"
     }
 }
+
+extension MoviePageDTO {
+    func toDomain() -> MoviePage {
+        return .init(
+            id: self.id ?? 0,
+            title: self.title ?? "",
+            posterPath: self.posterPath ?? "",
+            backdropPath: self.backdropPath ?? "",
+            voteAverage: self.voteAverage ?? 0.0,
+            genreIds: self.genreIds ?? []
+        )
+    }
+}

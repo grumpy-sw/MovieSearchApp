@@ -15,9 +15,9 @@ protocol MainViewModelInput {
     func itemSelected(_ index: Int, in section: SectionCategory)
 }
 protocol MainViewModelOutput {
-    var popularMovies: BehaviorRelay<[Movie]> { get }
-    var trendingMovies: BehaviorRelay<[Movie]> { get }
-    var upcomingMovies: BehaviorRelay<[Movie]> { get }
+    var popularMovies: BehaviorRelay<[MoviePage]> { get }
+    var trendingMovies: BehaviorRelay<[MoviePage]> { get }
+    var upcomingMovies: BehaviorRelay<[MoviePage]> { get }
     var errorOcurred: Observable<NetworkError> { get }
     var selectedMovieId: BehaviorRelay<Int?> { get }
     var search: PublishRelay<String> { get }
@@ -27,9 +27,9 @@ protocol MainViewModelable: MainViewModelInput, MainViewModelOutput {}
 
 final class MainViewModel: MainViewModelable {
     
-    var popularMovies: BehaviorRelay<[Movie]> = .init(value: [])
-    var trendingMovies: BehaviorRelay<[Movie]> = .init(value: [])
-    var upcomingMovies: BehaviorRelay<[Movie]> = .init(value: [])
+    var popularMovies: BehaviorRelay<[MoviePage]> = .init(value: [])
+    var trendingMovies: BehaviorRelay<[MoviePage]> = .init(value: [])
+    var upcomingMovies: BehaviorRelay<[MoviePage]> = .init(value: [])
     var errorOcurred: Observable<NetworkError> = .empty()
     var selectedMovieId: BehaviorRelay<Int?> = .init(value: nil)
     var search: PublishRelay<String> = .init()
@@ -72,8 +72,8 @@ extension MainViewModel {
         _ = mainViewUseCase.executeFetchPopular(media: .movie) { [weak self] result in
             switch result {
             case .success(let data):
-                if let movies = try? self?.decoder.decode(MoviesResponse.self, from: data).movies {
-                    self?.popularMovies.accept(movies)
+                if let response = try? self?.decoder.decode(MovieCollectionDTO.self, from: data) {
+                    self?.popularMovies.accept(response.toDomain().movies)
                 }
             case .failure(let error):
                 print(error.errorDescription)
@@ -85,8 +85,8 @@ extension MainViewModel {
         _ = mainViewUseCase.executeFetchTrending(media: .movie, timeWindow: .day) { [weak self] result in
             switch result {
             case .success(let data):
-                if let movies = try? self?.decoder.decode(MoviesResponse.self, from: data).movies {
-                    self?.trendingMovies.accept(movies)
+                if let response = try? self?.decoder.decode(MovieCollectionDTO.self, from: data) {
+                    self?.trendingMovies.accept(response.toDomain().movies)
                 }
             case .failure(let error):
                 print(error.errorDescription)
@@ -98,8 +98,8 @@ extension MainViewModel {
         _ = mainViewUseCase.executeFetchUpcoming(media: .movie) { [weak self] result in
             switch result {
             case .success(let data):
-                if let movies = try? self?.decoder.decode(MoviesResponse.self, from: data).movies {
-                    self?.upcomingMovies.accept(movies)
+                if let response = try? self?.decoder.decode(MovieCollectionDTO.self, from: data) {
+                    self?.upcomingMovies.accept(response.toDomain().movies)
                 }
             case .failure(let error):
                 print(error.errorDescription)

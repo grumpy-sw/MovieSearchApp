@@ -14,3 +14,9 @@ struct MovieCollectionDTO: Decodable {
         case movies = "results"
     }
 }
+
+extension MovieCollectionDTO {
+    func toDomain() -> MovieCollection {
+        return .init(movies: self.movies?.map { $0.toDomain() } ?? [])
+    }
+}

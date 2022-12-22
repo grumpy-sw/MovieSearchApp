@@ -126,7 +126,7 @@ extension MoviesListItemCell {
         }
     }
     
-    func updateCell(with Item: Movie) {
+    func updateCell(with Item: MovieCard) {
         
         updateImage(Item.posterPath)
         titleLabel.text = Item.title
