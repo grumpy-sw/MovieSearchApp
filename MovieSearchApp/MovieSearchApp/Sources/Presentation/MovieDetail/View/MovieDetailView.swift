@@ -12,9 +12,5 @@ import Then
 final class MovieDetailView: UIView {
     
     let backdropImageView = UIImageView()
-    let posterImageView = UIImageView()
-    
-    
-    
     
 }
