@@ -114,10 +114,10 @@ class APIRequestTests: QuickSpec {
                         self?.provider?.request(endpoint: (self?.detail)!) { result in
                             switch result {
                             case .success(let data):
-                                let movie = try! self?.decoder.decode(MovieDetail.self, from: data)
+                                let movie = try! self?.decoder.decode(MovieDetailDTO.self, from: data)
                                 
                                 expect(movie?.budget).to(equal(170000000))
-                                expect(movie?.originalTitle).to(equal("Top Gun: Maverick"))
+                                expect(movie?.title).to(equal("Top Gun: Maverick"))
                                 expect(movie?.runtime).to(equal(131))
                                 expect(movie?.status).to(equal("Released"))
                                 done()
