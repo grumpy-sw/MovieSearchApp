@@ -225,12 +225,8 @@
 		4EB55E4E29533438007AC682 /* DTO */ = {
 			isa = PBXGroup;
 			children = (
-				4EB55E7A29546A30007AC682 /* MovieCollection */,
-				4EB55E77295469AC007AC682 /* MovieDetail */,
-				4EB55E7229546446007AC682 /* MoviePage */,
-				4EB55E6C295461C4007AC682 /* ProductionCompany */,
-				4EB55E5829535D74007AC682 /* Credits */,
-				4EB55E7D29546C86007AC682 /* ErrorResponse */,
+				4EB55E8229546F41007AC682 /* Request */,
+				4EB55E8329546F48007AC682 /* Response */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -303,6 +299,26 @@
 				4EB55E8029546D07007AC682 /* ErrorResponseDTO.swift */,
 			);
 			path = ErrorResponse;
+			sourceTree = "<group>";
+		};
+		4EB55E8229546F41007AC682 /* Request */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
+		4EB55E8329546F48007AC682 /* Response */ = {
+			isa = PBXGroup;
+			children = (
+				4EB55E7A29546A30007AC682 /* MovieCollection */,
+				4EB55E77295469AC007AC682 /* MovieDetail */,
+				4EB55E7229546446007AC682 /* MoviePage */,
+				4EB55E6C295461C4007AC682 /* ProductionCompany */,
+				4EB55E5829535D74007AC682 /* Credits */,
+				4EB55E7D29546C86007AC682 /* ErrorResponse */,
+			);
+			path = Response;
 			sourceTree = "<group>";
 		};
 		4EBFBFDD294AFBA600064937 = {
