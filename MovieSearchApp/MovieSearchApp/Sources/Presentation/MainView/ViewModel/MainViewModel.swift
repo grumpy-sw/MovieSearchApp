@@ -64,8 +64,6 @@ final class MainViewModel: MainViewModelable {
     func itemSelected(_ index: Int, in section: SectionCategory) {
         selectedMovieId.accept(matchedMovieItemId(section, index))
     }
-    
-    
 }
 
 extension MainViewModel {

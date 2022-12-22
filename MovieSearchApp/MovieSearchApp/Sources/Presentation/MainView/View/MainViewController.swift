@@ -130,11 +130,15 @@ extension MainViewController {
             .asObservable()
             .observe(on: MainScheduler.instance)
             .bind(with: self) { [weak self] _,_  in
-                self?.coordinator?.presentMoviesListViewController(self?.searchBar.text ?? "")
-                self?.searchBar.endEditing(true)
-                self?.hideSearchBar()
-                
+                self?.viewModel.searchButtonClicked(self?.searchBar.text)
             }
+            .disposed(by: disposeBag)
+        
+        viewModel.search
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] query in
+                self?.presentMoviesListView(query)
+            })
             .disposed(by: disposeBag)
         
         viewModel.popularMovies
@@ -210,10 +214,10 @@ extension MainViewController {
         }
     }
     
-    private func presentMoviesListView() {
+    private func presentMoviesListView(_ query: String) {
         searchBar.endEditing(true)
         hideSearchBar()
-        coordinator?.presentMoviesListViewController(self.searchBar.text ?? "")
+        coordinator?.presentMoviesListViewController(query)
     }
     
     private func presentMovieDetailView(_ id: Int?) {
