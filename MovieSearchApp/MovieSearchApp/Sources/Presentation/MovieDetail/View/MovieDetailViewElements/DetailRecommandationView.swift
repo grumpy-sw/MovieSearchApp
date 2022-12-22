@@ -62,7 +62,7 @@ extension DetailRecommandationView {
         }
     }
     
-    func setContent(_ recommandations: [Movie]) {
+    func setContent(_ recommandations: [MoviePage]) {
         
     }
 }

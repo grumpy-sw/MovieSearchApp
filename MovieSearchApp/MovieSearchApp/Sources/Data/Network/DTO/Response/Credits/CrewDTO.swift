@@ -11,3 +11,12 @@ struct CrewDTO: Decodable {
     let name: String?
     let job: String?
 }
+
+extension CrewDTO {
+    func toDomain() -> Crew {
+        return .init(
+            name: self.name ?? "",
+            job: self.job ?? ""
+        )
+    }
+}

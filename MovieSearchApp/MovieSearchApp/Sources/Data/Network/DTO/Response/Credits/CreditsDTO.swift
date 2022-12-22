@@ -8,6 +8,14 @@
 import Foundation
 
 struct CreditsDTO: Decodable {
-    let cast: [CastDTO]?
-    let crew: [CrewDTO]?
+    let cast: [CastDTO]
+    let crew: [CrewDTO]
+}
+
+extension CreditsDTO {
+    func toDomain() -> Credits {
+        return Credits(
+            cast: self.cast.map{ $0.toDomain() },
+            crew: self.crew.map{ $0.toDomain() })
+    }
 }

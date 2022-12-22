@@ -19,3 +19,12 @@ struct CastDTO: Decodable {
     }
 }
 
+extension CastDTO {
+    func toDomain() -> Cast {
+        return .init(
+            name: self.name ?? "",
+            profilePath: self.profilePath ?? "",
+            character: self.character ?? ""
+        )
+    }
+}
