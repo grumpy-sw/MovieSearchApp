@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import RxCocoa
+import RxSwift
+import RxRelay
 
 protocol MovieDetailFlowDependencies: AnyObject {
     func presentMovieDetailViewController(_ id: Int)
@@ -17,6 +20,7 @@ final class MovieDetailViewController: UIViewController {
     let viewModel: MovieDetailViewModel
     let movieDetailView = MovieDetailView()
     let coordinator: MovieDetailFlowDependencies
+    private let disposeBag = DisposeBag()
     
     init(_ coordinator: MovieDetailFlowDependencies, _ viewModel: MovieDetailViewModel) {
         self.coordinator = coordinator
@@ -29,6 +33,8 @@ final class MovieDetailViewController: UIViewController {
     }
     override func loadView() {
         self.view = movieDetailView
+        viewModel.viewDidLoad()
+        bind()
     }
     
     override func viewDidLoad() {
@@ -39,5 +45,21 @@ final class MovieDetailViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         self.coordinator.dismissMoviesDetailViewController()
+    }
+}
+
+extension MovieDetailViewController {
+    func bind() {
+        viewModel.title
+            .asObservable()
+            .map { $0 }
+            .bind(to: movieDetailView.infoView.titleLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        viewModel.overview
+            .asObservable()
+            .map { $0 }
+            .bind(to: movieDetailView.descriptionView.overviewLabel.rx.text)
+            .disposed(by: disposeBag)
     }
 }
