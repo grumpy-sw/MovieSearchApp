@@ -93,12 +93,12 @@ class APIRequestTests: QuickSpec {
                         self?.provider?.request(endpoint: (self?.search)!) { result in
                             switch result {
                             case .success(let data):
-                                let movies = try! self?.decoder.decode(MoviesResponse.self, from: data)
+                                let movies = try! self?.decoder.decode(MoviesListDTO.self, from: data)
                                 
                                 expect(movies?.page).to(equal(1))
-                                expect(movies?.movies.count).to(equal(1))
-                                expect(movies?.movies.first!.title).to(equal("Top Gun: Maverick"))
-                                expect(movies?.movies.first!.id).to(equal(361743))
+                                expect(movies?.movies?.count).to(equal(1))
+                                expect(movies?.movies?.first!.title).to(equal("Top Gun: Maverick"))
+                                expect(movies?.movies?.first!.id).to(equal(361743))
                                 done()
                             case .failure(_):
                                 break
