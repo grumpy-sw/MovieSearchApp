@@ -1,5 +1,5 @@
 //
-//  MovieDetailInfoView.swift
+//  DetailInfoView.swift
 //  MovieSearchApp
 //
 //  Created by 박세웅 on 2022/12/22.
@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class MovieDetailInfoView: UIView {
+final class DetailInfoView: UIView {
     
     let baseLabelStackView = UIStackView().then {
         $0.axis = .vertical
@@ -68,7 +68,7 @@ final class MovieDetailInfoView: UIView {
     }
 }
 
-extension MovieDetailInfoView {
+extension DetailInfoView {
     private func setSubViews() {
         baseLabelStackView.addArrangedSubview(titleLabel)
         baseLabelStackView.addArrangedSubview(infoLabel)
