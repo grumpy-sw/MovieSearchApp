@@ -9,4 +9,5 @@ import Foundation
 
 enum Constants {
     static let apiKey = "c34bb382e26143a054947d411d07d1a1"
+    static let appendToResponse = ["recommandations", "credits"]
 }
