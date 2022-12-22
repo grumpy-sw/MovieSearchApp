@@ -43,6 +43,8 @@ extension DetailDescriptionView {
         baseStackView.addArrangedSubview(taglineLabel)
         baseStackView.addArrangedSubview(overviewStaticLabel)
         baseStackView.addArrangedSubview(overviewLabel)
+        
+        addSubview(baseStackView)
     }
     
     private func setLayoutConstraints() {
