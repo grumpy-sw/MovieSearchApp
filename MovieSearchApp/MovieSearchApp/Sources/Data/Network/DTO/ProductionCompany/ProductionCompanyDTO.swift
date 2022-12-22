@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ProductionCompanyDTO {
+struct ProductionCompanyDTO: Decodable {
     let name: String?
     let logoPath: String?
     
