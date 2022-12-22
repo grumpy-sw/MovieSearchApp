@@ -95,4 +95,8 @@ extension DetailInfoView {
             $0.top.bottom.trailing.equalToSuperview().inset(spacing)
         }
     }
+    
+    func setContent(_ title: String, _ releaseDate: String, _ runtime: Int, _ genres: [GenreCategory], _ posterPath: String, _ vote: Double) {
+        
+    }
 }

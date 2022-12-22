@@ -52,7 +52,7 @@ extension MovieDetailView {
         }
     }
     
-    func configureContent(_ movie: Movie) {
+    func setContent(_ movie: Movie) {
         
     }
 }

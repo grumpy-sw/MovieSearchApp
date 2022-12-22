@@ -60,4 +60,8 @@ extension DetailCrewView {
             $0.directionalEdges.equalToSuperview().inset(spacing)
         }
     }
+    
+    func setContent(_ productionCompanies: [ProductionCompany], _ credits: CreditsDTO) {
+        
+    }
 }

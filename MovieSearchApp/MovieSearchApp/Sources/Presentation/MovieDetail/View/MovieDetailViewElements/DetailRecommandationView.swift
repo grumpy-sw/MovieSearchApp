@@ -61,4 +61,8 @@ extension DetailRecommandationView {
             $0.directionalEdges.equalToSuperview().inset(spacing)
         }
     }
+    
+    func setContent(_ recommandations: [Movie]) {
+        
+    }
 }

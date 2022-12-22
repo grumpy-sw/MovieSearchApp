@@ -54,4 +54,8 @@ extension DetailDescriptionView {
             $0.directionalEdges.equalToSuperview().inset(spacing)
         }
     }
+    
+    func setContent(_ tagline: String, _ overview: String) {
+        
+    }
 }

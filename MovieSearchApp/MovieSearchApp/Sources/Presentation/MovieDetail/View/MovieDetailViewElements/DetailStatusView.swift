@@ -87,4 +87,8 @@ extension DetailStatusView {
             $0.directionalEdges.equalToSuperview().inset(spacing)
         }
     }
+    
+    func setContent(_ status: String, _ originalLanguage: String, _ budget: Int, _ revenue: Int) {
+        
+    }
 }
