@@ -56,7 +56,7 @@ extension EndpointStorage {
             return Endpoint(
                 url: "\(Constants.baseURL)\(media.path)/\(movieId)",
                 method: .get,
-                queryParameters: MovieCollectionQueryDTO())
+                queryParameters: MovieDetailQueryDTO())
         case .fetchImageAPI(let path, let width):
             return Endpoint(
                 url: "\(Constants.imageURL)/w\(width)\(path)",
