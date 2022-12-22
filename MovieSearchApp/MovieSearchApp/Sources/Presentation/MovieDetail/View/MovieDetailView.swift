@@ -6,7 +6,15 @@
 //
 
 import UIKit
+import SnapKit
+import Then
 
 final class MovieDetailView: UIView {
+    
+    let backdropImageView = UIImageView()
+    let posterImageView = UIImageView()
+    
+    
+    
     
 }
