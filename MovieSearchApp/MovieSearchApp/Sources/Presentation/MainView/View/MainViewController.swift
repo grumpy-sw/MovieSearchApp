@@ -15,13 +15,13 @@ protocol MainViewFlowDependencies: AnyObject {
     func presentMovieDetailViewController(_ id: Int)
 }
 
+enum SectionCategory: Int {
+    case popular = 0
+    case trending
+    case upcoming
+}
+
 class MainViewController: UIViewController {
-    
-    enum SectionCategory: Int {
-        case popular = 0
-        case trending
-        case upcoming
-    }
     
     struct MovieCollection: Hashable {
         let title: String
@@ -85,6 +85,7 @@ class MainViewController: UIViewController {
     }
     
     @objc func hideSearchBar() {
+        searchBar.text = nil
         self.navigationItem.leftBarButtonItem = nil
         title = "MovieSearchApp"
         self.navigationItem.rightBarButtonItem = searchIconButton
@@ -158,11 +159,15 @@ extension MainViewController {
         mainView.collectionView.rx.itemSelected
             .subscribe(onNext: { [weak self] content in
                 if let section = SectionCategory(rawValue: content.section) {
-                    guard let list = self?.matchCollectionType(section) else { return }
-                    if let movieId = list[content.item].id {
-                        self?.coordinator?.presentMovieDetailViewController(movieId)
-                    }
+                    self?.viewModel.itemSelected(content.item, in: section)
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.selectedMovieId
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] id in
+                self?.presentMovieDetailView(id)
             })
             .disposed(by: disposeBag)
     }
@@ -203,5 +208,19 @@ extension MainViewController {
         case .upcoming:
             return viewModel.upcomingMovies.value
         }
+    }
+    
+    private func presentMoviesListView() {
+        searchBar.endEditing(true)
+        hideSearchBar()
+        coordinator?.presentMoviesListViewController(self.searchBar.text ?? "")
+    }
+    
+    private func presentMovieDetailView(_ id: Int?) {
+        guard let id = id else {
+            return
+        }
+        
+        coordinator?.presentMovieDetailViewController(id)
     }
 }
