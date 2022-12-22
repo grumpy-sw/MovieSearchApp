@@ -39,11 +39,9 @@ class APIRequestTests: QuickSpec {
                         self?.provider?.request(endpoint: (self?.trending)!) { result in
                             switch result {
                             case .success(let data):
-                                let trending = try! self?.decoder.decode(MoviesResponse.self, from: data)
+                                let trending = try! self?.decoder.decode(MovieCollectionDTO.self, from: data)
                                 
-                                expect(trending?.page).to(equal(1))
-                                expect(trending?.totalPages).to(equal(1000))
-                                expect(trending?.totalResults).to(equal(20000))
+                                expect(trending?.movies?.count).to(equal(20))
                                 done()
                             case .failure(_):
                                 break
@@ -59,9 +57,9 @@ class APIRequestTests: QuickSpec {
                         self?.provider?.request(endpoint: (self?.upcoming)!) { result in
                             switch result {
                             case .success(let data):
-                                let upcoming = try! self?.decoder.decode(MoviesResponse.self, from: data)
+                                let upcoming = try! self?.decoder.decode(MovieCollectionDTO.self, from: data)
                                 
-                                expect(upcoming?.page).to(equal(1))
+                                expect(upcoming?.movies?.count).to(equal(20))
                                 done()
                             case .failure(_):
                                 break
@@ -77,9 +75,9 @@ class APIRequestTests: QuickSpec {
                         self?.provider?.request(endpoint: (self?.popular)!) { result in
                             switch result {
                             case .success(let data):
-                                let popular = try! self?.decoder.decode(MoviesResponse.self, from: data)
+                                let popular = try! self?.decoder.decode(MovieCollectionDTO.self, from: data)
                                 
-                                expect(popular?.page).to(equal(1))
+                                expect(popular?.movies?.count).to(equal(20))
                                 done()
                             case .failure(_):
                                 break
