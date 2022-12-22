@@ -33,17 +33,34 @@ extension EndpointStorage {
     var endpoint: Endpoint {
         switch self {
         case .trendingAPI(let media, let timeWindow):
-            return Endpoint(url: "\(Constants.baseURL)\(Constants.trendingPath)\(media.path)\(timeWindow.path)", method: .get, queryParameters: MoviesQuery())
+            return Endpoint(
+                url: "\(Constants.baseURL)\(Constants.trendingPath)\(media.path)\(timeWindow.path)",
+                method: .get,
+                queryParameters: MovieCollectionQueryDTO())
         case .upcomingAPI(let media):
-            return Endpoint(url: "\(Constants.baseURL)\(media.path)\(Constants.upcomingPath)", method: .get, queryParameters: MoviesQuery())
+            return Endpoint(
+                url: "\(Constants.baseURL)\(media.path)\(Constants.upcomingPath)",
+                method: .get,
+                queryParameters: MovieCollectionQueryDTO())
         case .popularAPI(let media):
-            return Endpoint(url: "\(Constants.baseURL)\(media.path)\(Constants.popularPath)", method: .get, queryParameters: MoviesQuery())
+            return Endpoint(
+                url: "\(Constants.baseURL)\(media.path)\(Constants.popularPath)",
+                method: .get,
+                queryParameters: MovieCollectionQueryDTO())
         case .searchAPI(let media, let query, let page):
-            return Endpoint(url: "\(Constants.baseURL)\(Constants.searchPath)\(media.path)", method: .get, queryParameters: MovieQuery(page: page, query: query))
+            return Endpoint(
+                url: "\(Constants.baseURL)\(Constants.searchPath)\(media.path)",
+                method: .get,
+                queryParameters: MoviesListQueryDTO(query: query, page: page))
         case .detailAPI(let media, let movieId):
-            return Endpoint(url: "\(Constants.baseURL)\(media.path)/\(movieId)", method: .get, queryParameters: MoviesQuery())
+            return Endpoint(
+                url: "\(Constants.baseURL)\(media.path)/\(movieId)",
+                method: .get,
+                queryParameters: MovieCollectionQueryDTO())
         case .fetchImageAPI(let path, let width):
-            return Endpoint(url: "\(Constants.imageURL)/w\(width)\(path)", method: .get)
+            return Endpoint(
+                url: "\(Constants.imageURL)/w\(width)\(path)",
+                method: .get)
         }
     }
 }
