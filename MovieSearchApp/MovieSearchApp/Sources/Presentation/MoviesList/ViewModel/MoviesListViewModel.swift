@@ -13,11 +13,13 @@ protocol MoviesListViewModelInput {
     func viewDidLoad()
     func searchButtonClicked(by query: String)
     func willDisplayCell(at index: Int)
+    func itemSelected(_ index: Int)
 }
 protocol MoviesListViewModelOutput {
     var queriedMovies: BehaviorRelay<[Movie]> { get }
     var errorOcurred: Observable<NetworkError> { get }
     var currentPageCount: BehaviorRelay<Int> { get }
+    var selectedMovieId: BehaviorRelay<Int?> { get }
     var moviesListFetching: BehaviorRelay<MoviesListFetching> { get }
     
     var isEmpty: Bool { get }
@@ -34,6 +36,7 @@ final class MoviesListViewModel: MoviesListViewModelable {
     var isEmpty: Bool { return queriedMovies.value.isEmpty }
     var errorOcurred: Observable<NetworkError> = .empty()
     var currentPageCount: BehaviorRelay<Int> = .init(value: 1)
+    var selectedMovieId: BehaviorRelay<Int?> = .init(value: nil)
     var moviesListFetching: BehaviorRelay<MoviesListFetching> = .init(value: .firstPage)
     
     var currentPage: Int = 1
@@ -67,10 +70,14 @@ final class MoviesListViewModel: MoviesListViewModelable {
         }
     }
     
+    func itemSelected(_ index: Int) {
+        selectedMovieId.accept(queriedMovies.value[index].id)
+    }
+    
     func fetchMoviesList(by query: String) {
         self.query = query
         isLoading = true
-        searchMoviesUseCase.execute(requestQuery: query, page: currentPage) { [weak self] result in
+        _ = searchMoviesUseCase.execute(requestQuery: query, page: currentPage) { [weak self] result in
             switch result {
             case .success(let data):
                 if let response = try? self?.decoder.decode(MoviesResponse.self, from: data) {

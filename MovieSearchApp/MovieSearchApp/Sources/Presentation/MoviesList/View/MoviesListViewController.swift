@@ -139,11 +139,15 @@ extension MoviesListViewController {
         moviesListView.collectionView.rx.itemSelected
             .asObservable()
             .observe(on: MainScheduler.instance)
-            .bind(with: self) { [weak self] obj, indexPath in
-                if let movieId = self?.viewModel.queriedMovies.value[indexPath.item].id {
-                    self?.coordinator?.presentMovieDetailViewController(movieId)
-                }
+            .bind(with: self) { [weak self] _, content in
+                self?.viewModel.itemSelected(content.item)
             }
+            .disposed(by: disposeBag)
+        
+        viewModel.selectedMovieId.asObservable()
+            .subscribe(onNext: { [weak self] id in
+                self?.presentMovieDetailView(id)
+            })
             .disposed(by: disposeBag)
     }
     
@@ -172,5 +176,13 @@ extension MoviesListViewController {
         currentSnapshot.appendItems(appendItems, toSection: .main)
         
         dataSource.apply(currentSnapshot, animatingDifferences: true)
+    }
+    
+    private func presentMovieDetailView(_ id: Int?) {
+        guard let id = id else {
+            return
+        }
+        
+        coordinator?.presentMovieDetailViewController(id)
     }
 }
