@@ -8,9 +8,9 @@
 import Foundation
 
 struct CastDTO: Decodable {
-    let name: String
+    let name: String?
     let profilePath: String?
-    let character: String
+    let character: String?
 
     enum CodingKeys: String, CodingKey {
         case name

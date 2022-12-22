@@ -8,6 +8,6 @@
 import Foundation
 
 struct CrewDTO: Decodable {
-    let name: String
-    let job: String
+    let name: String?
+    let job: String?
 }
