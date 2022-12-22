@@ -7,12 +7,7 @@
 
 import Foundation
 
-struct ProductionCompanyDTO {
+struct ProductionCompany {
     let name: String
     let logoPath: String
-    
-    enum CodingKeys: String, CodingKey {
-        case name
-        case logoPath = "logo_path"
-    }
 }
