@@ -8,8 +8,8 @@
 import Foundation
 
 struct ProductionCompanyDTO: Decodable {
-    let name: String
-    let logoPath: String
+    let name: String?
+    let logoPath: String?
     
     enum CodingKeys: String, CodingKey {
         case name
@@ -20,7 +20,7 @@ struct ProductionCompanyDTO: Decodable {
 extension ProductionCompanyDTO {
     func toDomain() -> ProductionCompany {
         return ProductionCompany(
-            name: self.name,
-            logoPath: self.logoPath)
+            name: self.name ?? "",
+            logoPath: self.logoPath ?? "")
     }
 }
