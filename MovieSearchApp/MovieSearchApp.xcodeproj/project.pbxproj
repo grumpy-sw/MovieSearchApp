@@ -30,6 +30,9 @@
 		4EB55E79295469C5007AC682 /* MovieDetailDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB55E78295469C5007AC682 /* MovieDetailDTO.swift */; };
 		4EB55E7C29546A41007AC682 /* MovieCollectionDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB55E7B29546A41007AC682 /* MovieCollectionDTO.swift */; };
 		4EB55E8129546D07007AC682 /* ErrorResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB55E8029546D07007AC682 /* ErrorResponseDTO.swift */; };
+		4EB55E8529547063007AC682 /* MovieCollectionQueryDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB55E8429547063007AC682 /* MovieCollectionQueryDTO.swift */; };
+		4EB55E872954708B007AC682 /* MoviesListQueryDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB55E862954708B007AC682 /* MoviesListQueryDTO.swift */; };
+		4EB55E8929547098007AC682 /* MovieDetailQueryDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB55E8829547098007AC682 /* MovieDetailQueryDTO.swift */; };
 		4EBEC7FE294F5986002CD321 /* Genre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EBEC7FD294F5986002CD321 /* Genre.swift */; };
 		4EBEC800294F6EE9002CD321 /* MovieDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EBEC7FF294F6EE9002CD321 /* MovieDetail.swift */; };
 		4EBFBFEA294AFBA600064937 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EBFBFE9294AFBA600064937 /* AppDelegate.swift */; };
@@ -109,6 +112,9 @@
 		4EB55E78295469C5007AC682 /* MovieDetailDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailDTO.swift; sourceTree = "<group>"; };
 		4EB55E7B29546A41007AC682 /* MovieCollectionDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCollectionDTO.swift; sourceTree = "<group>"; };
 		4EB55E8029546D07007AC682 /* ErrorResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponseDTO.swift; sourceTree = "<group>"; };
+		4EB55E8429547063007AC682 /* MovieCollectionQueryDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCollectionQueryDTO.swift; sourceTree = "<group>"; };
+		4EB55E862954708B007AC682 /* MoviesListQueryDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesListQueryDTO.swift; sourceTree = "<group>"; };
+		4EB55E8829547098007AC682 /* MovieDetailQueryDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailQueryDTO.swift; sourceTree = "<group>"; };
 		4EBEC7FD294F5986002CD321 /* Genre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genre.swift; sourceTree = "<group>"; };
 		4EBEC7FF294F6EE9002CD321 /* MovieDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetail.swift; sourceTree = "<group>"; };
 		4EBFBFE6294AFBA600064937 /* MovieSearchApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieSearchApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -304,6 +310,9 @@
 		4EB55E8229546F41007AC682 /* Request */ = {
 			isa = PBXGroup;
 			children = (
+				4EB55E8429547063007AC682 /* MovieCollectionQueryDTO.swift */,
+				4EB55E862954708B007AC682 /* MoviesListQueryDTO.swift */,
+				4EB55E8829547098007AC682 /* MovieDetailQueryDTO.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -834,10 +843,13 @@
 				4EB55E6E295461E3007AC682 /* ProductionCompanyDTO.swift in Sources */,
 				4EBFC015294C262F00064937 /* EndpointStorage.swift in Sources */,
 				4EB55E482953115C007AC682 /* MovieDetailViewModel.swift in Sources */,
+				4EB55E8529547063007AC682 /* MovieCollectionQueryDTO.swift in Sources */,
 				4EB55E7629546650007AC682 /* ProductionCompany.swift in Sources */,
 				4ED29D5629518D3100760A97 /* MoviesRepository.swift in Sources */,
+				4EB55E872954708B007AC682 /* MoviesListQueryDTO.swift in Sources */,
 				4EBFC01C294C2B3700064937 /* TimeWindow.swift in Sources */,
 				4EC546C02950494F00A6E4C9 /* MovieCollectionCell.swift in Sources */,
+				4EB55E8929547098007AC682 /* MovieDetailQueryDTO.swift in Sources */,
 				4EEBFD43294C4A7300188F1F /* MoviesQuery.swift in Sources */,
 				4EEBFD4A294CBEA200188F1F /* MoviesResponse.swift in Sources */,
 				4ED29D4D295164D700760A97 /* MoviesListViewController.swift in Sources */,
