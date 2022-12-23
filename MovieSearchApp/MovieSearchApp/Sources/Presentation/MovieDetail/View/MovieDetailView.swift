@@ -10,19 +10,23 @@ import SnapKit
 import Then
 
 final class MovieDetailView: UIView {
+    
     let baseScrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = false
         $0.showsHorizontalScrollIndicator = false
         $0.isScrollEnabled = true
     }
-    let baseStackView = UIStackView().then {
+    
+    let contentView = UIStackView().then {
         $0.axis = .vertical
+        $0.spacing = 20
     }
     
-    let backdropImageView = UIImageView()
-    
+    let backdropView = DetailBackdropView()
     let infoView = DetailInfoView()
     let descriptionView = DetailDescriptionView()
+    let productionView = DetailProductionView()
+    let castView = DetailCastView()
     let crewView = DetailCrewView()
     let statusView = DetailStatusView()
     let recommendationView = DetailRecommendationView()
@@ -39,37 +43,105 @@ final class MovieDetailView: UIView {
 }
 
 extension MovieDetailView {
-    
     private func setSubViews() {
-        baseStackView.addArrangedSubview(backdropImageView)
-        baseStackView.addArrangedSubview(infoView)
-        baseStackView.addArrangedSubview(descriptionView)
+        contentView.addArrangedSubview(backdropView)
+        contentView.addArrangedSubview(infoView)
+        contentView.addArrangedSubview(descriptionView)
+        contentView.addArrangedSubview(productionView)
+        contentView.addArrangedSubview(castView)
+        contentView.addArrangedSubview(crewView)
+        contentView.addArrangedSubview(statusView)
+        contentView.addArrangedSubview(recommendationView)
         
-        baseStackView.addArrangedSubview(crewView)
-        baseStackView.addArrangedSubview(statusView)
-        baseStackView.addArrangedSubview(recommendationView)
-        
-        baseScrollView.addSubview(baseStackView)
+        baseScrollView.addSubview(contentView)
         addSubview(baseScrollView)
     }
     
     private func setLayoutConstraints() {
         baseScrollView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
-            $0.center.equalToSuperview()
+            $0.directionalEdges.equalToSuperview()
         }
         
-        baseStackView.snp.makeConstraints {
-            $0.directionalVerticalEdges.equalTo(baseScrollView.safeAreaLayoutGuide.snp.directionalVerticalEdges)
-            $0.directionalHorizontalEdges.equalTo(baseScrollView.safeAreaLayoutGuide.snp.directionalHorizontalEdges)
+        contentView.snp.makeConstraints {
+            $0.directionalEdges.equalToSuperview()
+            $0.width.equalTo(self)
+        }
+        
+        backdropView.snp.makeConstraints {
+            $0.width.equalToSuperview()
+            $0.centerX.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(200)
+            $0.top.equalTo(contentView) // Top
+        }
+
+        infoView.snp.makeConstraints {
+            $0.width.equalToSuperview()
+            $0.centerX.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
+            //$0.top.equalTo(backdropView.snp.bottom)
+        }
+
+        descriptionView.snp.makeConstraints {
+            $0.width.equalToSuperview()
+            $0.centerX.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
+            //$0.top.equalTo(infoView.snp.bottom)
+        }
+        
+        productionView.snp.makeConstraints {
+            $0.width.equalToSuperview()
+            $0.centerX.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(250)
+            //$0.top.equalTo(descriptionView.snp.bottom)
+        }
+        
+        castView.snp.makeConstraints {
+            $0.width.equalToSuperview()
+            $0.centerX.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(390)
+            //$0.top.equalTo(productionView.snp.bottom)
+        }
+        
+        crewView.snp.makeConstraints {
+            $0.width.equalToSuperview()
+            $0.centerX.equalToSuperview()
+            $0.height.equalTo(300)
+            $0.leading.trailing.equalToSuperview()
+            //$0.top.equalTo(castView.snp.bottom)
+        }
+        
+        statusView.snp.makeConstraints {
+            $0.width.equalToSuperview()
+            $0.centerX.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
+            //$0.top.equalTo(statusView.snp.bottom)
+            $0.height.equalTo(270)
+        }
+        
+        recommendationView.snp.makeConstraints {
+            $0.width.equalToSuperview()
+            $0.centerX.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
+            //$0.top.equalTo(statusView.snp.bottom)
+            $0.height.equalTo(350)
+            $0.bottom.equalTo(contentView) // Bottom
         }
     }
     
     func setContent(_ movie: MovieDetail) {
         infoView.setContent(movie.title, movie.releaseDate, movie.runtime, movie.genres, movie.posterPath, movie.voteAverage)
-        
         descriptionView.setContent(movie.tagline, movie.overview)
-        
         statusView.setContent(movie.status, movie.originalLanguage, movie.budget, movie.revenue)
+    }
+    
+    func updatePosterImage(with image: Data?) {
+        infoView.updatePosterImage(image)
+    }
+    
+    func updateBackdropImage(with image: Data?) {
+        backdropView.updateBackdropImage(image)
     }
 }
