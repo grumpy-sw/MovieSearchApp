@@ -35,6 +35,8 @@ final class MovieDetailViewController: UIViewController {
     fileprivate typealias RecommendationSnapshot = NSDiffableDataSourceSnapshot<Section, MoviePage>
     
 
+    private var contributorDataSource: UICollectionViewDiffableDataSource<ContributionKind, Contributor>! = nil
+    private var contributorSnapshot: NSDiffableDataSourceSnapshot<ContributionKind, Contributor>! = nil
     private var castDataSource: CastDataSource! = nil
     private var castSnapshot: CastSnapshot! = nil
     
