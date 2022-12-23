@@ -84,8 +84,8 @@ extension MovieDetailViewController {
             cell.genreLabel.text = genres.map{ $0.desciption }.joined(separator: ",")
         }
         
-        dataSource = UICollectionViewDiffableDataSource<Section, MoviePage>(collectionView: movieDetailView.recommendationView.recommendationCollectionView) { [weak self] (collectionView: UICollectionView, indexPath: IndexPath, movie: MoviePage) -> UICollectionViewCell? in
-            return self?.movieDetailView.recommendationView.recommendationCollectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: movie)
+        dataSource = UICollectionViewDiffableDataSource<Section, MoviePage>(collectionView: movieDetailView.recommendationView.collectionView) { [weak self] (collectionView: UICollectionView, indexPath: IndexPath, movie: MoviePage) -> UICollectionViewCell? in
+            return self?.movieDetailView.recommendationView.collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: movie)
         }
         
         let supplementaryRegistration = UICollectionView.SupplementaryRegistration<RecommendationSupplementaryView>(elementKind: RecommendationSupplementaryView.recommendationElementKind) { (supplementaryView, string, indexPath) in
@@ -93,7 +93,7 @@ extension MovieDetailViewController {
         }
         
         dataSource.supplementaryViewProvider = { (view, kind, index) in
-            return self.movieDetailView.recommendationView.recommendationCollectionView.dequeueConfiguredReusableSupplementary(using: supplementaryRegistration, for: index)
+            return self.movieDetailView.recommendationView.collectionView.dequeueConfiguredReusableSupplementary(using: supplementaryRegistration, for: index)
         }
         
         currentSnapshot = NSDiffableDataSourceSnapshot<Section, MoviePage>()
