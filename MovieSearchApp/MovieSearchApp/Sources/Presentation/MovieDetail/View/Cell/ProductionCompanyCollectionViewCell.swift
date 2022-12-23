@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import SnapKit
+import Then
 
 final class ProductionCompanyCollectionViewCell: UICollectionViewCell {
     
@@ -61,7 +63,7 @@ extension ProductionCompanyCollectionViewCell {
     func updateImage(_ posterPath: String) {
         self.imageView.image = nil
         let provider = APIProvider()
-        let endpoint = EndpointStorage.fetchImageAPI(posterPath, 200).endpoint
+        let endpoint = EndpointStorage.fetchImageAPI(posterPath, 154).endpoint
         provider.request(endpoint: endpoint) { [weak self] result in
             if case let .success(data) = result {
                 DispatchQueue.main.async {
