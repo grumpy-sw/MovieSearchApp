@@ -96,7 +96,11 @@ extension DetailInfoView {
         }
     }
     
-    func setContent(_ title: String, _ releaseDate: String, _ runtime: Int, _ genres: [GenreCategory], _ posterPath: String, _ vote: Double) {
-        
+    func setContent(_ title: String, _ releaseDate: String, _ runtime: Int, _ genres: [Genre], _ posterPath: String, _ vote: Double) {
+        titleLabel.text = title
+        infoLabel.text = "\(releaseDate) | \(runtime) m"
+        genreLabel.text = genres.map{ $0.id.desciption }.joined(separator: ", ")
+        userScoreLabel.text = String(Int(vote * 10))
+        //posterImageView.image = UIImage()
     }
 }

@@ -53,12 +53,12 @@ extension MovieDetailViewController {
         viewModel.outputMovie
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] movieDetail in
-                self?.configureContent(with: movieDetail)
+                self?.setViewContent(with: movieDetail)
             })
             .disposed(by: disposeBag)
     }
     
-    private func configureContent(with movieDetail: MovieDetail) {
+    private func setViewContent(with movieDetail: MovieDetail) {
         movieDetailView.setContent(movieDetail)
     }
 }

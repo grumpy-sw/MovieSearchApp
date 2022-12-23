@@ -18,6 +18,7 @@ final class DetailDescriptionView: UIView {
     let taglineLabel = UILabel().then {
         $0.font = .preferredFont(forTextStyle: .body)
         $0.textAlignment = .center
+        $0.numberOfLines = 0
     }
     let overviewStaticLabel = UILabel().then {
         $0.font = .preferredFont(forTextStyle: .headline)
@@ -25,6 +26,8 @@ final class DetailDescriptionView: UIView {
     }
     let overviewLabel = UILabel().then {
         $0.font = .preferredFont(forTextStyle: .body)
+        $0.numberOfLines = 0
+        
     }
     
     override init(frame: CGRect) {
@@ -56,6 +59,7 @@ extension DetailDescriptionView {
     }
     
     func setContent(_ tagline: String, _ overview: String) {
-        
+        taglineLabel.text = tagline
+        overviewLabel.text = overview
     }
 }

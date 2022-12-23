@@ -48,11 +48,13 @@ extension MovieDetailView {
     
     private func setLayoutConstraints() {
         baseStackView.snp.makeConstraints {
-            $0.directionalEdges.equalToSuperview()
+            $0.top.leading.trailing.bottom.equalToSuperview()
         }
     }
     
     func setContent(_ movie: MovieDetail) {
-        
+        infoView.setContent(movie.title, movie.releaseDate, movie.runtime, movie.genres, movie.posterPath, movie.voteAverage)
+        descriptionView.setContent(movie.tagline, movie.overview)
+        statusView.setContent(movie.status, movie.originalLanguage, movie.budget, movie.revenue)
     }
 }

@@ -89,6 +89,10 @@ extension DetailStatusView {
     }
     
     func setContent(_ status: String, _ originalLanguage: String, _ budget: Int, _ revenue: Int) {
+        statusLabel.text = status
+        originalLanguageLabel.text = originalLanguage.uppercased()
+        budgetLabel.text = String(budget)
+        revenueLabel.text = String(revenue)
         
     }
 }
