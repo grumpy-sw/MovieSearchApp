@@ -11,42 +11,35 @@ import Then
 
 final class DetailInfoView: UIView {
     
-    let baseLabelStackView = UIStackView().then {
+    let baseStackView = UIStackView().then {
         $0.axis = .vertical
         $0.spacing = 15
     }
     
     let titleLabel = UILabel().then {
         $0.font = .preferredFont(forTextStyle: .title2)
+        $0.textColor = .white
     }
     let infoLabel = UILabel().then {
         $0.font = .preferredFont(forTextStyle: .footnote)
+        $0.textColor = .white
     }
     let genreLabel = UILabel().then {
         $0.font = .preferredFont(forTextStyle: .footnote)
-    }
-    
-    let basePosterStackView = UIStackView().then {
-        $0.axis = .vertical
-        $0.spacing = 15
-    }
-    
-    let posterImageView = UIImageView().then {
-        $0.clipsToBounds = true
-        $0.layer.borderColor = UIColor.black.cgColor
-        $0.layer.borderWidth = 1
-        $0.layer.cornerRadius = 4
-        $0.backgroundColor = UIColor.cornflowerBlue
+        $0.textColor = .white
     }
     
     let userScoreStackView = UIStackView().then {
         $0.axis = .horizontal
         $0.spacing = 5
+        $0.alignment = .trailing
     }
     
     let userScoreStaticLabel = UILabel().then {
         $0.font = .preferredFont(forTextStyle: .footnote)
         $0.text = "User Score"
+        $0.textAlignment = .right
+        $0.textColor = .white
     }
     
     let userScoreStaticImageView = UIImageView().then {
@@ -55,10 +48,14 @@ final class DetailInfoView: UIView {
     
     let userScoreLabel = UILabel().then {
         $0.font = .preferredFont(forTextStyle: .footnote)
+        $0.textAlignment = .right
+        $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        $0.textColor = .white
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = UIColor.cornflowerBlue
         setSubViews()
         setLayoutConstraints()
     }
@@ -70,47 +67,36 @@ final class DetailInfoView: UIView {
 
 extension DetailInfoView {
     private func setSubViews() {
-        baseLabelStackView.addArrangedSubview(titleLabel)
-        baseLabelStackView.addArrangedSubview(infoLabel)
-        baseLabelStackView.addArrangedSubview(genreLabel)
-        
         userScoreStackView.addArrangedSubview(userScoreStaticLabel)
         userScoreStackView.addArrangedSubview(userScoreStaticImageView)
         userScoreStackView.addArrangedSubview(userScoreLabel)
         
-        basePosterStackView.addArrangedSubview(posterImageView)
-        basePosterStackView.addArrangedSubview(userScoreStackView)
-        addSubview(baseLabelStackView)
-        addSubview(basePosterStackView)
+        baseStackView.addArrangedSubview(titleLabel)
+        baseStackView.addArrangedSubview(infoLabel)
+        baseStackView.addArrangedSubview(genreLabel)
+        addSubview(userScoreStackView)
+        addSubview(baseStackView)
     }
     
     private func setLayoutConstraints() {
         let spacing = CGFloat(20)
         
-        baseLabelStackView.snp.makeConstraints {
-            $0.top.bottom.leading.equalToSuperview().inset(spacing)
+        baseStackView.snp.makeConstraints {
+            $0.top.bottom.leading.trailing.equalToSuperview().inset(spacing)
         }
         
-        basePosterStackView.snp.makeConstraints {
-            $0.top.trailing.equalToSuperview().inset(spacing)
-        }
-        
-        posterImageView.snp.makeConstraints {
-            $0.top.trailing.bottom.equalToSuperview().inset(spacing * 2)
+        userScoreStackView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(50)
+            $0.trailing.equalToSuperview().inset(spacing)
         }
     }
     
     func setContent(_ title: String, _ releaseDate: String, _ runtime: Int, _ genres: [Genre], _ posterPath: String, _ vote: Double) {
         titleLabel.text = title
-        infoLabel.text = "\(releaseDate) | \(runtime) m"
+        infoLabel.text = "\(releaseDate) · \(runtime) m"
         genreLabel.text = genres.map{ $0.id.desciption }.joined(separator: ", ")
-        userScoreLabel.text = String(Int(vote * 10))
+        userScoreLabel.text = String(Int(vote * 10)) + "%"
     }
     
-    func updatePosterImage(_ image: Data?) {
-//        guard let image = image else {
-//            return
-//        }
-//        posterImageView.image = UIImage(data: image)
-    }
+
 }
