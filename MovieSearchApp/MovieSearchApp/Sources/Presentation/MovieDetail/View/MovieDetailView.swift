@@ -10,7 +10,11 @@ import SnapKit
 import Then
 
 final class MovieDetailView: UIView {
-    
+    let baseScrollView = UIScrollView().then {
+        $0.showsVerticalScrollIndicator = false
+        $0.showsHorizontalScrollIndicator = false
+        $0.isScrollEnabled = true
+    }
     let baseStackView = UIStackView().then {
         $0.axis = .vertical
     }
@@ -37,27 +41,35 @@ final class MovieDetailView: UIView {
 extension MovieDetailView {
     
     private func setSubViews() {
-        //baseStackView.addArrangedSubview(backdropImageView)
-        //baseStackView.addArrangedSubview(infoView)
-        //baseStackView.addArrangedSubview(descriptionView)
+        baseStackView.addArrangedSubview(backdropImageView)
+        baseStackView.addArrangedSubview(infoView)
+        baseStackView.addArrangedSubview(descriptionView)
         
         baseStackView.addArrangedSubview(crewView)
-        //baseStackView.addArrangedSubview(statusView)
-        //baseStackView.addArrangedSubview(recommendationView)
-        addSubview(baseStackView)
+        baseStackView.addArrangedSubview(statusView)
+        baseStackView.addArrangedSubview(recommendationView)
+        
+        baseScrollView.addSubview(baseStackView)
+        addSubview(baseScrollView)
     }
     
     private func setLayoutConstraints() {
+        baseScrollView.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
+            $0.center.equalToSuperview()
+        }
+        
         baseStackView.snp.makeConstraints {
-            $0.top.leading.trailing.bottom.equalToSuperview()
+            $0.directionalVerticalEdges.equalTo(baseScrollView.safeAreaLayoutGuide.snp.directionalVerticalEdges)
+            $0.directionalHorizontalEdges.equalTo(baseScrollView.safeAreaLayoutGuide.snp.directionalHorizontalEdges)
         }
     }
     
     func setContent(_ movie: MovieDetail) {
-        //infoView.setContent(movie.title, movie.releaseDate, movie.runtime, movie.genres, movie.posterPath, movie.voteAverage)
+        infoView.setContent(movie.title, movie.releaseDate, movie.runtime, movie.genres, movie.posterPath, movie.voteAverage)
         
         descriptionView.setContent(movie.tagline, movie.overview)
         
-        //statusView.setContent(movie.status, movie.originalLanguage, movie.budget, movie.revenue)
+        statusView.setContent(movie.status, movie.originalLanguage, movie.budget, movie.revenue)
     }
 }

@@ -69,6 +69,7 @@ final class MovieDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .systemBackground
+        configureDataSource()
         viewModel.viewDidLoad()
         bind()
     }
@@ -90,12 +91,14 @@ extension MovieDetailViewController {
     }
     
     private func setViewContent(with movieDetail: MovieDetail) {
-        //movieDetailView.setContent(movieDetail)
-//        if let recommendations = movieDetail.recommendations {
-//            configureDataSource(recommendations)
-//        }
+        movieDetailView.setContent(movieDetail)
+        configureProductionSnapshot(movieDetail.productionCompanies)
         if let credits = movieDetail.credits {
-            configureCastDataSource(credits)
+            configureCastSnapshot(credits.cast)
+            configureCrewSnapshot(credits.crew)
+        }
+        if let recommendations = movieDetail.recommendations {
+            configureRecommendationSnapshot(recommendations.movies)
         }
     }
 }
@@ -217,6 +220,5 @@ extension MovieDetailViewController {
         recommendationDataSource.apply(recommendationSnapshot, animatingDifferences: true)
     }
 }
-
 
 
