@@ -113,7 +113,7 @@ extension MainViewController {
         let supplementaryRegistration = UICollectionView.SupplementaryRegistration<TitleSupplementaryView>(elementKind: TitleSupplementaryView.titleElementKind) { (supplementaryView, string, indexPath) in
             if let snapshot = self.currentSnapshot {
                 let movieCategory = snapshot.sectionIdentifiers[indexPath.section]
-                supplementaryView.label.text = movieCategory.title
+                supplementaryView.setTitleLabel(movieCategory.title)
             }
         }
         

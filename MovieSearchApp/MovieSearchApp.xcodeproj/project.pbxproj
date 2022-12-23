@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4EAC892429557B8B00B9AD9D /* RecommendationSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAC892329557B8B00B9AD9D /* RecommendationSupplementaryView.swift */; };
 		4EAC892629557D0800B9AD9D /* RecommendationCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAC892529557D0800B9AD9D /* RecommendationCollectionCell.swift */; };
 		4EAC89282955874800B9AD9D /* CastCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAC89272955874800B9AD9D /* CastCollectionViewCell.swift */; };
 		4EAC892A295598C000B9AD9D /* CrewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAC8929295598C000B9AD9D /* CrewCollectionViewCell.swift */; };
@@ -99,7 +98,6 @@
 
 /* Begin PBXFileReference section */
 		4A73D2BB27C26B6E80EBE120 /* Pods_MovieSearchApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieSearchApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		4EAC892329557B8B00B9AD9D /* RecommendationSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationSupplementaryView.swift; sourceTree = "<group>"; };
 		4EAC892529557D0800B9AD9D /* RecommendationCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationCollectionCell.swift; sourceTree = "<group>"; };
 		4EAC89272955874800B9AD9D /* CastCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastCollectionViewCell.swift; sourceTree = "<group>"; };
 		4EAC8929295598C000B9AD9D /* CrewCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -208,7 +206,6 @@
 		4EAC892229557B7200B9AD9D /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				4EAC892329557B8B00B9AD9D /* RecommendationSupplementaryView.swift */,
 				4EAC892529557D0800B9AD9D /* RecommendationCollectionCell.swift */,
 				4EAC89272955874800B9AD9D /* CastCollectionViewCell.swift */,
 				4EAC8929295598C000B9AD9D /* CrewCollectionViewCell.swift */,
@@ -941,7 +938,6 @@
 				4EB55E8C2954742F007AC682 /* MoviesListDTO.swift in Sources */,
 				4EB55E6929544B0B007AC682 /* DetailStatusView.swift in Sources */,
 				4EB55E9A295480B4007AC682 /* Crew.swift in Sources */,
-				4EAC892429557B8B00B9AD9D /* RecommendationSupplementaryView.swift in Sources */,
 				4ED29D4F295164E100760A97 /* MoviesListViewModel.swift in Sources */,
 				4EB55E9029547754007AC682 /* MovieCard.swift in Sources */,
 				4EC546C4295057DE00A6E4C9 /* MainViewModel.swift in Sources */,

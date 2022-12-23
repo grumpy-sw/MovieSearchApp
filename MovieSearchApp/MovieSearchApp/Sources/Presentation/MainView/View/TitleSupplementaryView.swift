@@ -11,7 +11,7 @@ import Then
 
 final class TitleSupplementaryView: UICollectionReusableView {
     static let titleElementKind = "title-element-kind"
-    let label = UILabel().then {
+    private let label = UILabel().then {
         $0.adjustsFontForContentSizeCategory = true
         $0.font = UIFont.preferredFont(forTextStyle: .title3)
     }
@@ -29,15 +29,19 @@ final class TitleSupplementaryView: UICollectionReusableView {
 }
 
 extension TitleSupplementaryView {
-    func setSubViews() {
+    private func setSubViews() {
         addSubview(label)
     }
     
-    func setLayoutConstraints() {
+    private func setLayoutConstraints() {
         let inset = CGFloat(10)
         label.snp.makeConstraints {
             $0.top.leading.equalToSuperview().inset(inset)
             $0.bottom.trailing.equalToSuperview().inset(-inset)
         }
+    }
+    
+    func setTitleLabel(_ title: String) {
+        self.label.text = title
     }
 }
