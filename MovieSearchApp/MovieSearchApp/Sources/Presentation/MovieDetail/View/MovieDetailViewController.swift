@@ -16,13 +16,19 @@ protocol MovieDetailFlowDependencies: AnyObject {
 }
 
 private enum Section: Hashable {
-    case main
+    case recommendations
+    case crew
 }
 
 final class MovieDetailViewController: UIViewController {
     
+    private var castDataSource: UICollectionViewDiffableDataSource<Section, Cast>! = nil
+    private var castSnapshot: NSDiffableDataSourceSnapshot<Section, Cast>! = nil
+    
     private var dataSource: UICollectionViewDiffableDataSource<Section, MoviePage>! = nil
     private var currentSnapshot: NSDiffableDataSourceSnapshot<Section, MoviePage>! = nil
+    
+    
     let viewModel: MovieDetailViewModel
     let movieDetailView = MovieDetailView()
     let coordinator: MovieDetailFlowDependencies
@@ -65,10 +71,39 @@ extension MovieDetailViewController {
     }
     
     private func setViewContent(with movieDetail: MovieDetail) {
-        movieDetailView.setContent(movieDetail)
-        if let recommendations = movieDetail.recommendations {
-            configureDataSource(recommendations)
+        //movieDetailView.setContent(movieDetail)
+//        if let recommendations = movieDetail.recommendations {
+//            configureDataSource(recommendations)
+//        }
+        if let credits = movieDetail.credits {
+            configureCastDataSource(credits)
         }
+    }
+    
+    private func configureCastDataSource(_ credits: Credits) {
+        
+        let cellRegistration = UICollectionView.CellRegistration<CastCollectionViewCell, Cast> { (cell, indexPath, cast) in
+            cell.updateImage(cast.profilePath)
+            cell.nameLabel.text = cast.name
+            cell.characterLabel.text = cast.character
+        }
+        
+        castDataSource = UICollectionViewDiffableDataSource<Section, Cast>(collectionView: movieDetailView.crewView.castCollectionView) { [weak self] (collectionView: UICollectionView, indexPath: IndexPath, cast: Cast) -> UICollectionViewCell? in
+            return self?.movieDetailView.crewView.castCollectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: cast)
+        }
+        
+        let supplementaryRegistration = UICollectionView.SupplementaryRegistration<RecommendationSupplementaryView>(elementKind: RecommendationSupplementaryView.recommendationElementKind) { (supplementaryView, string, indexPath) in
+            
+        }
+        
+        castDataSource.supplementaryViewProvider = { (view, kind, index) in
+            return self.movieDetailView.crewView.castCollectionView.dequeueConfiguredReusableSupplementary(using: supplementaryRegistration, for: index)
+        }
+        
+        castSnapshot = NSDiffableDataSourceSnapshot<Section, Cast>()
+        castSnapshot.appendSections([.crew])
+        castSnapshot.appendItems(credits.cast)
+        castDataSource.apply(castSnapshot, animatingDifferences: true)
     }
     
     private func configureDataSource(_ movieCollection: MovieCollection) {
@@ -97,7 +132,7 @@ extension MovieDetailViewController {
         }
         
         currentSnapshot = NSDiffableDataSourceSnapshot<Section, MoviePage>()
-        currentSnapshot.appendSections([.main])
+        currentSnapshot.appendSections([.recommendations])
         currentSnapshot.appendItems(movieCollection.movies)
         dataSource.apply(currentSnapshot, animatingDifferences: true)
     }

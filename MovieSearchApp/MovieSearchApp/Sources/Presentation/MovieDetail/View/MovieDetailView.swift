@@ -41,6 +41,7 @@ extension MovieDetailView {
         //baseStackView.addArrangedSubview(infoView)
         //baseStackView.addArrangedSubview(descriptionView)
         //baseStackView.addArrangedSubview(crewView)
+        baseStackView.addArrangedSubview(crewView)
         //baseStackView.addArrangedSubview(statusView)
         baseStackView.addArrangedSubview(recommendationView)
         addSubview(baseStackView)
