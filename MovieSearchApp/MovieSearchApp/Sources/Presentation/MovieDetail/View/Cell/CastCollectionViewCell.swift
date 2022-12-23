@@ -15,9 +15,7 @@ final class CastCollectionViewCell: UICollectionViewCell {
         String(describing: Self.self)
     }
     
-    let imageView = UIImageView().then {
-        $0.backgroundColor = UIColor.systemBlue
-    }
+    let imageView = UIImageView()
     let nameLabel = UILabel().then {
         $0.font = UIFont.preferredFont(for: .footnote, weight: .bold)
         $0.adjustsFontForContentSizeCategory = true

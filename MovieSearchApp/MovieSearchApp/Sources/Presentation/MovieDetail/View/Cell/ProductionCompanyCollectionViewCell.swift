@@ -15,9 +15,7 @@ final class ProductionCompanyCollectionViewCell: UICollectionViewCell {
         String(describing: Self.self)
     }
     
-    let imageView = UIImageView().then {
-        $0.backgroundColor = UIColor.systemBlue
-    }
+    let imageView = UIImageView()
     let nameLabel = UILabel().then {
         $0.font = UIFont.preferredFont(for: .footnote, weight: .bold)
         $0.adjustsFontForContentSizeCategory = true
@@ -43,11 +41,6 @@ extension ProductionCompanyCollectionViewCell {
     
     func setLayoutConstraints() {
         let spacing = CGFloat(10)
-        
-        contentView.clipsToBounds = true
-        contentView.layer.borderColor = UIColor.systemGray5.cgColor
-        contentView.layer.borderWidth = 1
-        contentView.layer.cornerRadius = 4
         
         imageView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
