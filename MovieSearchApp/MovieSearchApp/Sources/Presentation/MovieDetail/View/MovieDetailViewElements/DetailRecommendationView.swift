@@ -10,7 +10,7 @@ import SnapKit
 import Then
 
 final class DetailRecommendationView: UIView {
-    lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: createRecommendationLayout())
+    lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -24,7 +24,7 @@ final class DetailRecommendationView: UIView {
 }
 
 extension DetailRecommendationView {
-    private func createRecommendationLayout() -> UICollectionViewLayout {
+    private func createLayout() -> UICollectionViewLayout {
         let sectionProvider = { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
         
             let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
@@ -37,7 +37,7 @@ extension DetailRecommendationView {
             section.interGroupSpacing = 20
             section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 80, trailing: 20)
             let titleSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(50))
-            let titleSupplementary = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: titleSize, elementKind: RecommendationSupplementaryView.recommendationElementKind, alignment: .topLeading)
+            let titleSupplementary = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: titleSize, elementKind: TitleSupplementaryView.titleElementKind, alignment: .topLeading)
             
             section.boundarySupplementaryItems = [titleSupplementary]
             return section
