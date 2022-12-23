@@ -17,7 +17,9 @@ protocol MovieDetailFlowDependencies: AnyObject {
 
 private enum Section: Hashable {
     case recommendations
+    case cast
     case crew
+    case production
 }
 
 final class MovieDetailViewController: UIViewController {
