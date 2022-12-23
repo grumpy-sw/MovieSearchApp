@@ -7,8 +7,14 @@
 
 import Foundation
 
-struct Cast {
+struct Cast: Hashable {
     let name: String
     let profilePath: String
     let character: String
+    
+    let identifier = UUID()
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(identifier)
+    }
 }

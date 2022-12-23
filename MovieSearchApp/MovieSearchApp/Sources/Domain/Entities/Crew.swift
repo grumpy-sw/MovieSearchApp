@@ -7,7 +7,13 @@
 
 import Foundation
 
-struct Crew {
+struct Crew: Hashable {
     let name: String
     let job: String
+    
+    let identifier = UUID()
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(identifier)
+    }
 }

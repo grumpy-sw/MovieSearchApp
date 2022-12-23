@@ -7,7 +7,13 @@
 
 import Foundation
 
-struct ProductionCompany {
+struct ProductionCompany: Hashable {
     let name: String
     let logoPath: String
+    
+    let identifier = UUID()
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(identifier)
+    }
 }
