@@ -10,6 +10,8 @@
 		4EAC892429557B8B00B9AD9D /* RecommendationSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAC892329557B8B00B9AD9D /* RecommendationSupplementaryView.swift */; };
 		4EAC892629557D0800B9AD9D /* RecommendationCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAC892529557D0800B9AD9D /* RecommendationCollectionCell.swift */; };
 		4EAC89282955874800B9AD9D /* CastCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAC89272955874800B9AD9D /* CastCollectionViewCell.swift */; };
+		4EAC892A295598C000B9AD9D /* CrewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAC8929295598C000B9AD9D /* CrewCollectionViewCell.swift */; };
+		4EAC892C29559D2300B9AD9D /* ProductionCompanyCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAC892B29559D2300B9AD9D /* ProductionCompanyCollectionViewCell.swift */; };
 		4EB55E432952D7CB007AC682 /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB55E422952D7CB007AC682 /* UIFont+.swift */; };
 		4EB55E482953115C007AC682 /* MovieDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB55E472953115C007AC682 /* MovieDetailViewModel.swift */; };
 		4EB55E4A295311B3007AC682 /* MovieDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB55E49295311B3007AC682 /* MovieDetailView.swift */; };
@@ -100,6 +102,8 @@
 		4EAC892329557B8B00B9AD9D /* RecommendationSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationSupplementaryView.swift; sourceTree = "<group>"; };
 		4EAC892529557D0800B9AD9D /* RecommendationCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationCollectionCell.swift; sourceTree = "<group>"; };
 		4EAC89272955874800B9AD9D /* CastCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastCollectionViewCell.swift; sourceTree = "<group>"; };
+		4EAC8929295598C000B9AD9D /* CrewCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewCollectionViewCell.swift; sourceTree = "<group>"; };
+		4EAC892B29559D2300B9AD9D /* ProductionCompanyCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductionCompanyCollectionViewCell.swift; sourceTree = "<group>"; };
 		4EB55E422952D7CB007AC682 /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
 		4EB55E472953115C007AC682 /* MovieDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailViewModel.swift; sourceTree = "<group>"; };
 		4EB55E49295311B3007AC682 /* MovieDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailView.swift; sourceTree = "<group>"; };
@@ -207,6 +211,8 @@
 				4EAC892329557B8B00B9AD9D /* RecommendationSupplementaryView.swift */,
 				4EAC892529557D0800B9AD9D /* RecommendationCollectionCell.swift */,
 				4EAC89272955874800B9AD9D /* CastCollectionViewCell.swift */,
+				4EAC8929295598C000B9AD9D /* CrewCollectionViewCell.swift */,
+				4EAC892B29559D2300B9AD9D /* ProductionCompanyCollectionViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -920,6 +926,7 @@
 				4EB55E4C295311BD007AC682 /* MovieDetailViewController.swift in Sources */,
 				4EEBFD45294C4AEC00188F1F /* Constants.swift in Sources */,
 				4EBFC017294C263600064937 /* Endpoint.swift in Sources */,
+				4EAC892A295598C000B9AD9D /* CrewCollectionViewCell.swift in Sources */,
 				4EB55E5F295386C7007AC682 /* MovieDetailUseCase.swift in Sources */,
 				4EC546BD2950378800A6E4C9 /* MainView.swift in Sources */,
 				4EC546C92950690F00A6E4C9 /* AppCoordinator.swift in Sources */,
@@ -941,6 +948,7 @@
 				4EB55E9829547F13007AC682 /* MovieDetail.swift in Sources */,
 				4EB55E5D295384C7007AC682 /* DefaultMovieDetailRepository.swift in Sources */,
 				4EB55E9629547AC2007AC682 /* MovieCollection.swift in Sources */,
+				4EAC892C29559D2300B9AD9D /* ProductionCompanyCollectionViewCell.swift in Sources */,
 				4EB55E5029533469007AC682 /* CreditsDTO.swift in Sources */,
 				4EBFC021294C3B1600064937 /* NetworkError.swift in Sources */,
 				4EB55E7429546457007AC682 /* MoviePageDTO.swift in Sources */,
