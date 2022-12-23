@@ -88,8 +88,8 @@ extension MovieDetailViewController {
             cell.characterLabel.text = cast.character
         }
         
-        castDataSource = UICollectionViewDiffableDataSource<Section, Cast>(collectionView: movieDetailView.crewView.castCollectionView) { [weak self] (collectionView: UICollectionView, indexPath: IndexPath, cast: Cast) -> UICollectionViewCell? in
-            return self?.movieDetailView.crewView.castCollectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: cast)
+        castDataSource = UICollectionViewDiffableDataSource<Section, Cast>(collectionView: movieDetailView.crewView.collectionView) { [weak self] (collectionView: UICollectionView, indexPath: IndexPath, cast: Cast) -> UICollectionViewCell? in
+            return self?.movieDetailView.crewView.collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: cast)
         }
         
         let supplementaryRegistration = UICollectionView.SupplementaryRegistration<RecommendationSupplementaryView>(elementKind: RecommendationSupplementaryView.recommendationElementKind) { (supplementaryView, string, indexPath) in
@@ -97,7 +97,7 @@ extension MovieDetailViewController {
         }
         
         castDataSource.supplementaryViewProvider = { (view, kind, index) in
-            return self.movieDetailView.crewView.castCollectionView.dequeueConfiguredReusableSupplementary(using: supplementaryRegistration, for: index)
+            return self.movieDetailView.crewView.collectionView.dequeueConfiguredReusableSupplementary(using: supplementaryRegistration, for: index)
         }
         
         castSnapshot = NSDiffableDataSourceSnapshot<Section, Cast>()

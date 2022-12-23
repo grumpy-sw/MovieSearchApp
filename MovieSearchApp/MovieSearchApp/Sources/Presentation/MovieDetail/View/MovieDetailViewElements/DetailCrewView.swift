@@ -11,16 +11,7 @@ import Then
 
 final class DetailCrewView: UIView {
     
-    private let baseStackView = UIStackView().then {
-        $0.axis = .vertical
-        $0.spacing = 20
-    }
-    
-    lazy var productionCollectionView = UICollectionView(frame: .zero, collectionViewLayout: createProductionLayout())
-    
-    lazy var castCollectionView = UICollectionView(frame: .zero, collectionViewLayout: createCastLayout())
-    
-    lazy var crewCollectionView = UICollectionView(frame: .zero, collectionViewLayout: createCrewLayout())
+    lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,11 +25,7 @@ final class DetailCrewView: UIView {
 }
 
 extension DetailCrewView {
-    private func createProductionLayout() -> UICollectionViewLayout {
-        return UICollectionViewLayout.init()
-    }
-    
-    private func createCastLayout() -> UICollectionViewLayout {
+    private func createLayout() -> UICollectionViewLayout {
         let sectionProvider = { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
         
             let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
@@ -65,21 +52,14 @@ extension DetailCrewView {
         return layout
     }
     
-    private func createCrewLayout() -> UICollectionViewLayout {
-        return UICollectionViewLayout.init()
-    }
-    
     private func setSubViews() {
-        //baseStackView.addArrangedSubview(productionCollectionView)
-        baseStackView.addArrangedSubview(castCollectionView)
-        //baseStackView.addArrangedSubview(crewCollectionView)
-        addSubview(baseStackView)
+        addSubview(collectionView)
     }
     
     private func setLayoutConstraints() {
         let spacing = CGFloat(20)
         
-        baseStackView.snp.makeConstraints {
+        collectionView.snp.makeConstraints {
             $0.directionalEdges.equalToSuperview()
         }
     }
