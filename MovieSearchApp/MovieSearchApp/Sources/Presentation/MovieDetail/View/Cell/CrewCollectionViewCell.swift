@@ -5,9 +5,9 @@
 //  Created by 박세웅 on 2022/12/23.
 //
 
-import Foundation
-
 import UIKit
+import SnapKit
+import Then
 
 final class CrewCollectionViewCell: UICollectionViewCell {
     
@@ -18,17 +18,21 @@ final class CrewCollectionViewCell: UICollectionViewCell {
     let baseStackView = UIStackView().then {
         $0.axis = .vertical
         $0.spacing = 5
+        $0.alignment = .center
     }
     
     let nameLabel = UILabel().then {
         $0.font = UIFont.preferredFont(for: .footnote, weight: .bold)
         $0.adjustsFontForContentSizeCategory = true
+        $0.textColor = .black
         $0.numberOfLines = 0
     }
     
     let jobLabel = UILabel().then {
         $0.font = UIFont.preferredFont(forTextStyle: .caption1)
         $0.adjustsFontForContentSizeCategory = true
+        $0.textColor = .black
+        $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
         $0.numberOfLines = 0
     }
     
@@ -44,12 +48,13 @@ final class CrewCollectionViewCell: UICollectionViewCell {
 }
 
 extension CrewCollectionViewCell {
-    func setSubViews() {
-        contentView.addSubview(nameLabel)
-        contentView.addSubview(jobLabel)
+    private func setSubViews() {
+        baseStackView.addArrangedSubview(nameLabel)
+        baseStackView.addArrangedSubview(jobLabel)
+        addSubview(baseStackView)
     }
     
-    func setLayoutConstraints() {
+    private func setLayoutConstraints() {
         baseStackView.snp.makeConstraints {
             $0.directionalEdges.equalToSuperview()
         }
