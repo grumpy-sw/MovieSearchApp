@@ -34,9 +34,9 @@ final class MovieDetailViewController: UIViewController {
     fileprivate typealias RecommendationDataSource = UICollectionViewDiffableDataSource<Section, MoviePage>
     fileprivate typealias RecommendationSnapshot = NSDiffableDataSourceSnapshot<Section, MoviePage>
     
-
     private var contributorDataSource: UICollectionViewDiffableDataSource<ContributionKind, Contributor>! = nil
     private var contributorSnapshot: NSDiffableDataSourceSnapshot<ContributionKind, Contributor>! = nil
+    
     private var castDataSource: CastDataSource! = nil
     private var castSnapshot: CastSnapshot! = nil
     
@@ -93,13 +93,14 @@ extension MovieDetailViewController {
     }
     
     private func setViewContent(with movieDetail: MovieDetail) {
-        movieDetailView.setContent(movieDetail)
-        configureProductionSnapshot(movieDetail.productionCompanies)
+        
+        
         configureContributorSnapshot(movieDetail.productionCompanies.map { $0.toContributor()})
         if let credits = movieDetail.credits {
             configureContributorSnapshot(credits.cast.map { $0.toContributor() })
             configureContributorSnapshot(credits.crew.map { $0.toContributor() })
         }
+        
         if let recommendations = movieDetail.recommendations {
             configureRecommendationSnapshot(recommendations.movies)
         }
@@ -175,70 +176,6 @@ extension MovieDetailViewController {
         contributorSnapshot.appendSections([.crew])
     }
     
-    private func configureContributorSnapshot(_ contributors: [Contributor]) {
-        let kind = contributors.first?.type
-        contributorSnapshot.appendItems(contributors, toSection: kind)
-        contributorDataSource.apply(contributorSnapshot, animatingDifferences: true)
-    }
-    
-    private func configureProductionDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<ProductionCompanyCollectionViewCell, ProductionCompany> { (cell, indexPath, company) in
-            cell.updateImage(company.logoPath)
-            cell.nameLabel.text = company.name
-        }
-        
-        productionDataSource = ProductionDataSource(collectionView: movieDetailView.crewView.productionCollectionView) { [weak self] (collectionView: UICollectionView, indexPath: IndexPath, company: ProductionCompany) -> UICollectionViewCell? in
-            return self?.movieDetailView.crewView.productionCollectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: company)
-        }
-        
-        let supplementaryRegistration = UICollectionView.SupplementaryRegistration<TitleSupplementaryView>(elementKind: TitleSupplementaryView.titleElementKind) { (supplementaryView, string, indexPath) in
-            supplementaryView.setTitleLabel("Productions")
-        }
-        
-        productionDataSource.supplementaryViewProvider = { (view, kind, index) in
-            return self.movieDetailView.crewView.productionCollectionView.dequeueConfiguredReusableSupplementary(using: supplementaryRegistration, for: index)
-        }
-    }
-    
-    private func configureCastDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<CastCollectionViewCell, Cast> { (cell, indexPath, cast) in
-            cell.updateImage(cast.profilePath)
-            cell.nameLabel.text = cast.name
-            cell.characterLabel.text = cast.character
-        }
-        
-        castDataSource = CastDataSource(collectionView: movieDetailView.crewView.castCollectionView) { [weak self] (collectionView: UICollectionView, indexPath: IndexPath, cast: Cast) -> UICollectionViewCell? in
-            return self?.movieDetailView.crewView.castCollectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: cast)
-        }
-        
-        let supplementaryRegistration = UICollectionView.SupplementaryRegistration<TitleSupplementaryView>(elementKind: TitleSupplementaryView.titleElementKind) { (supplementaryView, string, indexPath) in
-            supplementaryView.setTitleLabel("Cast")
-        }
-        
-        castDataSource.supplementaryViewProvider = { (view, kind, index) in
-            return self.movieDetailView.crewView.castCollectionView.dequeueConfiguredReusableSupplementary(using: supplementaryRegistration, for: index)
-        }
-    }
-    
-    private func configureCrewDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<CrewCollectionViewCell, Crew> { (cell, indexPath, crew) in
-            cell.nameLabel.text = crew.name
-            cell.jobLabel.text = crew.job
-        }
-        
-        crewDataSource = CrewDataSource(collectionView: movieDetailView.crewView.crewCollectionView) { [weak self] (collectionView: UICollectionView, indexPath: IndexPath, cast: Crew) -> UICollectionViewCell? in
-            return self?.movieDetailView.crewView.crewCollectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: cast)
-        }
-        
-        let supplementaryRegistration = UICollectionView.SupplementaryRegistration<TitleSupplementaryView>(elementKind: TitleSupplementaryView.titleElementKind) { (supplementaryView, string, indexPath) in
-            supplementaryView.setTitleLabel("Crew")
-        }
-        
-        crewDataSource.supplementaryViewProvider = { (view, kind, index) in
-            return self.movieDetailView.crewView.crewCollectionView.dequeueConfiguredReusableSupplementary(using: supplementaryRegistration, for: index)
-        }
-    }
-    
     private func configureRecommendationDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<RecommendationCollectionCell, MoviePage> { (cell, indexPath, movie) in
             cell.updateImage(movie.backdropPath)
@@ -259,32 +196,17 @@ extension MovieDetailViewController {
     }
     
     // MARK: - Configuring Snapshot
-    private func configureProductionSnapshot(_ productionCompanies: [ProductionCompany]) {
-        productionSnapshot = ProductionSnapshot()
-        productionSnapshot.appendSections([.production])
-        productionSnapshot.appendItems(productionCompanies)
-        productionDataSource.apply(productionSnapshot, animatingDifferences: true)
-    }
-    
-    private func configureCastSnapshot(_ cast: [Cast]) {
-        castSnapshot = CastSnapshot()
-        castSnapshot.appendSections([.cast])
-        castSnapshot.appendItems(cast)
-        castDataSource.apply(castSnapshot, animatingDifferences: true)
-    }
-    
-    private func configureCrewSnapshot(_ crew: [Crew]) {
-        crewSnapshot = CrewSnapshot()
-        crewSnapshot.appendSections([.crew])
-        crewSnapshot.appendItems(crew)
-        crewDataSource.apply(crewSnapshot, animatingDifferences: true)
-    }
-    
     private func configureRecommendationSnapshot(_ recommendations: [MoviePage]) {
         recommendationSnapshot = RecommendationSnapshot()
         recommendationSnapshot.appendSections([.recommendations])
         recommendationSnapshot.appendItems(recommendations)
         recommendationDataSource.apply(recommendationSnapshot, animatingDifferences: true)
+    }
+    
+    private func configureContributorSnapshot(_ contributors: [Contributor]) {
+        let kind = contributors.first?.type
+        contributorSnapshot.appendItems(contributors, toSection: kind)
+        contributorDataSource.apply(contributorSnapshot, animatingDifferences: true)
     }
 }
 
