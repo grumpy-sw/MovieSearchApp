@@ -17,9 +17,3 @@ struct ProductionCompany: Hashable {
         hasher.combine(identifier)
     }
 }
-
-extension ProductionCompany {
-    func toContributor() -> Contributor {
-        return Contributor(name: name, imagePath: logoPath, additionalInfo: nil, type: .production)
-    }
-}

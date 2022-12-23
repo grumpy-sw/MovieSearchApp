@@ -18,9 +18,3 @@ struct Cast: Hashable {
         hasher.combine(identifier)
     }
 }
-
-extension Cast {
-    func toContributor() -> Contributor {
-        return Contributor(name: name, imagePath: profilePath, additionalInfo: character, type: .cast)
-    }
-}
