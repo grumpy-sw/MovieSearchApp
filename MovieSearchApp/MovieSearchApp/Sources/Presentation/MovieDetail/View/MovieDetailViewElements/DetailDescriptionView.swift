@@ -16,7 +16,7 @@ final class DetailDescriptionView: UIView {
         $0.spacing = 15
     }
     let taglineLabel = UILabel().then {
-        $0.font = .preferredFont(forTextStyle: .body)
+        $0.font = .italicPreferredFont(for: .body)
         $0.textAlignment = .center
         $0.numberOfLines = 0
     }
