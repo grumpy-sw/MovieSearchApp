@@ -15,10 +15,7 @@ protocol MovieDetailViewModelInput {
 }
 
 protocol MovieDetailViewModelOutput {
-    var title: PublishRelay<String> { get }
-    var overview: PublishRelay<String> { get }
-    var recommandations: BehaviorRelay<[MoviePage]> { get }
-    var productions: BehaviorRelay<[ProductionCompany]> { get }
+    var outputMovie: PublishRelay<MovieDetail> { get }
 }
 
 protocol MovieDetailViewModelable: MovieDetailViewModelInput, MovieDetailViewModelOutput { }
@@ -29,10 +26,7 @@ final class MovieDetailViewModel: MovieDetailViewModelable {
     private let movieId: Int
     private let decoder = JSONDecoder()
 
-    var title: PublishRelay<String> = .init()
-    var overview: PublishRelay<String> = .init()
-    var recommandations: BehaviorRelay<[MoviePage]> = .init(value: [])
-    var productions: BehaviorRelay<[ProductionCompany]> = .init(value: [])
+    var outputMovie: PublishRelay<MovieDetail> = .init()
     
     init(_ movieId: Int, _ movieDetailUseCase: MovieDetailUseCase) {
         self.movieId = movieId
@@ -60,7 +54,6 @@ extension MovieDetailViewModel {
     }
     
     private func setObservableValues(_ movieDetails: MovieDetail) {
-        title.accept(movieDetails.title)
-        overview.accept(movieDetails.overview)
+        outputMovie.accept(movieDetails)
     }
 }

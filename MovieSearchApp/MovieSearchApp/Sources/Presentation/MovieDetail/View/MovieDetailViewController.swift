@@ -50,16 +50,15 @@ final class MovieDetailViewController: UIViewController {
 
 extension MovieDetailViewController {
     func bind() {
-        viewModel.title
-            .asObservable()
-            .map { $0 }
-            .bind(to: movieDetailView.infoView.titleLabel.rx.text)
+        viewModel.outputMovie
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] movieDetail in
+                self?.configureContent(with: movieDetail)
+            })
             .disposed(by: disposeBag)
-        
-        viewModel.overview
-            .asObservable()
-            .map { $0 }
-            .bind(to: movieDetailView.descriptionView.overviewLabel.rx.text)
-            .disposed(by: disposeBag)
+    }
+    
+    private func configureContent(with movieDetail: MovieDetail) {
+        movieDetailView.setContent(movieDetail)
     }
 }
