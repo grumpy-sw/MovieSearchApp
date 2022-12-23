@@ -21,7 +21,7 @@ final class MovieDetailView: UIView {
     let descriptionView = DetailDescriptionView()
     let crewView = DetailCrewView()
     let statusView = DetailStatusView()
-    let recommandationView = DetailRecommandationView()
+    let recommendationView = DetailRecommendationView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -37,12 +37,12 @@ final class MovieDetailView: UIView {
 extension MovieDetailView {
     
     private func setSubViews() {
-        baseStackView.addArrangedSubview(backdropImageView)
-        baseStackView.addArrangedSubview(infoView)
-        baseStackView.addArrangedSubview(descriptionView)
-        baseStackView.addArrangedSubview(crewView)
-        baseStackView.addArrangedSubview(statusView)
-        baseStackView.addArrangedSubview(recommandationView)
+        //baseStackView.addArrangedSubview(backdropImageView)
+        //baseStackView.addArrangedSubview(infoView)
+        //baseStackView.addArrangedSubview(descriptionView)
+        //baseStackView.addArrangedSubview(crewView)
+        //baseStackView.addArrangedSubview(statusView)
+        baseStackView.addArrangedSubview(recommendationView)
         addSubview(baseStackView)
     }
     
@@ -53,8 +53,8 @@ extension MovieDetailView {
     }
     
     func setContent(_ movie: MovieDetail) {
-        infoView.setContent(movie.title, movie.releaseDate, movie.runtime, movie.genres, movie.posterPath, movie.voteAverage)
+        //infoView.setContent(movie.title, movie.releaseDate, movie.runtime, movie.genres, movie.posterPath, movie.voteAverage)
         descriptionView.setContent(movie.tagline, movie.overview)
-        statusView.setContent(movie.status, movie.originalLanguage, movie.budget, movie.revenue)
+        //statusView.setContent(movie.status, movie.originalLanguage, movie.budget, movie.revenue)
     }
 }

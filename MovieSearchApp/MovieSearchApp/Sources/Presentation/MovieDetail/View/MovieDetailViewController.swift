@@ -21,6 +21,8 @@ private enum Section: Hashable {
 
 final class MovieDetailViewController: UIViewController {
     
+    private var dataSource: UICollectionViewDiffableDataSource<Section, MoviePage>! = nil
+    private var currentSnapshot: NSDiffableDataSourceSnapshot<Section, MoviePage>! = nil
     let viewModel: MovieDetailViewModel
     let movieDetailView = MovieDetailView()
     let coordinator: MovieDetailFlowDependencies
@@ -37,13 +39,13 @@ final class MovieDetailViewController: UIViewController {
     }
     override func loadView() {
         self.view = movieDetailView
-        viewModel.viewDidLoad()
-        bind()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .systemOrange
+        self.view.backgroundColor = .systemBackground
+        viewModel.viewDidLoad()
+        bind()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -64,20 +66,16 @@ extension MovieDetailViewController {
     
     private func setViewContent(with movieDetail: MovieDetail) {
         movieDetailView.setContent(movieDetail)
-        print(movieDetail.recommendations)
         if let recommendations = movieDetail.recommendations {
             configureDataSource(recommendations)
         }
     }
     
     private func configureDataSource(_ movieCollection: MovieCollection) {
-        var dataSource: UICollectionViewDiffableDataSource<Section, MoviePage>! = nil
-        var currentSnapshot: NSDiffableDataSourceSnapshot<Section, MoviePage>! = nil
         
         let cellRegistration = UICollectionView.CellRegistration<RecommendationCollectionCell, MoviePage> { (cell, indexPath, movie) in
-            cell.updateImage(movie.posterPath)
+            cell.updateImage(movie.backdropPath)
             cell.titleLabel.text = movie.title
-            
             var genres: [GenreCategory] = []
             
             movie.genreIds.forEach {
@@ -86,16 +84,16 @@ extension MovieDetailViewController {
             cell.genreLabel.text = genres.map{ $0.desciption }.joined(separator: ",")
         }
         
-        dataSource = UICollectionViewDiffableDataSource<Section, MoviePage>(collectionView: movieDetailView.recommandationView.recommandationCollectionView) { [weak self] (collectionView: UICollectionView, indexPath: IndexPath, movie: MoviePage) -> UICollectionViewCell? in
-            return self?.movieDetailView.recommandationView.recommandationCollectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: movie)
+        dataSource = UICollectionViewDiffableDataSource<Section, MoviePage>(collectionView: movieDetailView.recommendationView.recommendationCollectionView) { [weak self] (collectionView: UICollectionView, indexPath: IndexPath, movie: MoviePage) -> UICollectionViewCell? in
+            return self?.movieDetailView.recommendationView.recommendationCollectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: movie)
         }
         
-        let supplementaryRegistration = UICollectionView.SupplementaryRegistration<TitleSupplementaryView>(elementKind: TitleSupplementaryView.titleElementKind) { (supplementaryView, string, indexPath) in
+        let supplementaryRegistration = UICollectionView.SupplementaryRegistration<RecommendationSupplementaryView>(elementKind: RecommendationSupplementaryView.recommendationElementKind) { (supplementaryView, string, indexPath) in
             
         }
         
         dataSource.supplementaryViewProvider = { (view, kind, index) in
-            return self.movieDetailView.recommandationView.recommandationCollectionView.dequeueConfiguredReusableSupplementary(using: supplementaryRegistration, for: index)
+            return self.movieDetailView.recommendationView.recommendationCollectionView.dequeueConfiguredReusableSupplementary(using: supplementaryRegistration, for: index)
         }
         
         currentSnapshot = NSDiffableDataSourceSnapshot<Section, MoviePage>()
