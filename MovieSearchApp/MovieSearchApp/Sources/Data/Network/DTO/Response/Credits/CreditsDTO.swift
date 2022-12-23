@@ -15,7 +15,19 @@ struct CreditsDTO: Decodable {
 extension CreditsDTO {
     func toDomain() -> Credits {
         return Credits(
-            cast: self.cast.map{ $0.toDomain() },
-            crew: self.crew.map{ $0.toDomain() })
+            cast: slice(cast).map { $0.toDomain() },
+            crew: slice(filterCrew()).map { $0.toDomain() })
+    }
+    
+    private func slice<T>(_ collection: [T]) -> [T] {
+        if collection.count > 10 {
+            return Array(collection[..<10])
+        }
+        return collection
+    }
+    
+    private func filterCrew() -> [CrewDTO] {
+        let showingJobs = ["Director", "Story", "Writer", "ScreenPlay", "Writer"]
+        return crew.filter { showingJobs.contains($0.job ?? "") }
     }
 }
