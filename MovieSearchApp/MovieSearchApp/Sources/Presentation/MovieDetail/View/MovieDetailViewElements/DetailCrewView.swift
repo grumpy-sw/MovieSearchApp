@@ -65,6 +65,7 @@ extension DetailCrewView {
             let titleSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(50))
             let titleSupplementary = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: titleSize, elementKind: TitleSupplementaryView.titleElementKind, alignment: .topLeading)
             
+            section.boundarySupplementaryItems = [titleSupplementary]
             return section
         }
         

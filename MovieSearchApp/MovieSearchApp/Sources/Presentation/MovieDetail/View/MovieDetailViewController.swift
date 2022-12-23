@@ -150,7 +150,19 @@ extension MovieDetailViewController {
         }
         
         let supplementaryRegistration = UICollectionView.SupplementaryRegistration<TitleSupplementaryView>(elementKind: TitleSupplementaryView.titleElementKind) { (supplementaryView, string, indexPath) in
-            supplementaryView.setTitleLabel("Productions")
+            guard let kind = ContributionKind(rawValue: indexPath.section) else {
+                return
+            }
+            var title = "Untitled"
+            switch kind {
+            case .production:
+                title = "Production"
+            case .cast:
+                title = "Cast"
+            case .crew:
+                title = "Crew"
+            }
+            supplementaryView.setTitleLabel(title)
         }
         
         contributorDataSource.supplementaryViewProvider = { (view, kind, index) in
