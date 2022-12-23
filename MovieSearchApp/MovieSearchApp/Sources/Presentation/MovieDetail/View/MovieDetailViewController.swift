@@ -95,9 +95,10 @@ extension MovieDetailViewController {
     private func setViewContent(with movieDetail: MovieDetail) {
         movieDetailView.setContent(movieDetail)
         configureProductionSnapshot(movieDetail.productionCompanies)
+        configureContributorSnapshot(movieDetail.productionCompanies.map { $0.toContributor()})
         if let credits = movieDetail.credits {
-            configureCastSnapshot(credits.cast)
-            configureCrewSnapshot(credits.crew)
+            configureContributorSnapshot(credits.cast.map { $0.toContributor() })
+            configureContributorSnapshot(credits.crew.map { $0.toContributor() })
         }
         if let recommendations = movieDetail.recommendations {
             configureRecommendationSnapshot(recommendations.movies)
@@ -109,13 +110,65 @@ extension MovieDetailViewController {
 extension MovieDetailViewController {
     
     private func configureDataSource() {
-        configureProductionDataSource()
-        configureCastDataSource()
-        configureCrewDataSource()
         configureRecommendationDataSource()
+        configureContributorDataSource()
     }
     
     // MARK: - Configuring DataSource
+    private func configureContributorDataSource() {
+        let productionRegistration = UICollectionView.CellRegistration<ProductionCompanyCollectionViewCell, Contributor> { (cell, indexPath, company) in
+            cell.nameLabel.text = company.name
+            guard let imagePath = company.imagePath else {
+                return
+            }
+            cell.updateImage(imagePath)
+        }
+        
+        let castRegistration = UICollectionView.CellRegistration<CastCollectionViewCell, Contributor> { (cell, indexPath, cast) in
+            cell.nameLabel.text = cast.name
+            cell.characterLabel.text = cast.additionalInfo
+            guard let imagePath = cast.imagePath else {
+                return
+            }
+            cell.updateImage(imagePath)
+        }
+        
+        let crewRegistration = UICollectionView.CellRegistration<CrewCollectionViewCell, Contributor> { (cell, indexPath, crew) in
+            cell.nameLabel.text = crew.name
+            cell.jobLabel.text = crew.additionalInfo
+        }
+        
+        contributorDataSource = UICollectionViewDiffableDataSource<ContributionKind, Contributor>(collectionView: movieDetailView.crewView.collectionView) { [weak self] (collectionView: UICollectionView, indexPath: IndexPath, contributor: Contributor) -> UICollectionViewCell? in
+            switch contributor.type {
+            case .cast:
+                return self?.movieDetailView.crewView.collectionView.dequeueConfiguredReusableCell(using: castRegistration, for: indexPath, item: contributor)
+            case .production:
+                return self?.movieDetailView.crewView.collectionView.dequeueConfiguredReusableCell(using: productionRegistration, for: indexPath, item: contributor)
+            case .crew:
+                return self?.movieDetailView.crewView.collectionView.dequeueConfiguredReusableCell(using: crewRegistration, for: indexPath, item: contributor)
+            }
+        }
+        
+        let supplementaryRegistration = UICollectionView.SupplementaryRegistration<TitleSupplementaryView>(elementKind: TitleSupplementaryView.titleElementKind) { (supplementaryView, string, indexPath) in
+            supplementaryView.setTitleLabel("Productions")
+        }
+        
+        contributorDataSource.supplementaryViewProvider = { (view, kind, index) in
+            return self.movieDetailView.crewView.collectionView.dequeueConfiguredReusableSupplementary(using: supplementaryRegistration, for: index)
+        }
+        
+        contributorSnapshot = NSDiffableDataSourceSnapshot<ContributionKind, Contributor>()
+        contributorSnapshot.appendSections([.production])
+        contributorSnapshot.appendSections([.cast])
+        contributorSnapshot.appendSections([.crew])
+    }
+    
+    private func configureContributorSnapshot(_ contributors: [Contributor]) {
+        let kind = contributors.first?.type
+        contributorSnapshot.appendItems(contributors, toSection: kind)
+        contributorDataSource.apply(contributorSnapshot, animatingDifferences: true)
+    }
+    
     private func configureProductionDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<ProductionCompanyCollectionViewCell, ProductionCompany> { (cell, indexPath, company) in
             cell.updateImage(company.logoPath)
