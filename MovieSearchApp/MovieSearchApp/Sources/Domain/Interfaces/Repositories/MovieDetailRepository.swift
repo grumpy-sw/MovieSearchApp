@@ -10,5 +10,6 @@ import Foundation
 protocol MovieDetailRepository {
     @discardableResult
     func fetchMovieDetails(id: Int, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask?
+    func fetchImageData(width: Int, path: String, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask?
 }
 

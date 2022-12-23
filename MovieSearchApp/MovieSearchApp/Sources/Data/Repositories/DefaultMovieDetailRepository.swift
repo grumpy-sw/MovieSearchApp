@@ -27,4 +27,15 @@ extension DefaultMovieDetailRepository: MovieDetailRepository {
             }
         }
     }
+    
+    func fetchImageData(width: Int, path: String, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask? {
+        dataTransferService.imageProvider.request(endpoint: EndpointStorage.fetchImageAPI(path, width).endpoint) { result in
+            switch result {
+            case .success(let data):
+                completion(.success(data))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
 }
