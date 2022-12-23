@@ -37,7 +37,7 @@ extension DetailRecommandationView {
             section.interGroupSpacing = 20
             section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 80, trailing: 20)
             let titleSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(50))
-            let titleSupplementary = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: titleSize, elementKind: TitleSupplementaryView.titleElementKind, alignment: .topLeading)
+            let titleSupplementary = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: titleSize, elementKind: RecommendationSupplementaryView.recommendationElementKind, alignment: .topLeading)
             
             section.boundarySupplementaryItems = [titleSupplementary]
             return section

@@ -10,7 +10,7 @@ import SnapKit
 import Then
 
 final class RecommendationSupplementaryView: UICollectionReusableView {
-    static let RecommendationElementKind = "recommendation-element-kind"
+    static let recommendationElementKind = "recommendation-element-kind"
     private let label = UILabel().then {
         $0.text = "Recommendation"
         $0.adjustsFontForContentSizeCategory = true

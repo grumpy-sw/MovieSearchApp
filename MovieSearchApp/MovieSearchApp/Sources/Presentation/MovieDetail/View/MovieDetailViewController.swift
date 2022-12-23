@@ -15,6 +15,10 @@ protocol MovieDetailFlowDependencies: AnyObject {
     func dismissMoviesDetailViewController()
 }
 
+private enum Section: Hashable {
+    case main
+}
+
 final class MovieDetailViewController: UIViewController {
     
     let viewModel: MovieDetailViewModel
@@ -60,5 +64,46 @@ extension MovieDetailViewController {
     
     private func setViewContent(with movieDetail: MovieDetail) {
         movieDetailView.setContent(movieDetail)
+        print(movieDetail.recommendations)
+        if let recommendations = movieDetail.recommendations {
+            configureDataSource(recommendations)
+        }
+    }
+    
+    private func configureDataSource(_ movieCollection: MovieCollection) {
+        var dataSource: UICollectionViewDiffableDataSource<Section, MoviePage>! = nil
+        var currentSnapshot: NSDiffableDataSourceSnapshot<Section, MoviePage>! = nil
+        
+        let cellRegistration = UICollectionView.CellRegistration<RecommendationCollectionCell, MoviePage> { (cell, indexPath, movie) in
+            cell.updateImage(movie.posterPath)
+            cell.titleLabel.text = movie.title
+            
+            var genres: [GenreCategory] = []
+            
+            movie.genreIds.forEach {
+                genres.append(GenreCategory(rawValue: $0)!)
+            }
+            cell.genreLabel.text = genres.map{ $0.desciption }.joined(separator: ",")
+        }
+        
+        dataSource = UICollectionViewDiffableDataSource<Section, MoviePage>(collectionView: movieDetailView.recommandationView.recommandationCollectionView) { [weak self] (collectionView: UICollectionView, indexPath: IndexPath, movie: MoviePage) -> UICollectionViewCell? in
+            return self?.movieDetailView.recommandationView.recommandationCollectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: movie)
+        }
+        
+        let supplementaryRegistration = UICollectionView.SupplementaryRegistration<TitleSupplementaryView>(elementKind: TitleSupplementaryView.titleElementKind) { (supplementaryView, string, indexPath) in
+            
+        }
+        
+        dataSource.supplementaryViewProvider = { (view, kind, index) in
+            return self.movieDetailView.recommandationView.recommandationCollectionView.dequeueConfiguredReusableSupplementary(using: supplementaryRegistration, for: index)
+        }
+        
+        currentSnapshot = NSDiffableDataSourceSnapshot<Section, MoviePage>()
+        currentSnapshot.appendSections([.main])
+        currentSnapshot.appendItems(movieCollection.movies)
+        dataSource.apply(currentSnapshot, animatingDifferences: true)
     }
 }
+
+
+

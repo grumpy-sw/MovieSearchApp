@@ -1,13 +1,13 @@
 //
-//  MovieCollectionCell.swift
+//  RecommendationCollectionCell.swift
 //  MovieSearchApp
 //
-//  Created by 박세웅 on 2022/12/19.
+//  Created by 박세웅 on 2022/12/23.
 //
 
 import UIKit
 
-final class MovieCollectionCell: UICollectionViewCell {
+final class RecommendationCollectionCell: UICollectionViewCell {
     
     static var identifier: String {
         String(describing: Self.self)
@@ -18,7 +18,7 @@ final class MovieCollectionCell: UICollectionViewCell {
         $0.layer.borderColor = UIColor.black.cgColor
         $0.layer.borderWidth = 1
         $0.layer.cornerRadius = 4
-        $0.backgroundColor = UIColor.cornflowerBlue
+        $0.backgroundColor = UIColor.systemBlue
     }
     let titleLabel = UILabel().then {
         $0.font = UIFont.preferredFont(forTextStyle: .subheadline)
@@ -42,7 +42,7 @@ final class MovieCollectionCell: UICollectionViewCell {
     }
 }
 
-extension MovieCollectionCell {
+extension RecommendationCollectionCell {
     func setSubViews() {
         contentView.addSubview(imageView)
         contentView.addSubview(titleLabel)
@@ -80,11 +80,5 @@ extension MovieCollectionCell {
                 }
             }
         }
-    }
-}
-
-extension UIColor {
-    static var cornflowerBlue: UIColor {
-        return UIColor(displayP3Red: 100.0 / 255.0, green: 149.0 / 255.0, blue: 237.0 / 255.0, alpha: 1.0)
     }
 }
