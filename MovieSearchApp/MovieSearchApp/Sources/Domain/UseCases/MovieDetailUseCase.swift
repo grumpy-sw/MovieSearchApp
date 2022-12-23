@@ -9,6 +9,7 @@ import Foundation
 
 protocol MovieDetailUseCase {
     func execute(id: Int, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask?
+    func execute(width: Int, path: String, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask?
 }
 
 final class DefaultMovieDetailUseCase: MovieDetailUseCase {
@@ -20,6 +21,12 @@ final class DefaultMovieDetailUseCase: MovieDetailUseCase {
     
     func execute(id: Int, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask? {
         return movieDetailRepository.fetchMovieDetails(id: id) { result in
+            completion(result)
+        }
+    }
+    
+    func execute(width: Int, path: String, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask? {
+        return movieDetailRepository.fetchImageData(width: width, path: path) { result in
             completion(result)
         }
     }
