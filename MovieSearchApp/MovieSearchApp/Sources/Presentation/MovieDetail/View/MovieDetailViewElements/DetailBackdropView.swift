@@ -7,10 +7,11 @@
 
 import UIKit
 import SnapKit
+import Then
 
 final class DetailBackdropView: UIView {
     
-    private let backdropImageView: UIImageView = UIImageView()
+    private let backdropImageView = UIImageView()
     override init(frame: CGRect) {
         super.init(frame: frame)
         setSubViews()

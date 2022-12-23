@@ -19,7 +19,6 @@ final class MovieDetailView: UIView {
     
     let contentView = UIStackView().then {
         $0.axis = .vertical
-        $0.spacing = 20
     }
     
     let backdropView = DetailBackdropView()
@@ -79,14 +78,12 @@ extension MovieDetailView {
             $0.width.equalToSuperview()
             $0.centerX.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
-            //$0.top.equalTo(backdropView.snp.bottom)
         }
 
         descriptionView.snp.makeConstraints {
             $0.width.equalToSuperview()
             $0.centerX.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
-            //$0.top.equalTo(infoView.snp.bottom)
         }
         
         productionView.snp.makeConstraints {
@@ -94,7 +91,6 @@ extension MovieDetailView {
             $0.centerX.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(250)
-            //$0.top.equalTo(descriptionView.snp.bottom)
         }
         
         castView.snp.makeConstraints {
@@ -102,7 +98,6 @@ extension MovieDetailView {
             $0.centerX.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(390)
-            //$0.top.equalTo(productionView.snp.bottom)
         }
         
         crewView.snp.makeConstraints {
@@ -110,14 +105,12 @@ extension MovieDetailView {
             $0.centerX.equalToSuperview()
             $0.height.equalTo(300)
             $0.leading.trailing.equalToSuperview()
-            //$0.top.equalTo(castView.snp.bottom)
         }
         
         statusView.snp.makeConstraints {
             $0.width.equalToSuperview()
             $0.centerX.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
-            //$0.top.equalTo(statusView.snp.bottom)
             $0.height.equalTo(270)
         }
         
@@ -125,7 +118,6 @@ extension MovieDetailView {
             $0.width.equalToSuperview()
             $0.centerX.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
-            //$0.top.equalTo(statusView.snp.bottom)
             $0.height.equalTo(350)
             $0.bottom.equalTo(contentView) // Bottom
         }
@@ -135,10 +127,6 @@ extension MovieDetailView {
         infoView.setContent(movie.title, movie.releaseDate, movie.runtime, movie.genres, movie.posterPath, movie.voteAverage)
         descriptionView.setContent(movie.tagline, movie.overview)
         statusView.setContent(movie.status, movie.originalLanguage, movie.budget, movie.revenue)
-    }
-    
-    func updatePosterImage(with image: Data?) {
-        infoView.updatePosterImage(image)
     }
     
     func updateBackdropImage(with image: Data?) {
