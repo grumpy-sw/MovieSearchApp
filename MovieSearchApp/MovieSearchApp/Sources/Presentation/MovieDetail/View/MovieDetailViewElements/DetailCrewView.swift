@@ -61,10 +61,9 @@ extension DetailCrewView {
             
             
             section.interGroupSpacing = 20
-            section.contentInsets = NSDirectionalEdgeInsets(top: 30, leading: 20, bottom: 80, trailing: 20)
+            section.contentInsets = NSDirectionalEdgeInsets(top: 30, leading: 20, bottom: 30, trailing: 20)
             let titleSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(50))
             let titleSupplementary = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: titleSize, elementKind: TitleSupplementaryView.titleElementKind, alignment: .topLeading)
-            
             section.boundarySupplementaryItems = [titleSupplementary]
             return section
         }
