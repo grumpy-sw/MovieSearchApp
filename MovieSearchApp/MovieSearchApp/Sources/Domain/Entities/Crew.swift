@@ -17,3 +17,9 @@ struct Crew: Hashable {
         hasher.combine(identifier)
     }
 }
+
+extension Crew {
+    func toContributor() -> Contributor {
+        return Contributor(name: name, imagePath: nil, additionalInfo: job, type: .crew)
+    }
+}
