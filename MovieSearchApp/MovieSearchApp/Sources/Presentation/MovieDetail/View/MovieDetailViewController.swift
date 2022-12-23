@@ -24,11 +24,28 @@ private enum Section: Hashable {
 
 final class MovieDetailViewController: UIViewController {
     
-    private var castDataSource: UICollectionViewDiffableDataSource<Section, Cast>! = nil
-    private var castSnapshot: NSDiffableDataSourceSnapshot<Section, Cast>! = nil
+    // MARK: - Typealias for DataSource and Snapshot
+    fileprivate typealias CastDataSource = UICollectionViewDiffableDataSource<Section, Cast>
+    fileprivate typealias CastSnapshot = NSDiffableDataSourceSnapshot<Section, Cast>
+    fileprivate typealias CrewDataSource = UICollectionViewDiffableDataSource<Section, Crew>
+    fileprivate typealias CrewSnapshot = NSDiffableDataSourceSnapshot<Section, Crew>
+    fileprivate typealias ProductionDataSource = UICollectionViewDiffableDataSource<Section, ProductionCompany>
+    fileprivate typealias ProductionSnapshot = NSDiffableDataSourceSnapshot<Section, ProductionCompany>
+    fileprivate typealias RecommendationDataSource = UICollectionViewDiffableDataSource<Section, MoviePage>
+    fileprivate typealias RecommendationSnapshot = NSDiffableDataSourceSnapshot<Section, MoviePage>
     
-    private var dataSource: UICollectionViewDiffableDataSource<Section, MoviePage>! = nil
-    private var currentSnapshot: NSDiffableDataSourceSnapshot<Section, MoviePage>! = nil
+
+    private var castDataSource: CastDataSource! = nil
+    private var castSnapshot: CastSnapshot! = nil
+    
+    private var crewDataSource: CrewDataSource! = nil
+    private var crewSnapshot: CrewSnapshot! = nil
+    
+    private var productionDataSource: ProductionDataSource! = nil
+    private var productionSnapshot: ProductionSnapshot! = nil
+    
+    private var recommendationDataSource: RecommendationDataSource! = nil
+    private var recommendationSnapshot: RecommendationSnapshot! = nil
     
     
     let viewModel: MovieDetailViewModel
