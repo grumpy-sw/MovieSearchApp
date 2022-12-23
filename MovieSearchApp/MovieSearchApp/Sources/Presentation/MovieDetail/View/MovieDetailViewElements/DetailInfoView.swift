@@ -14,7 +14,6 @@ final class DetailInfoView: UIView {
     let baseLabelStackView = UIStackView().then {
         $0.axis = .vertical
         $0.spacing = 15
-        $0.alignment = .center
     }
     
     let titleLabel = UILabel().then {
@@ -30,7 +29,6 @@ final class DetailInfoView: UIView {
     let basePosterStackView = UIStackView().then {
         $0.axis = .vertical
         $0.spacing = 15
-        $0.alignment = .center
     }
     
     let posterImageView = UIImageView().then {
@@ -43,7 +41,7 @@ final class DetailInfoView: UIView {
     
     let userScoreStackView = UIStackView().then {
         $0.axis = .horizontal
-        $0.spacing = 10
+        $0.spacing = 5
     }
     
     let userScoreStaticLabel = UILabel().then {
@@ -51,7 +49,9 @@ final class DetailInfoView: UIView {
         $0.text = "User Score"
     }
     
-    let userScoreStaticImageView = UIImageView()
+    let userScoreStaticImageView = UIImageView().then {
+        $0.image = UIImage(systemName: "star.fill")
+    }
     
     let userScoreLabel = UILabel().then {
         $0.font = .preferredFont(forTextStyle: .footnote)
@@ -92,7 +92,11 @@ extension DetailInfoView {
         }
         
         basePosterStackView.snp.makeConstraints {
-            $0.top.bottom.trailing.equalToSuperview().inset(spacing)
+            $0.top.trailing.equalToSuperview().inset(spacing)
+        }
+        
+        posterImageView.snp.makeConstraints {
+            $0.top.trailing.bottom.equalToSuperview().inset(spacing * 2)
         }
     }
     
@@ -101,6 +105,12 @@ extension DetailInfoView {
         infoLabel.text = "\(releaseDate) | \(runtime) m"
         genreLabel.text = genres.map{ $0.id.desciption }.joined(separator: ", ")
         userScoreLabel.text = String(Int(vote * 10))
-        //posterImageView.image = UIImage()
+    }
+    
+    func updatePosterImage(_ image: Data?) {
+//        guard let image = image else {
+//            return
+//        }
+//        posterImageView.image = UIImage(data: image)
     }
 }

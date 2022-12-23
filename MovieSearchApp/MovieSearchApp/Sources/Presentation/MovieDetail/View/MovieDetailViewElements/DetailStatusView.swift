@@ -53,13 +53,13 @@ extension DetailStatusView {
     private func staticLabel(_ text: String) -> UILabel {
         return UILabel().then {
             $0.text = text
-            $0.font = .preferredFont(for: .body, weight: .bold)
+            $0.font = .preferredFont(for: .footnote, weight: .bold)
         }
     }
     
     private func variableLabel() -> UILabel {
         return UILabel().then {
-            $0.font = .preferredFont(forTextStyle: .body)
+            $0.font = .preferredFont(forTextStyle: .footnote)
         }
     }
     
@@ -82,17 +82,24 @@ extension DetailStatusView {
     }
     
     private func setLayoutConstraints() {
-        let spacing = CGFloat(20)
+        let spacing = CGFloat(35)
         baseStackView.snp.makeConstraints {
-            $0.directionalEdges.equalToSuperview().inset(spacing)
+            $0.directionalHorizontalEdges.equalToSuperview().inset(spacing)
+            $0.top.bottom.equalToSuperview()
         }
     }
     
     func setContent(_ status: String, _ originalLanguage: String, _ budget: Int, _ revenue: Int) {
         statusLabel.text = status
         originalLanguageLabel.text = originalLanguage.uppercased()
-        budgetLabel.text = String(budget)
-        revenueLabel.text = String(revenue)
-        
+        budgetLabel.text = "$ " + convertToDecimal(budget)
+        revenueLabel.text = "$ " + convertToDecimal(revenue)
+    }
+    
+    private func convertToDecimal(_ number: Int) -> String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+            
+        return numberFormatter.string(from: NSNumber(value: number)) ?? "0"
     }
 }
