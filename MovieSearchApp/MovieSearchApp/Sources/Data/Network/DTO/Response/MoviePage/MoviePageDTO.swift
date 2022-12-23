@@ -20,7 +20,7 @@ struct MoviePageDTO: Decodable {
         case posterPath = "poster_path"
         case backdropPath = "backdrop_path"
         case voteAverage = "vote_average"
-        case genreIds = "genreIds"
+        case genreIds = "genre_ids"
     }
 }
 
