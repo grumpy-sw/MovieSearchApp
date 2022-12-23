@@ -91,12 +91,6 @@ extension MovieDetailViewController {
             })
             .disposed(by: disposeBag)
         
-        viewModel.posterImage.observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] data in
-                self?.setPosterContent(data: data)
-            })
-            .disposed(by: disposeBag)
-        
         viewModel.backdropImage.observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] data in
                 self?.setBackdropContent(data: data)
@@ -115,10 +109,6 @@ extension MovieDetailViewController {
         if let recommendations = movieDetail.recommendations {
             configureRecommendationSnapshot(recommendations.movies)
         }
-    }
-    
-    private func setPosterContent(data: Data?) {
-        movieDetailView.updatePosterImage(with: data)
     }
     
     private func setBackdropContent(data: Data?) {
