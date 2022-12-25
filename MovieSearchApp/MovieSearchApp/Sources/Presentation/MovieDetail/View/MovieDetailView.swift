@@ -57,6 +57,7 @@ extension MovieDetailView {
     }
     
     private func setLayoutConstraints() {
+        let spacing = CGFloat(20)
         baseScrollView.snp.makeConstraints {
             $0.directionalEdges.equalToSuperview()
         }
@@ -71,55 +72,60 @@ extension MovieDetailView {
             $0.centerX.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(200)
-            $0.top.equalTo(contentView) // Top
+            $0.top.equalToSuperview() // Top
         }
 
         infoView.snp.makeConstraints {
             $0.width.equalToSuperview()
             $0.centerX.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
+            $0.top.equalTo(backdropView.snp.bottom).offset(spacing)
         }
 
         descriptionView.snp.makeConstraints {
             $0.width.equalToSuperview()
             $0.centerX.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
+            $0.top.equalTo(infoView.snp.bottom).offset(spacing)
         }
         
         productionView.snp.makeConstraints {
             $0.width.equalToSuperview()
             $0.centerX.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(250)
+            $0.height.equalTo(UIScreen.main.bounds.height * 0.28)
+            $0.top.equalTo(descriptionView.snp.bottom).offset(spacing)
         }
         
         castView.snp.makeConstraints {
             $0.width.equalToSuperview()
             $0.centerX.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(390)
+            $0.height.equalTo(UIScreen.main.bounds.height * 0.46)
+            $0.top.equalTo(productionView.snp.bottom).offset(spacing)
         }
         
         crewView.snp.makeConstraints {
             $0.width.equalToSuperview()
             $0.centerX.equalToSuperview()
-            $0.height.equalTo(300)
             $0.leading.trailing.equalToSuperview()
+            $0.top.equalTo(castView.snp.bottom).offset(spacing)
         }
         
         statusView.snp.makeConstraints {
             $0.width.equalToSuperview()
             $0.centerX.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(270)
+            $0.top.equalTo(crewView.snp.bottom).offset(spacing)
         }
         
         recommendationView.snp.makeConstraints {
             $0.width.equalToSuperview()
             $0.centerX.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(350)
-            $0.bottom.equalTo(contentView) // Bottom
+            $0.height.equalTo(UIScreen.main.bounds.height * 0.35)
+            $0.top.equalTo(statusView.snp.bottom).offset(spacing)
+            $0.bottom.equalToSuperview() // Bottom
         }
     }
     
@@ -127,9 +133,24 @@ extension MovieDetailView {
         infoView.setContent(movie.title, movie.releaseDate, movie.runtime, movie.genres, movie.posterPath, movie.voteAverage)
         descriptionView.setContent(movie.tagline, movie.overview)
         statusView.setContent(movie.status, movie.originalLanguage, movie.budget, movie.revenue)
+        guard let crew = movie.credits?.crew else {
+            return
+        }
+        crewView.setContentHeight(rows: (crew.count + 1) / 2)
     }
     
     func updateBackdropImage(with image: Data?) {
         backdropView.updateBackdropImage(image)
+    }
+    
+    func setViewContents(_ movie: MovieDetail) {
+        infoView.setContent(movie.title, movie.releaseDate, movie.runtime, movie.genres, movie.posterPath, movie.voteAverage)
+        descriptionView.setContent(movie.tagline, movie.overview)
+        statusView.setContent(movie.status, movie.originalLanguage, movie.budget, movie.revenue)
+        crewView.setContentHeight(rows: 0)
+        guard let crew = movie.credits?.crew else {
+            return
+        }
+        crewView.setContentHeight(rows: (crew.count + 1) / 2)
     }
 }

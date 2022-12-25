@@ -66,7 +66,10 @@ extension DetailCrewView {
         }
     }
     
-    func setContent(_ productionCompanies: [ProductionCompany], _ credits: Credits) {
-        
+    func setContentHeight(rows: Int) {
+        collectionView.snp.makeConstraints {
+            $0.directionalEdges.equalToSuperview()
+            $0.height.equalTo(50 + UIScreen.main.bounds.width * 0.2 * CGFloat(rows))
+        }
     }
 }
