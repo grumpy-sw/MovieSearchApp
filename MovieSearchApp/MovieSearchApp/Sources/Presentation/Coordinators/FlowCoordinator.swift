@@ -57,7 +57,10 @@ extension FlowCoordinator: MainViewFlowDependencies, MoviesListFlowDependencies,
     }
     
     func dismissMoviesDetailViewController() {
-        self.movieDetailViewControllers.removeLast()
+        guard movieDetailViewControllers.isEmpty else {
+            self.movieDetailViewControllers.removeLast()
+            return
+        }
     }
 }
 
