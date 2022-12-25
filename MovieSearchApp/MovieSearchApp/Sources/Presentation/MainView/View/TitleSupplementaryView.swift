@@ -44,4 +44,9 @@ extension TitleSupplementaryView {
     func setTitleLabel(_ title: String) {
         self.label.text = title
     }
+    
+    func setTitleLabel(_ title: String, _ font: UIFont) {
+        setTitleLabel(title)
+        label.font = font
+    }
 }
