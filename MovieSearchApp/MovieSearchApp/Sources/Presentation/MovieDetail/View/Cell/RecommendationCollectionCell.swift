@@ -33,6 +33,19 @@ final class RecommendationCollectionCell: UICollectionViewCell {
         $0.adjustsFontForContentSizeCategory = true
         $0.numberOfLines = 0
     }
+    private let userScoreStackView = UIStackView().then {
+        $0.axis = .horizontal
+        $0.spacing = 5
+    }
+    private let userScoreStaticImageView = UIImageView().then {
+        $0.image = UIImage(systemName: "star.fill")
+        $0.tintColor = 0.scoreColor
+    }
+    private let userScoreLabel = UILabel().then {
+        $0.font = .preferredFont(forTextStyle: .caption1)
+        $0.textAlignment = .right
+        $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+    }
     
     // MARK: - Class Properties
     private var moviePage: MoviePage!
@@ -51,8 +64,12 @@ final class RecommendationCollectionCell: UICollectionViewCell {
 
 extension RecommendationCollectionCell {
     private func setSubViews() {
+        userScoreStackView.addArrangedSubview(userScoreStaticImageView)
+        userScoreStackView.addArrangedSubview(userScoreLabel)
+        
         contentView.addSubview(imageView)
         contentView.addSubview(titleLabel)
+        contentView.addSubview(userScoreStackView)
         contentView.addSubview(genreLabel)
     }
     
@@ -67,7 +84,13 @@ extension RecommendationCollectionCell {
         
         titleLabel.snp.makeConstraints {
             $0.top.equalTo(imageView.snp.bottom).offset(spacing)
-            $0.leading.trailing.equalToSuperview()
+            $0.leading.equalToSuperview()
+            $0.width.equalToSuperview().multipliedBy(0.80)
+        }
+        
+        userScoreStackView.snp.makeConstraints {
+            $0.top.equalTo(imageView.snp.bottom).offset(spacing)
+            $0.trailing.equalToSuperview()
         }
         
         genreLabel.snp.makeConstraints {
@@ -82,6 +105,12 @@ extension RecommendationCollectionCell {
         
         titleLabel.text = moviePage.title
         genreLabel.text = moviePage.genreIds.compactMap{ GenreCategory(rawValue: $0) }.map{ $0.desciption }.joined(separator: ",")
+        
+        let score = Int(moviePage.voteAverage * 10)
+        userScoreLabel.text = String(score) + "%"
+        
+        userScoreLabel.textColor = score.scoreColor
+        userScoreStaticImageView.tintColor = score.scoreColor
         updateImage()
     }
     
