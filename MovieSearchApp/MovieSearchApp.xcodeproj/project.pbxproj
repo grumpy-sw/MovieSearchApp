@@ -228,6 +228,14 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		4EAC895B2958E44E00B9AD9D /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				4EC546C129504CE100A6E4C9 /* TitleSupplementaryView.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
 		4EB55E412952D79D007AC682 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -523,6 +531,7 @@
 			isa = PBXGroup;
 			children = (
 				4EC546DB29507A1200A6E4C9 /* Coordinators */,
+				4EAC895B2958E44E00B9AD9D /* Common */,
 				4EC546B6295034FC00A6E4C9 /* MainView */,
 				4ED29D472951646D00760A97 /* MoviesList */,
 				4EB55E4429531099007AC682 /* MovieDetail */,
@@ -554,7 +563,6 @@
 				4EC546BE2950492400A6E4C9 /* Cell */,
 				4EBFBFED294AFBA600064937 /* MainViewController.swift */,
 				4EC546BC2950378800A6E4C9 /* MainView.swift */,
-				4EC546C129504CE100A6E4C9 /* TitleSupplementaryView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
