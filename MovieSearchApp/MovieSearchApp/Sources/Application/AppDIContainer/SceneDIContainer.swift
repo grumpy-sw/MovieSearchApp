@@ -63,7 +63,7 @@ final class SceneDIContainer {
     
     // MARK: - Movies List
     func makeMoviesListViewController(_ coordinator: MoviesListFlowDependencies, _ query: String) -> MoviesListViewController {
-        return MoviesListViewController(coordinator, makeMoviesListViewModel(), query)
+        return MoviesListViewController(coordinator, makeMoviesListViewModel(), query, makeImageRepository())
     }
     
     func makeMoviesListViewModel() -> MoviesListViewModel {

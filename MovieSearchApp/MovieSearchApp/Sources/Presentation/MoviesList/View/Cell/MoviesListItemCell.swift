@@ -15,6 +15,7 @@ final class MoviesListItemCell: UICollectionViewListCell {
         String(describing: Self.self)
     }
     
+    // MARK: - UI Elements
     private let baseStackView = UIStackView().then {
         $0.axis = .horizontal
         $0.spacing = 15
@@ -55,6 +56,10 @@ final class MoviesListItemCell: UICollectionViewListCell {
         $0.numberOfLines = 2
         $0.setContentHuggingPriority(.defaultLow, for: .vertical)
     }
+    
+    // MARK: - Class Properties
+    private var movieCard: MovieCard!
+    private var posterImageRepository: ImageRepository?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -109,29 +114,29 @@ extension MoviesListItemCell {
         }
     }
     
-    func updateImage(_ posterPath: String?) {
+    func fill(with movieCard: MovieCard, posterImageRepository: ImageRepository?) {
+        self.movieCard = movieCard
+        self.posterImageRepository = posterImageRepository
+        
+        titleLabel.text = movieCard.title
+        releaseDateLabel.text = movieCard.releaseDate
+        overviewLabel.text = movieCard.overview
+        updateImage()
+    }
+    
+    private func updateImage() {
         self.imageView.image = nil
-        guard let posterPath = posterPath else {
+        
+        guard !movieCard.posterPath.isEmpty else {
             return
         }
-
-        let provider = APIProvider()
-        let endpoint = EndpointStorage.fetchImageAPI(posterPath, 200).endpoint
-        provider.request(endpoint: endpoint) { [weak self] result in
+        
+        posterImageRepository?.fetchImage(with: movieCard.posterPath, width: Constants.listPosterWidth) { [weak self] result in
             if case let .success(data) = result {
                 DispatchQueue.main.async {
                     self?.imageView.image = UIImage(data: data)
                 }
             }
         }
-    }
-    
-    func updateCell(with Item: MovieCard) {
-        
-        updateImage(Item.posterPath)
-        titleLabel.text = Item.title
-        releaseDateLabel.text = Item.releaseDate
-        overviewLabel.text = Item.overview
-        
     }
 }
