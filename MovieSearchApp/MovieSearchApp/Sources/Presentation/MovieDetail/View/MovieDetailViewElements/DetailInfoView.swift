@@ -18,6 +18,7 @@ final class DetailInfoView: UIView {
     
     private let titleLabel = UILabel().then {
         $0.font = .preferredFont(forTextStyle: .title2)
+        $0.numberOfLines = 0
         $0.textColor = .white
     }
     private let infoLabel = UILabel().then {
