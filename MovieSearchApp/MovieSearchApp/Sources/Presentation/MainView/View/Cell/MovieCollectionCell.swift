@@ -31,6 +31,9 @@ final class MovieCollectionCell: UICollectionViewCell {
         $0.numberOfLines = 0
     }
     
+    private var moviePage: MoviePage!
+    private var posterImageRepository: ImageRepository?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setSubViews()
@@ -43,13 +46,13 @@ final class MovieCollectionCell: UICollectionViewCell {
 }
 
 extension MovieCollectionCell {
-    func setSubViews() {
+    private func setSubViews() {
         contentView.addSubview(imageView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(genreLabel)
     }
     
-    func setLayoutConstraints() {
+    private func setLayoutConstraints() {
         let spacing = CGFloat(10)
         
         imageView.snp.makeConstraints {
@@ -69,11 +72,23 @@ extension MovieCollectionCell {
         }
     }
     
-    func updateImage(_ posterPath: String) {
+    func fill(with moviePage: MoviePage, posterImageRepository: ImageRepository?) {
+        self.moviePage = moviePage
+        self.posterImageRepository = posterImageRepository
+        
+        titleLabel.text = moviePage.title
+        genreLabel.text = moviePage.genreIds.compactMap{ GenreCategory(rawValue: $0) }.map{ $0.desciption }.joined(separator: ",")
+        updateImage()
+    }
+    
+    func updateImage() {
         self.imageView.image = nil
-        let provider = APIProvider()
-        let endpoint = EndpointStorage.fetchImageAPI(posterPath, 300).endpoint
-        provider.request(endpoint: endpoint) { [weak self] result in
+        
+        guard !moviePage.posterPath.isEmpty else {
+            return
+        }
+        
+        posterImageRepository?.fetchImage(with: moviePage.posterPath, width: Constants.mainPosterWidth) { [weak self] result in
             if case let .success(data) = result {
                 DispatchQueue.main.async {
                     self?.imageView.image = UIImage(data: data)

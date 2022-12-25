@@ -54,7 +54,7 @@ final class SceneDIContainer {
     
     // MARK: - MainView(Movie Collections)
     func makeMainViewController(_ coordinator: MainViewFlowDependencies) -> MainViewController {
-        return MainViewController(coordinator, makeMainViewModel())
+        return MainViewController(coordinator, makeMainViewModel(), makeImageRepository())
     }
     
     func makeMainViewModel() -> MainViewModel {

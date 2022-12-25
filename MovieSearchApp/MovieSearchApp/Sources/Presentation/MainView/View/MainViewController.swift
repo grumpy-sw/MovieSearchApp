@@ -46,14 +46,17 @@ class MainViewController: UIViewController {
     private lazy var cancelSearchButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(hideSearchBar))
     
     private weak var coordinator: MainViewFlowDependencies?
-    let viewModel: MainViewModel
+    private let viewModel: MainViewModel
+    private let posterImageRepository: ImageRepository?
+    
     let disposeBag = DisposeBag()
     var dataSource: UICollectionViewDiffableDataSource<CollectionSectionModel, MoviePage>! = nil
     var currentSnapshot: NSDiffableDataSourceSnapshot<CollectionSectionModel, MoviePage>! = nil
     
-    init(_ coordinator: MainViewFlowDependencies, _ viewModel: MainViewModel) {
+    init(_ coordinator: MainViewFlowDependencies, _ viewModel: MainViewModel, _ posterImageRepository: ImageRepository) {
         self.coordinator = coordinator
         self.viewModel = viewModel
+        self.posterImageRepository = posterImageRepository
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -94,16 +97,8 @@ class MainViewController: UIViewController {
 
 extension MainViewController {
     func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<MovieCollectionCell, MoviePage> { (cell, indexPath, movie) in
-            cell.updateImage(movie.posterPath)
-            cell.titleLabel.text = movie.title
-            
-            var genres: [GenreCategory] = []
-            
-            movie.genreIds.forEach {
-                genres.append(GenreCategory(rawValue: $0)!)
-            }
-            cell.genreLabel.text = genres.map{ $0.desciption }.joined(separator: ",")
+        let cellRegistration = UICollectionView.CellRegistration<MovieCollectionCell, MoviePage> { [weak self] (cell, indexPath, movie) in
+            cell.fill(with: movie, posterImageRepository: self?.posterImageRepository)
         }
         
         dataSource = UICollectionViewDiffableDataSource<CollectionSectionModel, MoviePage>(collectionView: mainView.collectionView) { [weak self] (collectionView: UICollectionView, indexPath: IndexPath, movie: MoviePage) -> UICollectionViewCell? in
