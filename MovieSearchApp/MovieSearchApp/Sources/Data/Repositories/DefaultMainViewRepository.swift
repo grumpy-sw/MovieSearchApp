@@ -48,6 +48,5 @@ extension DefaultMainViewRepository: MainViewRepository {
                 completion(.failure(error))
             }
         }
-        
     }
 }
