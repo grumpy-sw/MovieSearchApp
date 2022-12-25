@@ -13,24 +13,26 @@ final class MovieCollectionCell: UICollectionViewCell {
         String(describing: Self.self)
     }
     
-    let imageView = UIImageView().then {
+    // MARK: - UI Elements
+    private let imageView = UIImageView().then {
         $0.clipsToBounds = true
         $0.layer.borderColor = UIColor.black.cgColor
         $0.layer.borderWidth = 1
         $0.layer.cornerRadius = 4
         $0.backgroundColor = UIColor.cornflowerBlue
     }
-    let titleLabel = UILabel().then {
+    private let titleLabel = UILabel().then {
         $0.font = UIFont.preferredFont(forTextStyle: .subheadline)
         $0.adjustsFontForContentSizeCategory = true
         $0.numberOfLines = 0
     }
-    let genreLabel = UILabel().then {
+    private let genreLabel = UILabel().then {
         $0.font = UIFont.preferredFont(forTextStyle: .caption1)
         $0.adjustsFontForContentSizeCategory = true
         $0.numberOfLines = 0
     }
     
+    // MARK: - Class Properties
     private var moviePage: MoviePage!
     private var posterImageRepository: ImageRepository?
     
@@ -81,7 +83,7 @@ extension MovieCollectionCell {
         updateImage()
     }
     
-    func updateImage() {
+    private func updateImage() {
         self.imageView.image = nil
         
         guard !moviePage.posterPath.isEmpty else {
