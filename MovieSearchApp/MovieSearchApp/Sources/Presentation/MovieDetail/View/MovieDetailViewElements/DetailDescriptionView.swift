@@ -11,20 +11,20 @@ import Then
 
 final class DetailDescriptionView: UIView {
     
-    let baseStackView = UIStackView().then {
+    private let baseStackView = UIStackView().then {
         $0.axis = .vertical
         $0.spacing = 15
     }
-    let taglineLabel = UILabel().then {
+    private let taglineLabel = UILabel().then {
         $0.font = .italicPreferredFont(for: .body)
         $0.textAlignment = .center
         $0.numberOfLines = 0
     }
-    let overviewStaticLabel = UILabel().then {
+    private let overviewStaticLabel = UILabel().then {
         $0.font = .preferredFont(forTextStyle: .headline)
         $0.text = "Overview"
     }
-    let overviewLabel = UILabel().then {
+    private let overviewLabel = UILabel().then {
         $0.font = .preferredFont(forTextStyle: .body)
         $0.numberOfLines = 0
         

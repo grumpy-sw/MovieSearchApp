@@ -11,42 +11,42 @@ import Then
 
 final class DetailInfoView: UIView {
     
-    let baseStackView = UIStackView().then {
+    private let baseStackView = UIStackView().then {
         $0.axis = .vertical
         $0.spacing = 15
     }
     
-    let titleLabel = UILabel().then {
+    private let titleLabel = UILabel().then {
         $0.font = .preferredFont(forTextStyle: .title2)
         $0.textColor = .white
     }
-    let infoLabel = UILabel().then {
+    private let infoLabel = UILabel().then {
         $0.font = .preferredFont(forTextStyle: .footnote)
         $0.textColor = .white
     }
-    let genreLabel = UILabel().then {
+    private let genreLabel = UILabel().then {
         $0.font = .preferredFont(forTextStyle: .footnote)
         $0.textColor = .white
     }
     
-    let userScoreStackView = UIStackView().then {
+    private let userScoreStackView = UIStackView().then {
         $0.axis = .horizontal
         $0.spacing = 5
         $0.alignment = .trailing
     }
     
-    let userScoreStaticLabel = UILabel().then {
+    private let userScoreStaticLabel = UILabel().then {
         $0.font = .preferredFont(forTextStyle: .footnote)
         $0.text = "User Score"
         $0.textAlignment = .right
         $0.textColor = .white
     }
     
-    let userScoreStaticImageView = UIImageView().then {
+    private let userScoreStaticImageView = UIImageView().then {
         $0.image = UIImage(systemName: "star.fill")
     }
     
-    let userScoreLabel = UILabel().then {
+    private let userScoreLabel = UILabel().then {
         $0.font = .preferredFont(forTextStyle: .footnote)
         $0.textAlignment = .right
         $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
@@ -97,6 +97,4 @@ extension DetailInfoView {
         genreLabel.text = genres.map{ $0.id.desciption }.joined(separator: ", ")
         userScoreLabel.text = String(Int(vote * 10)) + "%"
     }
-    
-
 }
