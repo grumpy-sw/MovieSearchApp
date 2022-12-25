@@ -82,3 +82,7 @@ extension CastCollectionViewCell {
         }
     }
 }
+
+fileprivate extension Constants {
+    static let castWidth = 200
+}

@@ -84,3 +84,7 @@ extension RecommendationCollectionCell {
         }
     }
 }
+
+fileprivate extension Constants {
+    static let backdropWidth = 300
+}

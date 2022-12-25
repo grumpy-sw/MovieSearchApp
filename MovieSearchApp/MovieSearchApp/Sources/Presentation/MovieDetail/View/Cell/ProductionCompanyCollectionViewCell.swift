@@ -66,3 +66,7 @@ extension ProductionCompanyCollectionViewCell {
         }
     }
 }
+
+fileprivate extension Constants {
+    static let logoWidth = 154
+}

@@ -140,3 +140,7 @@ extension MoviesListItemCell {
         }
     }
 }
+
+fileprivate extension Constants {
+    static let posterWidth = 200
+}
