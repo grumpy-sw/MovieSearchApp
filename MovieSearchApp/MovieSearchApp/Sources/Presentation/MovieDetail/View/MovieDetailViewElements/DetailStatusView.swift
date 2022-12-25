@@ -92,8 +92,9 @@ extension DetailStatusView {
     func setContent(_ status: String, _ originalLanguage: String, _ budget: Int, _ revenue: Int) {
         statusLabel.text = status
         originalLanguageLabel.text = originalLanguage.uppercased()
-        budgetLabel.text = "$ " + convertToDecimal(budget)
-        revenueLabel.text = "$ " + convertToDecimal(revenue)
+        
+        revenueLabel.text = budget == 0 ?  "-" : "$ " + convertToDecimal(budget)
+        budgetLabel.text = revenue == 0 ?  "-" : "$ " + convertToDecimal(revenue)
     }
     
     private func convertToDecimal(_ number: Int) -> String {
