@@ -36,8 +36,9 @@ extension TitleSupplementaryView {
     private func setLayoutConstraints() {
         let inset = CGFloat(10)
         label.snp.makeConstraints {
-            $0.top.leading.equalToSuperview().inset(inset)
-            $0.bottom.trailing.equalToSuperview().inset(-inset)
+            $0.top.equalToSuperview().inset(inset)
+            $0.bottom.equalToSuperview().inset(-inset)
+            $0.leading.trailing.equalToSuperview()
         }
     }
     

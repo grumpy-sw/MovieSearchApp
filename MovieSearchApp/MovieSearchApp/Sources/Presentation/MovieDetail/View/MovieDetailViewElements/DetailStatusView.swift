@@ -82,10 +82,10 @@ extension DetailStatusView {
     }
     
     private func setLayoutConstraints() {
-        let spacing = CGFloat(35)
+        let spacing = CGFloat(20)
         baseStackView.snp.makeConstraints {
             $0.directionalHorizontalEdges.equalToSuperview().inset(spacing)
-            $0.top.bottom.equalToSuperview()
+            $0.top.bottom.equalToSuperview().inset(spacing)
         }
     }
     

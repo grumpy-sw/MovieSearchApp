@@ -58,7 +58,8 @@ extension DetailRecommendationView {
     private func setLayoutConstraints() {
         let spacing = CGFloat(20)
         collectionView.snp.makeConstraints {
-            $0.directionalEdges.equalToSuperview().inset(spacing)
+            $0.top.equalToSuperview().inset(spacing)
+            $0.bottom.leading.trailing.equalToSuperview()
         }
     }
 }
