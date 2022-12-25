@@ -52,7 +52,7 @@ final class MovieDetailViewController: UIViewController {
     
     let viewModel: MovieDetailViewModel
     let movieDetailView = MovieDetailView()
-    let coordinator: MovieDetailFlowDependencies
+    private weak var coordinator: MovieDetailFlowDependencies?
     private let disposeBag = DisposeBag()
     
     init(_ coordinator: MovieDetailFlowDependencies, _ viewModel: MovieDetailViewModel) {
@@ -78,7 +78,7 @@ final class MovieDetailViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        self.coordinator.dismissMoviesDetailViewController()
+        self.coordinator?.dismissMoviesDetailViewController()
     }
 }
 
@@ -94,6 +94,18 @@ extension MovieDetailViewController {
         viewModel.backdropImage.observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] data in
                 self?.setBackdropContent(data: data)
+            })
+            .disposed(by: disposeBag)
+        
+        movieDetailView.recommendationView.collectionView.rx.itemSelected
+            .subscribe(onNext: { [weak self] content in
+                self?.viewModel.itemSelected(content.item)
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.selectedMovieId.observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] id in
+                self?.presentMovieDetailView(id)
             })
             .disposed(by: disposeBag)
     }
@@ -113,6 +125,14 @@ extension MovieDetailViewController {
     
     private func setBackdropContent(data: Data?) {
         movieDetailView.updateBackdropImage(with: data)
+    }
+    
+    private func presentMovieDetailView(_ id: Int?) {
+        guard let id = id else {
+            return
+        }
+        
+        coordinator?.presentMovieDetailViewController(id)
     }
 }
 

@@ -17,6 +17,7 @@ protocol MovieDetailViewModelInput {
 protocol MovieDetailViewModelOutput {
     var outputMovie: PublishRelay<MovieDetail> { get }
     var backdropImage: PublishRelay<Data?> { get }
+    var selectedMovieId: PublishRelay<Int> { get }
 }
 
 protocol MovieDetailViewModelable: MovieDetailViewModelInput, MovieDetailViewModelOutput { }
@@ -28,7 +29,10 @@ final class MovieDetailViewModel: MovieDetailViewModelable {
     
     var outputMovie: PublishRelay<MovieDetail> = .init()
     var backdropImage: PublishRelay<Data?> = .init()
+    var selectedMovieId: PublishRelay<Int> = .init()
 
+    private var recommendations: [Int] = []
+    
     private var backdropImagePath: String = "" {
         didSet {
             updateBackdropImage(width: 780)
@@ -44,10 +48,9 @@ final class MovieDetailViewModel: MovieDetailViewModelable {
         fetchMovieDetails(by: movieId)
     }
     
-    
-    
     func itemSelected(_ index: Int) {
-    
+        
+        self.selectedMovieId.accept(recommendations[index])
     }
 }
 
@@ -91,5 +94,9 @@ extension MovieDetailViewModel {
     private func setObservableValues(_ movieDetails: MovieDetail) {
         outputMovie.accept(movieDetails)
         backdropImagePath = movieDetails.backdropPath
+        guard let recommendations = movieDetails.recommendations else {
+            return
+        }
+        self.recommendations = recommendations.movies.map { $0.id }
     }
 }
