@@ -26,16 +26,22 @@ protocol MoviesListFlowDependencies: AnyObject {
 
 final class MoviesListViewController: UIViewController {
     
+    fileprivate typealias DataSource = UICollectionViewDiffableDataSource<Section, MovieCard>
+    fileprivate typealias Snapshot = NSDiffableDataSourceSnapshot<Section, MovieCard>
+    
+    private lazy var searchIconButton = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: nil)
+    private lazy var cancelSearchButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: nil)
+    private let viewModel: MoviesListViewModel
+    
     private weak var coordinator: MoviesListFlowDependencies?
-    let viewModel: MoviesListViewModel
     private let moviesListView = MoviesListView()
-    private var dataSource: UICollectionViewDiffableDataSource<Section, MovieCard>! = nil
+    private var dataSource: DataSource! = nil
+    private var currentSnapshot = Snapshot()
     private var query: String
     private let disposeBag = DisposeBag()
-    private var currentSnapshot = NSDiffableDataSourceSnapshot<Section, MovieCard>()
-    
     private var fetching: MoviesListFetching = .firstPage
     private var currentPage: Int = 0
+    private let posterImageRepository: ImageRepository?
     
     private lazy var searchBar = UISearchBar().then {
         $0.frame = .init(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 0)
@@ -44,15 +50,11 @@ final class MoviesListViewController: UIViewController {
         $0.backgroundImage = UIImage()
     }
     
-    private lazy var searchIconButton = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: nil)
-    
-    private lazy var cancelSearchButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: nil)
-    
-    
-    init(_ coordinator: MoviesListFlowDependencies, _ viewModel: MoviesListViewModel, _ query: String) {
+    init(_ coordinator: MoviesListFlowDependencies, _ viewModel: MoviesListViewModel, _ query: String, _ posterImageRepository: ImageRepository) {
         self.coordinator = coordinator
         self.viewModel = viewModel
         self.query = query
+        self.posterImageRepository = posterImageRepository
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -86,11 +88,11 @@ extension MoviesListViewController {
     private func configureDataSource() {
 
         // MARK: - Cell Registration
-        let cellRegistration = UICollectionView.CellRegistration<MoviesListItemCell, MovieCard> { (cell, indexPath, movie) in
-            cell.updateCell(with: movie)
+        let cellRegistration = UICollectionView.CellRegistration<MoviesListItemCell, MovieCard> { [weak self] (cell, indexPath, movie) in
+            cell.fill(with: movie, posterImageRepository: self?.posterImageRepository)
         }
 
-        dataSource = UICollectionViewDiffableDataSource<Section, MovieCard>(collectionView: moviesListView.collectionView) {
+        dataSource = DataSource(collectionView: moviesListView.collectionView) {
             (collectionView: UICollectionView, indexPath: IndexPath, item: MovieCard) -> UICollectionViewCell? in
             return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
         }
@@ -98,7 +100,7 @@ extension MoviesListViewController {
 }
 
 extension MoviesListViewController {
-    func bind() {
+    private func bind() {
         searchBar.rx.searchButtonClicked
             .asObservable()
             .observe(on: MainScheduler.instance)
@@ -165,7 +167,7 @@ extension MoviesListViewController {
     }
     
     private func configureInitialSnapshot(with movies: [MovieCard]) {
-        currentSnapshot = NSDiffableDataSourceSnapshot<Section, MovieCard>()
+        currentSnapshot = Snapshot()
         currentSnapshot.appendSections([.main])
         currentSnapshot.appendItems(movies)
         dataSource.apply(currentSnapshot, animatingDifferences: true)
@@ -182,7 +184,6 @@ extension MoviesListViewController {
         guard let id = id else {
             return
         }
-        
         coordinator?.presentMovieDetailViewController(id)
     }
 }
