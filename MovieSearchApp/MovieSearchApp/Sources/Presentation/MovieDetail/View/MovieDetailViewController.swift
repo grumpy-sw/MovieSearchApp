@@ -156,7 +156,7 @@ extension MovieDetailViewController {
         }
         
         let supplementaryRegistration = UICollectionView.SupplementaryRegistration<TitleSupplementaryView>(elementKind: TitleSupplementaryView.titleElementKind) { (supplementaryView, string, indexPath) in
-            supplementaryView.setTitleLabel("Cast")
+            supplementaryView.setTitleLabel("Cast", .preferredFont(forTextStyle: .headline))
         }
         
         castDataSource.supplementaryViewProvider = { (view, kind, index) in
@@ -173,7 +173,7 @@ extension MovieDetailViewController {
         }
         
         let supplementaryRegistration = UICollectionView.SupplementaryRegistration<TitleSupplementaryView>(elementKind: TitleSupplementaryView.titleElementKind) { (supplementaryView, string, indexPath) in
-            supplementaryView.setTitleLabel("Crew")
+            supplementaryView.setTitleLabel("Crew", .preferredFont(forTextStyle: .headline))
         }
         
         crewDataSource.supplementaryViewProvider = { (view, kind, index) in
@@ -190,7 +190,7 @@ extension MovieDetailViewController {
         }
         
         let supplementaryRegistration = UICollectionView.SupplementaryRegistration<TitleSupplementaryView>(elementKind: TitleSupplementaryView.titleElementKind) { (supplementaryView, string, indexPath) in
-            supplementaryView.setTitleLabel("Production")
+            supplementaryView.setTitleLabel("Production", .preferredFont(forTextStyle: .headline))
         }
         
         productionDataSource.supplementaryViewProvider = { (view, kind, index) in
@@ -208,7 +208,7 @@ extension MovieDetailViewController {
         }
         
         let supplementaryRegistration = UICollectionView.SupplementaryRegistration<TitleSupplementaryView>(elementKind: TitleSupplementaryView.titleElementKind) { (supplementaryView, string, indexPath) in
-            supplementaryView.setTitleLabel("Recommendations")
+            supplementaryView.setTitleLabel("Recommendations", .preferredFont(forTextStyle: .headline))
         }
         
         recommendationDataSource.supplementaryViewProvider = { (view, kind, index) in
