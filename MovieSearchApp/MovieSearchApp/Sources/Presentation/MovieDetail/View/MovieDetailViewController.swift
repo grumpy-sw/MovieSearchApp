@@ -183,7 +183,6 @@ extension MovieDetailViewController {
     
     private func configureProductionDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<ProductionCompanyCollectionViewCell, ProductionCompany> { [weak self] (cell, indexPath, company) in
-            print("# \(company)")
             cell.fill(with: company, logoImageRepository: self?.imageRepository)
         }
         productionDataSource = ProductionDataSource(collectionView: movieDetailView.productionView.collectionView) { [weak self] (collectionView: UICollectionView, indexPath: IndexPath, company: ProductionCompany) -> UICollectionViewCell? in

@@ -63,9 +63,4 @@ extension DetailCastView {
             $0.directionalEdges.equalToSuperview()
         }
     }
-    
-    func setContent(_ productionCompanies: [ProductionCompany], _ credits: Credits) {
-        
-    }
 }
-
