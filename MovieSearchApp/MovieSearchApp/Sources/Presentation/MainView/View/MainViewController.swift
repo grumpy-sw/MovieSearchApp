@@ -15,23 +15,24 @@ protocol MainViewFlowDependencies: AnyObject {
     func presentMovieDetailViewController(_ id: Int)
 }
 
-enum SectionCategory: Int {
+enum CollectionKind: Int {
     case popular = 0
     case trending
     case upcoming
+    
+    var title: String {
+        switch self {
+        case .popular:
+            return "What's Popular"
+        case .trending:
+            return "Trending"
+        case .upcoming:
+            return "Upcoming"
+        }
+    }
 }
 
 class MainViewController: UIViewController {
-    
-    struct CollectionSectionModel: Hashable {
-        let title: String
-        let movies: [MoviePage]
-        
-        let identifier = UUID()
-        func hash(into hasher: inout Hasher) {
-            hasher.combine(identifier)
-        }
-    }
     
     private let mainView = MainView()
     private lazy var searchBar = UISearchBar().then {
@@ -50,8 +51,8 @@ class MainViewController: UIViewController {
     private let posterImageRepository: ImageRepository?
     
     let disposeBag = DisposeBag()
-    var dataSource: UICollectionViewDiffableDataSource<CollectionSectionModel, MoviePage>! = nil
-    var currentSnapshot: NSDiffableDataSourceSnapshot<CollectionSectionModel, MoviePage>! = nil
+    var dataSource: UICollectionViewDiffableDataSource<CollectionKind, MoviePage>! = nil
+    var currentSnapshot: NSDiffableDataSourceSnapshot<CollectionKind, MoviePage>! = nil
     
     init(_ coordinator: MainViewFlowDependencies, _ viewModel: MainViewModel, _ posterImageRepository: ImageRepository) {
         self.coordinator = coordinator
@@ -101,26 +102,32 @@ extension MainViewController {
             cell.fill(with: movie, posterImageRepository: self?.posterImageRepository)
         }
         
-        dataSource = UICollectionViewDiffableDataSource<CollectionSectionModel, MoviePage>(collectionView: mainView.collectionView) { [weak self] (collectionView: UICollectionView, indexPath: IndexPath, movie: MoviePage) -> UICollectionViewCell? in
+        dataSource = UICollectionViewDiffableDataSource<CollectionKind, MoviePage>(collectionView: mainView.collectionView) { [weak self] (collectionView: UICollectionView, indexPath: IndexPath, movie: MoviePage) -> UICollectionViewCell? in
             return self?.mainView.collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: movie)
         }
         
         let supplementaryRegistration = UICollectionView.SupplementaryRegistration<TitleSupplementaryView>(elementKind: TitleSupplementaryView.titleElementKind) { (supplementaryView, string, indexPath) in
-            if let snapshot = self.currentSnapshot {
-                let movieCategory = snapshot.sectionIdentifiers[indexPath.section]
-                supplementaryView.setTitleLabel(movieCategory.title)
+            if let kind = CollectionKind(rawValue: indexPath.section) {
+                supplementaryView.setTitleLabel(kind.title)
             }
         }
         
         dataSource.supplementaryViewProvider = { (view, kind, index) in
             return self.mainView.collectionView.dequeueConfiguredReusableSupplementary(using: supplementaryRegistration, for: index)
         }
+        configureInitialSnapshot()
+    }
+    
+    private func configureInitialSnapshot() {
+        currentSnapshot = NSDiffableDataSourceSnapshot<CollectionKind, MoviePage>()
+        currentSnapshot.appendSections([.popular])
+        currentSnapshot.appendSections([.trending])
+        currentSnapshot.appendSections([.upcoming])
     }
 }
 
 extension MainViewController {
     private func bind() {
-        
         searchBar.rx.searchButtonClicked
             .asObservable()
             .observe(on: MainScheduler.instance)
@@ -139,25 +146,27 @@ extension MainViewController {
         viewModel.popularMovies
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] movies in
-                self?.configureSnapshot(with: movies, of: "What's Popular")
+                self?.configureSnapshot(with: movies, in: .popular)
             })
             .disposed(by: disposeBag)
+        
         viewModel.trendingMovies
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] movies in
-                self?.configureSnapshot(with: movies, of: "Today's Trend")
+                self?.configureSnapshot(with: movies, in: .trending)
             })
             .disposed(by: disposeBag)
+        
         viewModel.upcomingMovies
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] movies in
-                self?.configureSnapshot(with: movies, of: "Upcoming")
+                self?.configureSnapshot(with: movies, in: .upcoming)
             })
             .disposed(by: disposeBag)
         
         mainView.collectionView.rx.itemSelected
             .subscribe(onNext: { [weak self] content in
-                if let section = SectionCategory(rawValue: content.section) {
+                if let section = CollectionKind(rawValue: content.section) {
                     self?.viewModel.itemSelected(content.item, in: section)
                 }
             })
@@ -171,42 +180,23 @@ extension MainViewController {
             .disposed(by: disposeBag)
     }
     
-    private func configureSnapshot(with movies: [MoviePage], of title: String) {
+    private func configureSnapshot(with movies: [MoviePage], in section: CollectionKind) {
         guard !movies.isEmpty else {
             return
         }
-        if currentSnapshot == nil {
-            configureInitialSnapshot(with: movies, of: title)
-        } else {
-            appendSnapshot(with: movies, of: title)
-        }
+        appendSnapshot(with: movies, in: section)
     }
     
-    private func configureInitialSnapshot(with movies: [MoviePage], of title: String) {
-        currentSnapshot = NSDiffableDataSourceSnapshot<CollectionSectionModel, MoviePage>()
-        let collection = CollectionSectionModel(title: title, movies: movies)
-        currentSnapshot.appendSections([collection])
-        currentSnapshot.appendItems(collection.movies)
+    private func configureInitialSnapshot(with movies: [MoviePage], in section: CollectionKind) {
+        currentSnapshot = NSDiffableDataSourceSnapshot<CollectionKind, MoviePage>()
+        currentSnapshot.appendSections([section])
+        currentSnapshot.appendItems(movies)
         dataSource.apply(currentSnapshot, animatingDifferences: true)
     }
     
-    private func appendSnapshot(with movies: [MoviePage], of title: String) {
-        
-        let collection = CollectionSectionModel(title: title, movies: movies)
-        currentSnapshot.appendSections([collection])
-        currentSnapshot.appendItems(collection.movies)
+    private func appendSnapshot(with movies: [MoviePage], in section: CollectionKind) {
+        currentSnapshot.appendItems(movies, toSection: section)
         dataSource.apply(currentSnapshot, animatingDifferences: true)
-    }
-    
-    private func matchCollectionType(_ section: SectionCategory) -> [MoviePage] {
-        switch section {
-        case .popular:
-            return viewModel.popularMovies.value
-        case .trending:
-            return viewModel.trendingMovies.value
-        case .upcoming:
-            return viewModel.upcomingMovies.value
-        }
     }
     
     private func presentMoviesListView(_ query: String) {
@@ -219,7 +209,6 @@ extension MainViewController {
         guard let id = id else {
             return
         }
-        
         coordinator?.presentMovieDetailViewController(id)
     }
 }
