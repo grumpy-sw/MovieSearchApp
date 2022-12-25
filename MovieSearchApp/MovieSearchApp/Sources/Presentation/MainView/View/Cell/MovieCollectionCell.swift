@@ -90,7 +90,7 @@ extension MovieCollectionCell {
             return
         }
         
-        posterImageRepository?.fetchImage(with: moviePage.posterPath, width: Constants.mainPosterWidth) { [weak self] result in
+        posterImageRepository?.fetchImage(with: moviePage.posterPath, width: Constants.posterWidth) { [weak self] result in
             if case let .success(data) = result {
                 DispatchQueue.main.async {
                     self?.imageView.image = UIImage(data: data)

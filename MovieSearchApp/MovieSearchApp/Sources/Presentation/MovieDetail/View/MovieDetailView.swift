@@ -123,7 +123,7 @@ extension MovieDetailView {
             $0.width.equalToSuperview()
             $0.centerX.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(UIScreen.main.bounds.height * 0.35)
+            $0.height.equalTo(UIScreen.main.bounds.height * 0.4)
             $0.top.equalTo(statusView.snp.bottom).offset(spacing)
             $0.bottom.equalToSuperview() // Bottom
         }

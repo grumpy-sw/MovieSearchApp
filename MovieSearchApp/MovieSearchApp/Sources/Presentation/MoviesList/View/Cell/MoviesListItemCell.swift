@@ -131,7 +131,7 @@ extension MoviesListItemCell {
             return
         }
         
-        posterImageRepository?.fetchImage(with: movieCard.posterPath, width: Constants.listPosterWidth) { [weak self] result in
+        posterImageRepository?.fetchImage(with: movieCard.posterPath, width: Constants.posterWidth) { [weak self] result in
             if case let .success(data) = result {
                 DispatchQueue.main.async {
                     self?.imageView.image = UIImage(data: data)
