@@ -12,7 +12,7 @@ import RxRelay
 protocol MainViewModelInput {
     func viewDidLoad()
     func searchButtonClicked(_ query: String?)
-    func itemSelected(_ index: Int, in section: SectionCategory)
+    func itemSelected(_ index: Int, in section: CollectionKind)
 }
 protocol MainViewModelOutput {
     var popularMovies: BehaviorRelay<[MoviePage]> { get }
@@ -42,17 +42,9 @@ final class MainViewModel: MainViewModelable {
     }
     
     func viewDidLoad() {
-        DispatchQueue.global().sync {
-            fetchPopularMoviesList()
-            
-        }
-        DispatchQueue.global().sync {
-            fetchTrendingMoviesList()
-            
-        }
-        DispatchQueue.global().sync {
-            fetchUpcomingMoviesList()
-        }
+        fetchPopularMoviesList()
+        fetchTrendingMoviesList()
+        fetchUpcomingMoviesList()
     }
     
     func searchButtonClicked(_ query: String?) {
@@ -61,7 +53,7 @@ final class MainViewModel: MainViewModelable {
         }
     }
     
-    func itemSelected(_ index: Int, in section: SectionCategory) {
+    func itemSelected(_ index: Int, in section: CollectionKind) {
         selectedMovieId.accept(matchedMovieItemId(section, index))
     }
 }
@@ -107,7 +99,7 @@ extension MainViewModel {
         }
     }
     
-    private func matchedMovieItemId(_ section: SectionCategory, _ index: Int) -> Int {
+    private func matchedMovieItemId(_ section: CollectionKind, _ index: Int) -> Int {
         var id: Int? = nil
         switch section {
         case .popular:
