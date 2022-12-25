@@ -95,6 +95,10 @@ extension DetailInfoView {
         titleLabel.text = title
         infoLabel.text = "\(releaseDate) · \(runtime) m"
         genreLabel.text = genres.map{ $0.id.desciption }.joined(separator: ", ")
-        userScoreLabel.text = String(Int(vote * 10)) + "%"
+        let score = Int(vote * 10)
+        userScoreLabel.text = String(score) + "%"
+        
+        userScoreLabel.textColor = score.scoreColor
+        userScoreStaticImageView.tintColor = score.scoreColor
     }
 }
