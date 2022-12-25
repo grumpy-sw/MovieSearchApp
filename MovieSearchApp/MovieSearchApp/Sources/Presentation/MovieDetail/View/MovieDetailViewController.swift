@@ -49,15 +49,16 @@ final class MovieDetailViewController: UIViewController {
     private var recommendationDataSource: RecommendationDataSource! = nil
     private var recommendationSnapshot: RecommendationSnapshot! = nil
     
-    
-    let viewModel: MovieDetailViewModel
-    let movieDetailView = MovieDetailView()
+    private let viewModel: MovieDetailViewModel
+    private let movieDetailView = MovieDetailView()
     private weak var coordinator: MovieDetailFlowDependencies?
+    private let imageRepository: ImageRepository?
     private let disposeBag = DisposeBag()
     
-    init(_ coordinator: MovieDetailFlowDependencies, _ viewModel: MovieDetailViewModel) {
+    init(_ coordinator: MovieDetailFlowDependencies, _ viewModel: MovieDetailViewModel, _ imageRepository: ImageRepository) {
         self.coordinator = coordinator
         self.viewModel = viewModel
+        self.imageRepository = imageRepository
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -147,10 +148,8 @@ extension MovieDetailViewController {
     
     // MARK: - Configuring DataSource
     private func configureCastDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<CastCollectionViewCell, Cast> { (cell, indexPath, cast) in
-            cell.updateImage(cast.profilePath)
-            cell.nameLabel.text = cast.name
-            cell.characterLabel.text = cast.character
+        let cellRegistration = UICollectionView.CellRegistration<CastCollectionViewCell, Cast> { [weak self] (cell, indexPath, cast) in
+            cell.fill(with: cast, profileImageRepository: self?.imageRepository)
         }
         castDataSource = CastDataSource(collectionView: movieDetailView.castView.collectionView) { [weak self] (collectionView: UICollectionView, indexPath: IndexPath, cast: Cast) -> UICollectionViewCell? in
             return self?.movieDetailView.castView.collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: cast)
@@ -167,8 +166,7 @@ extension MovieDetailViewController {
     
     private func configureCrewDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<CrewCollectionViewCell, Crew> { (cell, indexPath, crew) in
-            cell.nameLabel.text = crew.name
-            cell.jobLabel.text = crew.job
+            cell.fill(with: crew)
         }
         crewDataSource = CrewDataSource(collectionView: movieDetailView.crewView.collectionView) { [weak self] (collectionView: UICollectionView, indexPath: IndexPath, crew: Crew) -> UICollectionViewCell? in
             return self?.movieDetailView.crewView.collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: crew)
@@ -184,9 +182,9 @@ extension MovieDetailViewController {
     }
     
     private func configureProductionDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<ProductionCompanyCollectionViewCell, ProductionCompany> { (cell, indexPath, company) in
-            cell.nameLabel.text = company.name
-            cell.updateImage(company.logoPath)
+        let cellRegistration = UICollectionView.CellRegistration<ProductionCompanyCollectionViewCell, ProductionCompany> { [weak self] (cell, indexPath, company) in
+            print("# \(company)")
+            cell.fill(with: company, logoImageRepository: self?.imageRepository)
         }
         productionDataSource = ProductionDataSource(collectionView: movieDetailView.productionView.collectionView) { [weak self] (collectionView: UICollectionView, indexPath: IndexPath, company: ProductionCompany) -> UICollectionViewCell? in
             return self?.movieDetailView.productionView.collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: company)
@@ -202,9 +200,8 @@ extension MovieDetailViewController {
     }
     
     private func configureRecommendationDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<RecommendationCollectionCell, MoviePage> { (cell, indexPath, movie) in
-            cell.updateImage(movie.backdropPath)
-            cell.titleLabel.text = movie.title
+        let cellRegistration = UICollectionView.CellRegistration<RecommendationCollectionCell, MoviePage> { [weak self] (cell, indexPath, movie) in
+            cell.fill(with: movie, backdropImageRepository: self?.imageRepository)
         }
         
         recommendationDataSource = RecommendationDataSource(collectionView: movieDetailView.recommendationView.collectionView) { [weak self] (collectionView: UICollectionView, indexPath: IndexPath, movie: MoviePage) -> UICollectionViewCell? in

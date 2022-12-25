@@ -10,17 +10,22 @@ import SnapKit
 import Then
 
 final class ProductionCompanyCollectionViewCell: UICollectionViewCell {
-    
+
     static var identifier: String {
         String(describing: Self.self)
     }
     
-    let imageView = UIImageView()
-    let nameLabel = UILabel().then {
+    // MARK: - UI Elements
+    private let imageView = UIImageView()
+    private let nameLabel = UILabel().then {
         $0.font = UIFont.preferredFont(for: .footnote, weight: .bold)
         $0.adjustsFontForContentSizeCategory = true
         $0.numberOfLines = 0
     }
+    
+    // MARK: - Class Properties
+    private var company: ProductionCompany!
+    private var logoImageRepository: ImageRepository?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,12 +39,12 @@ final class ProductionCompanyCollectionViewCell: UICollectionViewCell {
 }
 
 extension ProductionCompanyCollectionViewCell {
-    func setSubViews() {
+    private func setSubViews() {
         contentView.addSubview(imageView)
         contentView.addSubview(nameLabel)
     }
     
-    func setLayoutConstraints() {
+    private func setLayoutConstraints() {
         let spacing = CGFloat(10)
         
         imageView.snp.makeConstraints {
@@ -53,11 +58,21 @@ extension ProductionCompanyCollectionViewCell {
         }
     }
     
-    func updateImage(_ posterPath: String) {
+    func fill(with company: ProductionCompany, logoImageRepository: ImageRepository?) {
+        self.company = company
+        self.logoImageRepository = logoImageRepository
+        
+        nameLabel.text = company.name
+        updateImage()
+    }
+    
+    private func updateImage() {
         self.imageView.image = nil
-        let provider = APIProvider()
-        let endpoint = EndpointStorage.fetchImageAPI(posterPath, 154).endpoint
-        provider.request(endpoint: endpoint) { [weak self] result in
+        guard let logoPath = company?.logoPath, !logoPath.isEmpty else {
+            return
+        }
+        
+        logoImageRepository?.fetchImage(with: logoPath, width: Constants.logoWidth) { [weak self] result in
             if case let .success(data) = result {
                 DispatchQueue.main.async {
                     self?.imageView.image = UIImage(data: data)
@@ -70,3 +85,4 @@ extension ProductionCompanyCollectionViewCell {
 fileprivate extension Constants {
     static let logoWidth = 154
 }
+

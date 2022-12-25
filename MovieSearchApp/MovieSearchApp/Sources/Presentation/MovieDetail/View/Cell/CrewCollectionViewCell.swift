@@ -15,20 +15,19 @@ final class CrewCollectionViewCell: UICollectionViewCell {
         String(describing: Self.self)
     }
     
-    let baseStackView = UIStackView().then {
+    // MARK: - UI Elements
+    private let baseStackView = UIStackView().then {
         $0.axis = .vertical
         $0.spacing = 5
         $0.alignment = .center
     }
-    
-    let nameLabel = UILabel().then {
+    private let nameLabel = UILabel().then {
         $0.font = UIFont.preferredFont(for: .footnote, weight: .bold)
         $0.adjustsFontForContentSizeCategory = true
         $0.textColor = .black
         $0.numberOfLines = 0
     }
-    
-    let jobLabel = UILabel().then {
+    private let jobLabel = UILabel().then {
         $0.font = UIFont.preferredFont(forTextStyle: .caption1)
         $0.adjustsFontForContentSizeCategory = true
         $0.textColor = .black
@@ -58,5 +57,10 @@ extension CrewCollectionViewCell {
         baseStackView.snp.makeConstraints {
             $0.directionalEdges.equalToSuperview()
         }
+    }
+    
+    func fill(with crew: Crew) {
+        nameLabel.text = crew.name
+        jobLabel.text = crew.job
     }
 }

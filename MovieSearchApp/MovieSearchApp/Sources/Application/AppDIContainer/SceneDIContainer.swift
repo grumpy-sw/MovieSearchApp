@@ -72,7 +72,7 @@ final class SceneDIContainer {
     
     // MARK: - Movie Detail
     func makeMovieDetailViewController(_ coordinator: MovieDetailFlowDependencies, _ movieId: Int) -> MovieDetailViewController {
-        return MovieDetailViewController(coordinator, makeMovieDetailViewModel(movieId))
+        return MovieDetailViewController(coordinator, makeMovieDetailViewModel(movieId), makeImageRepository())
     }
     
     func makeMovieDetailViewModel(_ movieId: Int) -> MovieDetailViewModel {

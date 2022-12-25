@@ -15,17 +15,22 @@ final class CastCollectionViewCell: UICollectionViewCell {
         String(describing: Self.self)
     }
     
-    let imageView = UIImageView()
-    let nameLabel = UILabel().then {
+    // MARK: - UI Elements
+    private let imageView = UIImageView()
+    private let nameLabel = UILabel().then {
         $0.font = UIFont.preferredFont(for: .footnote, weight: .bold)
         $0.adjustsFontForContentSizeCategory = true
         $0.numberOfLines = 0
     }
-    let characterLabel = UILabel().then {
+    private let characterLabel = UILabel().then {
         $0.font = UIFont.preferredFont(forTextStyle: .caption1)
         $0.adjustsFontForContentSizeCategory = true
         $0.numberOfLines = 0
     }
+    
+    // MARK: - Class Properties
+    private var cast: Cast!
+    private var profileImageRepository: ImageRepository?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -39,13 +44,13 @@ final class CastCollectionViewCell: UICollectionViewCell {
 }
 
 extension CastCollectionViewCell {
-    func setSubViews() {
+    private func setSubViews() {
         contentView.addSubview(imageView)
         contentView.addSubview(nameLabel)
         contentView.addSubview(characterLabel)
     }
     
-    func setLayoutConstraints() {
+    private func setLayoutConstraints() {
         let spacing = CGFloat(10)
         
         contentView.clipsToBounds = true
@@ -69,11 +74,23 @@ extension CastCollectionViewCell {
         }
     }
     
-    func updateImage(_ posterPath: String) {
+    func fill(with cast: Cast, profileImageRepository: ImageRepository?) {
+        self.cast = cast
+        self.profileImageRepository = profileImageRepository
+        
+        nameLabel.text = cast.name
+        characterLabel.text = cast.character
+        updateImage()
+    }
+    
+    private func updateImage() {
         self.imageView.image = nil
-        let provider = APIProvider()
-        let endpoint = EndpointStorage.fetchImageAPI(posterPath, 200).endpoint
-        provider.request(endpoint: endpoint) { [weak self] result in
+        
+        guard !cast.profilePath.isEmpty else {
+            return
+        }
+        
+        profileImageRepository?.fetchImage(with: cast.profilePath, width: Constants.castWidth) { [weak self] result in
             if case let .success(data) = result {
                 DispatchQueue.main.async {
                     self?.imageView.image = UIImage(data: data)

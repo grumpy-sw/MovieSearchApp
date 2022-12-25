@@ -15,23 +15,28 @@ final class RecommendationCollectionCell: UICollectionViewCell {
         String(describing: Self.self)
     }
     
-    let imageView = UIImageView().then {
+    // MARK: - UI Elements
+    private let imageView = UIImageView().then {
         $0.clipsToBounds = true
         $0.layer.borderColor = UIColor.black.cgColor
         $0.layer.borderWidth = 1
         $0.layer.cornerRadius = 4
         $0.backgroundColor = UIColor.systemBlue
     }
-    let titleLabel = UILabel().then {
+    private let titleLabel = UILabel().then {
         $0.font = UIFont.preferredFont(forTextStyle: .subheadline)
         $0.adjustsFontForContentSizeCategory = true
         $0.numberOfLines = 0
     }
-    let genreLabel = UILabel().then {
+    private let genreLabel = UILabel().then {
         $0.font = UIFont.preferredFont(forTextStyle: .caption1)
         $0.adjustsFontForContentSizeCategory = true
         $0.numberOfLines = 0
     }
+    
+    // MARK: - Class Properties
+    private var moviePage: MoviePage!
+    private var backdropImageRepository: ImageRepository?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -45,13 +50,13 @@ final class RecommendationCollectionCell: UICollectionViewCell {
 }
 
 extension RecommendationCollectionCell {
-    func setSubViews() {
+    private func setSubViews() {
         contentView.addSubview(imageView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(genreLabel)
     }
     
-    func setLayoutConstraints() {
+    private func setLayoutConstraints() {
         let spacing = CGFloat(10)
         
         imageView.snp.makeConstraints {
@@ -71,11 +76,23 @@ extension RecommendationCollectionCell {
         }
     }
     
-    func updateImage(_ posterPath: String) {
+    func fill(with moviePage: MoviePage, backdropImageRepository: ImageRepository?) {
+        self.moviePage = moviePage
+        self.backdropImageRepository = backdropImageRepository
+        
+        titleLabel.text = moviePage.title
+        genreLabel.text = moviePage.genreIds.compactMap{ GenreCategory(rawValue: $0) }.map{ $0.desciption }.joined(separator: ",")
+        updateImage()
+    }
+    
+    private func updateImage() {
         self.imageView.image = nil
-        let provider = APIProvider()
-        let endpoint = EndpointStorage.fetchImageAPI(posterPath, 300).endpoint
-        provider.request(endpoint: endpoint) { [weak self] result in
+        
+        guard !moviePage.posterPath.isEmpty else {
+            return
+        }
+        
+        backdropImageRepository?.fetchImage(with: moviePage.backdropPath, width: Constants.backdropWidth) { [weak self] result in
             if case let .success(data) = result {
                 DispatchQueue.main.async {
                     self?.imageView.image = UIImage(data: data)
