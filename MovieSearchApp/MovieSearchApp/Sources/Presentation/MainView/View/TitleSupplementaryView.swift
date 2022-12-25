@@ -13,7 +13,7 @@ final class TitleSupplementaryView: UICollectionReusableView {
     static let titleElementKind = "title-element-kind"
     private let label = UILabel().then {
         $0.adjustsFontForContentSizeCategory = true
-        $0.font = UIFont.preferredFont(forTextStyle: .title3)
+        $0.font = UIFont.preferredFont(for: .title3, weight: .bold)
     }
     static let reuseIdentifier = "title-supplementary-reuse-identifier"
     
