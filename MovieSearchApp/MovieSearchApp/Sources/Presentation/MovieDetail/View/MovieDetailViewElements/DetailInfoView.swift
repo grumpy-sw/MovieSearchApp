@@ -87,7 +87,7 @@ extension DetailInfoView {
         }
         
         userScoreStackView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(50)
+            $0.top.equalTo(titleLabel.snp.bottom)
             $0.trailing.equalToSuperview().inset(spacing)
         }
     }
