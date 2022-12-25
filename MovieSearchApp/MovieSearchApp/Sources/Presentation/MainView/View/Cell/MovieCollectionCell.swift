@@ -26,7 +26,7 @@ final class MovieCollectionCell: UICollectionViewCell {
     private let titleLabel = UILabel().then {
         $0.font = UIFont.preferredFont(forTextStyle: .subheadline)
         $0.adjustsFontForContentSizeCategory = true
-        $0.numberOfLines = 0
+        $0.numberOfLines = 3
     }
     private let genreLabel = UILabel().then {
         $0.font = UIFont.preferredFont(forTextStyle: .caption1)
