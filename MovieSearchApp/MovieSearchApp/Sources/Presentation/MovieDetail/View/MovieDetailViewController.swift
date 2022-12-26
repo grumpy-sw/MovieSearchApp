@@ -109,6 +109,16 @@ extension MovieDetailViewController {
                 self?.presentMovieDetailView(id)
             })
             .disposed(by: disposeBag)
+        
+        bindErrorAlert()
+    }
+    
+    private func bindErrorAlert() {
+        viewModel.errorOccured
+            .subscribe(onNext: { [weak self] error in
+                self?.showAlert(message: error.errorDescription!)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func setViewContent(with movieDetail: MovieDetail) {

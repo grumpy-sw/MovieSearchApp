@@ -18,6 +18,7 @@ protocol MovieDetailViewModelOutput {
     var outputMovie: PublishRelay<MovieDetail> { get }
     var backdropImage: PublishRelay<Data?> { get }
     var selectedMovieId: PublishRelay<Int> { get }
+    var errorOccured: PublishRelay<NetworkError> { get }
 }
 
 protocol MovieDetailViewModelable: MovieDetailViewModelInput, MovieDetailViewModelOutput { }
@@ -30,7 +31,8 @@ final class MovieDetailViewModel: MovieDetailViewModelable {
     var outputMovie: PublishRelay<MovieDetail> = .init()
     var backdropImage: PublishRelay<Data?> = .init()
     var selectedMovieId: PublishRelay<Int> = .init()
-
+    var errorOccured: PublishRelay<NetworkError> = .init()
+    
     private var recommendations: [Int] = []
     
     private var backdropImagePath: String = "" {
@@ -63,7 +65,7 @@ extension MovieDetailViewModel {
                     self?.setObservableValues(response.toDomain())
                 }
             case .failure(let error):
-                print(error.errorDescription)
+                self?.errorOccured.accept(error)
             }
         }
     }
@@ -86,7 +88,7 @@ extension MovieDetailViewModel {
             case .success(let data):
                 self?.backdropImage.accept(data)
             case .failure(let error):
-                print(error.errorDescription)
+                self?.errorOccured.accept(error)
             }
         }
     }

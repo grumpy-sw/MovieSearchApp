@@ -18,7 +18,7 @@ protocol MainViewModelOutput {
     var popularMovies: BehaviorRelay<[MoviePage]> { get }
     var trendingMovies: BehaviorRelay<[MoviePage]> { get }
     var upcomingMovies: BehaviorRelay<[MoviePage]> { get }
-    var errorOcurred: Observable<NetworkError> { get }
+    var errorOccured: PublishRelay<NetworkError> { get }
     var selectedMovieId: BehaviorRelay<Int?> { get }
     var search: PublishRelay<String> { get }
 }
@@ -30,7 +30,7 @@ final class MainViewModel: MainViewModelable {
     var popularMovies: BehaviorRelay<[MoviePage]> = .init(value: [])
     var trendingMovies: BehaviorRelay<[MoviePage]> = .init(value: [])
     var upcomingMovies: BehaviorRelay<[MoviePage]> = .init(value: [])
-    var errorOcurred: Observable<NetworkError> = .empty()
+    var errorOccured: PublishRelay<NetworkError> = .init()
     var selectedMovieId: BehaviorRelay<Int?> = .init(value: nil)
     var search: PublishRelay<String> = .init()
     
@@ -68,7 +68,7 @@ extension MainViewModel {
                     self?.popularMovies.accept(response.toDomain().movies)
                 }
             case .failure(let error):
-                print(error.errorDescription)
+                self?.errorOccured.accept(error)
             }
         }
     }
@@ -81,7 +81,7 @@ extension MainViewModel {
                     self?.trendingMovies.accept(response.toDomain().movies)
                 }
             case .failure(let error):
-                print(error.errorDescription)
+                self?.errorOccured.accept(error)
             }
         }
     }
@@ -94,7 +94,7 @@ extension MainViewModel {
                     self?.upcomingMovies.accept(response.toDomain().movies)
                 }
             case .failure(let error):
-                print(error.errorDescription)
+                self?.errorOccured.accept(error)
             }
         }
     }

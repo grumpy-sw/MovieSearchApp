@@ -17,7 +17,7 @@ protocol MoviesListViewModelInput {
 }
 protocol MoviesListViewModelOutput {
     var queriedMovies: BehaviorRelay<[MovieCard]> { get }
-    var errorOcurred: Observable<NetworkError> { get }
+    var errorOccured: PublishRelay<NetworkError> { get }
     var currentPageCount: BehaviorRelay<Int> { get }
     var selectedMovieId: BehaviorRelay<Int?> { get }
     var moviesListFetching: BehaviorRelay<MoviesListFetching> { get }
@@ -34,7 +34,7 @@ final class MoviesListViewModel: MoviesListViewModelable {
     
     var queriedMovies: BehaviorRelay<[MovieCard]> = .init(value: [])
     var isEmpty: Bool { return queriedMovies.value.isEmpty }
-    var errorOcurred: Observable<NetworkError> = .empty()
+    var errorOccured: PublishRelay<NetworkError> = .init()
     var currentPageCount: BehaviorRelay<Int> = .init(value: 1)
     var selectedMovieId: BehaviorRelay<Int?> = .init(value: nil)
     var moviesListFetching: BehaviorRelay<MoviesListFetching> = .init(value: .firstPage)
@@ -84,16 +84,23 @@ final class MoviesListViewModel: MoviesListViewModelable {
                     self?.appendPage(response.toDomain())
                 }
             case .failure(let error):
-                print(error.errorDescription)
+                self?.errorOccured.accept(error)
             }
             self?.isLoading = false
         }
     }
     
-    func appendPage(_ response: MoviesList) {
+    private func appendPage(_ response: MoviesList) {
         currentPage = response.page
         totalPageCount = response.totalPages
         currentPageCount.accept(currentPage)
+        guard !response.movies.isEmpty else {
+            queriedMovies.accept([])
+            DispatchQueue.main.async {
+                self.errorOccured.accept(.emptyDataError)
+            }
+            return
+        }
         queriedMovies.accept(queriedMovies.value + response.movies)
     }
 }

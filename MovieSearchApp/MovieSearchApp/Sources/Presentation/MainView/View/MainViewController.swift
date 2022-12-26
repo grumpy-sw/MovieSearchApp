@@ -44,7 +44,7 @@ class MainViewController: UIViewController {
     
     private lazy var searchIconButton = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: #selector(showSearchBar))
     
-    private lazy var cancelSearchButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(hideSearchBar))
+    private lazy var cancelSearchButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(hideSearchBar))
     
     private weak var coordinator: MainViewFlowDependencies?
     private let viewModel: MainViewModel
@@ -178,6 +178,8 @@ extension MainViewController {
                 self?.presentMovieDetailView(id)
             })
             .disposed(by: disposeBag)
+        
+        bindErrorAlert()
     }
     
     private func configureSnapshot(with movies: [MoviePage], in section: CollectionKind) {
@@ -210,5 +212,13 @@ extension MainViewController {
             return
         }
         coordinator?.presentMovieDetailViewController(id)
+    }
+    
+    private func bindErrorAlert() {
+        viewModel.errorOccured
+            .subscribe(onNext: { [weak self] error in
+                self?.showAlert(message: error.errorDescription!)
+            })
+            .disposed(by: disposeBag)
     }
 }
