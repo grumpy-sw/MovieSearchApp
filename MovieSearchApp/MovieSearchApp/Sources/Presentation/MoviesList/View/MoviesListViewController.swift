@@ -29,8 +29,8 @@ final class MoviesListViewController: UIViewController, Alertable {
     fileprivate typealias DataSource = UICollectionViewDiffableDataSource<Section, MovieCard>
     fileprivate typealias Snapshot = NSDiffableDataSourceSnapshot<Section, MovieCard>
     
-    private lazy var searchIconButton = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: nil)
-    private lazy var cancelSearchButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: nil)
+    private lazy var searchIconButton = UIBarButtonItem(image: UIImage(systemName: Constants.searchIconText), style: .plain, target: self, action: nil)
+    private lazy var cancelSearchButton = UIBarButtonItem(title: Constants.cancelButtonText, style: .plain, target: self, action: nil)
     private let viewModel: MoviesListViewModel
     
     private weak var coordinator: MoviesListFlowDependencies?
@@ -45,7 +45,7 @@ final class MoviesListViewController: UIViewController, Alertable {
     
     private lazy var searchBar = UISearchBar().then {
         $0.frame = .init(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 0)
-        $0.placeholder = "Search"
+        $0.placeholder = Constants.searchPlaceholderText
         $0.isTranslucent = false
         $0.backgroundImage = UIImage()
     }

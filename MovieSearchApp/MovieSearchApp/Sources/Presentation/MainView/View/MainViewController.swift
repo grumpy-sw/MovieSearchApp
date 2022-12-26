@@ -37,14 +37,14 @@ class MainViewController: UIViewController, Alertable {
     private let mainView = MainView()
     private lazy var searchBar = UISearchBar().then {
         $0.frame = .init(x: 0, y: 0, width: UIScreen.main.bounds.size.width * 0.8, height: 0)
-        $0.placeholder = "Search"
+        $0.placeholder = Constants.searchPlaceholderText
         $0.isTranslucent = false
         $0.backgroundImage = UIImage()
     }
     
-    private lazy var searchIconButton = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: #selector(showSearchBar))
+    private lazy var searchIconButton = UIBarButtonItem(image: UIImage(systemName: Constants.searchIconText), style: .plain, target: self, action: #selector(showSearchBar))
     
-    private lazy var cancelSearchButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(hideSearchBar))
+    private lazy var cancelSearchButton = UIBarButtonItem(title: Constants.cancelButtonText, style: .plain, target: self, action: #selector(hideSearchBar))
     
     private weak var coordinator: MainViewFlowDependencies?
     private let viewModel: MainViewModel

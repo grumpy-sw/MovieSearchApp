@@ -13,4 +13,8 @@ enum Constants {
     
     static let errorAlertTitle = "API Network Error"
     static let okActionTitle = "ok"
+    
+    static let searchPlaceholderText = "Search"
+    static let cancelButtonText = "Cancel"
+    static let searchIconText = "magnifyingglass"
 }
