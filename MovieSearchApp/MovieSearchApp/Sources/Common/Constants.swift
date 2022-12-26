@@ -12,6 +12,6 @@ enum Constants {
     static let imageURL = "https://image.tmdb.org/t/p"
     static let appendToResponse = ["recommendations", "credits"]
     
-    static let mainPosterWidth: Int = 300
-    static let listPosterWidth: Int = 200
+    static let errorAlertTitle = "API Network Error"
+    static let okActionTitle = "ok"
 }
