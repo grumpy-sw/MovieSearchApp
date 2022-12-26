@@ -32,7 +32,7 @@ enum CollectionKind: Int {
     }
 }
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, Alertable {
     
     private let mainView = MainView()
     private lazy var searchBar = UISearchBar().then {

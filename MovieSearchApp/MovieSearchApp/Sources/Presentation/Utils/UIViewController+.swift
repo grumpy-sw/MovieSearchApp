@@ -7,7 +7,8 @@
 
 import UIKit
 
-extension UIViewController {
+protocol Alertable {}
+extension Alertable where Self: UIViewController {
     func showAlert(message: String) {
         let alertController = UIAlertController(
             title: Constants.errorAlertTitle,

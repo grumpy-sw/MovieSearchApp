@@ -22,7 +22,7 @@ private enum Section: Hashable {
     case recommendations
 }
 
-final class MovieDetailViewController: UIViewController {
+final class MovieDetailViewController: UIViewController, Alertable {
     
     // MARK: - Typealias for DataSource and Snapshot
     fileprivate typealias CastDataSource = UICollectionViewDiffableDataSource<Section, Cast>

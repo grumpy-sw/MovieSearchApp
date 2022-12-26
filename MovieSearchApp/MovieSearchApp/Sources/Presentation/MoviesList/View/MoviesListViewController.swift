@@ -24,7 +24,7 @@ protocol MoviesListFlowDependencies: AnyObject {
     func dismissMoviesListViewController(_ viewController: MoviesListViewController)
 }
 
-final class MoviesListViewController: UIViewController {
+final class MoviesListViewController: UIViewController, Alertable {
     
     fileprivate typealias DataSource = UICollectionViewDiffableDataSource<Section, MovieCard>
     fileprivate typealias Snapshot = NSDiffableDataSourceSnapshot<Section, MovieCard>
