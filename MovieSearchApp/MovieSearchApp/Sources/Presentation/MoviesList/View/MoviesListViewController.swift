@@ -30,7 +30,7 @@ final class MoviesListViewController: UIViewController {
     fileprivate typealias Snapshot = NSDiffableDataSourceSnapshot<Section, MovieCard>
     
     private lazy var searchIconButton = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: nil)
-    private lazy var cancelSearchButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: nil)
+    private lazy var cancelSearchButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: nil)
     private let viewModel: MoviesListViewModel
     
     private weak var coordinator: MoviesListFlowDependencies?
@@ -45,7 +45,7 @@ final class MoviesListViewController: UIViewController {
     
     private lazy var searchBar = UISearchBar().then {
         $0.frame = .init(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 0)
-        $0.placeholder = "검색"
+        $0.placeholder = "Search"
         $0.isTranslucent = false
         $0.backgroundImage = UIImage()
     }
@@ -106,7 +106,6 @@ extension MoviesListViewController {
             .observe(on: MainScheduler.instance)
             .bind(with: self) { [weak self] _,_  in
                 self?.searchBar.endEditing(true)
-                self?.moviesListView.collectionView.scrollToItem(at: .init(item: 0, section: 0), at: .top, animated: true)
                 self?.viewModel.searchButtonClicked(by: self?.searchBar.text ?? "")
             }
             .disposed(by: disposeBag)
@@ -142,6 +141,7 @@ extension MoviesListViewController {
             .asObservable()
             .observe(on: MainScheduler.instance)
             .bind(with: self) { [weak self] _, content in
+                self?.moviesListView.collectionView.deselectItem(at: content, animated: true)
                 self?.viewModel.itemSelected(content.item)
             }
             .disposed(by: disposeBag)
@@ -157,6 +157,7 @@ extension MoviesListViewController {
     
     private func configureSnapshot(with movies: [MovieCard]) {
         guard !movies.isEmpty else {
+            configureInitialSnapshot(with: [])
             return
         }
         
