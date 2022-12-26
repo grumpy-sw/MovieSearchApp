@@ -133,6 +133,12 @@ extension MovieDetailView {
         infoView.setContent(movie.title, movie.releaseDate, movie.runtime, movie.genres, movie.posterPath, movie.voteAverage)
         descriptionView.setContent(movie.tagline, movie.overview)
         statusView.setContent(movie.status, movie.originalLanguage, movie.budget, movie.revenue)
+        if let recommendations = movie.recommendations {
+            if recommendations.movies.isEmpty {
+                recommendationView.showNoRecommendations(for: movie.title)
+            }
+        }
+        
         guard let crew = movie.credits?.crew else {
             return
         }
@@ -141,16 +147,5 @@ extension MovieDetailView {
     
     func updateBackdropImage(with image: Data?) {
         backdropView.updateBackdropImage(image)
-    }
-    
-    func setViewContents(_ movie: MovieDetail) {
-        infoView.setContent(movie.title, movie.releaseDate, movie.runtime, movie.genres, movie.posterPath, movie.voteAverage)
-        descriptionView.setContent(movie.tagline, movie.overview)
-        statusView.setContent(movie.status, movie.originalLanguage, movie.budget, movie.revenue)
-        crewView.setContentHeight(rows: 0)
-        guard let crew = movie.credits?.crew else {
-            return
-        }
-        crewView.setContentHeight(rows: (crew.count + 1) / 2)
     }
 }

@@ -11,6 +11,12 @@ import Then
 
 final class DetailRecommendationView: UIView {
     lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
+
+    private let noRecommendationsLabel = UILabel().then {
+        $0.font = .preferredFont(forTextStyle: .footnote)
+        $0.numberOfLines = 0
+        $0.isHidden = true
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -53,6 +59,8 @@ extension DetailRecommendationView {
     
     private func setSubViews() {
         addSubview(collectionView)
+        addSubview(noRecommendationsLabel)
+        noRecommendationsLabel.isHidden = true
     }
     
     private func setLayoutConstraints() {
@@ -61,5 +69,15 @@ extension DetailRecommendationView {
             $0.top.equalToSuperview().inset(spacing)
             $0.bottom.leading.trailing.equalToSuperview()
         }
+        noRecommendationsLabel.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(collectionView.snp.top).inset(80)
+            $0.leading.trailing.equalToSuperview().inset(spacing)
+        }
+    }
+    
+    func showNoRecommendations(for title: String) {
+        noRecommendationsLabel.text = "We don't have enough data to suggest any movies based on \(title)."
+        noRecommendationsLabel.isHidden = false
     }
 }
