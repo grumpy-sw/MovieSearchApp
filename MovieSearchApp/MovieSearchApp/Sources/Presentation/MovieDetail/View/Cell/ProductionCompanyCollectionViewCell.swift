@@ -21,6 +21,7 @@ final class ProductionCompanyCollectionViewCell: UICollectionViewCell {
         $0.font = UIFont.preferredFont(for: .footnote, weight: .bold)
         $0.adjustsFontForContentSizeCategory = true
         $0.numberOfLines = 0
+        $0.textAlignment = .center
     }
     
     // MARK: - Class Properties

@@ -46,11 +46,12 @@ extension MovieDetailView {
         contentView.addArrangedSubview(backdropView)
         contentView.addArrangedSubview(infoView)
         contentView.addArrangedSubview(descriptionView)
-        contentView.addArrangedSubview(productionView)
+        
         contentView.addArrangedSubview(castView)
         contentView.addArrangedSubview(crewView)
-        contentView.addArrangedSubview(statusView)
+        contentView.addArrangedSubview(productionView)
         contentView.addArrangedSubview(recommendationView)
+        contentView.addArrangedSubview(statusView)
         
         baseScrollView.addSubview(contentView)
         addSubview(baseScrollView)
@@ -89,20 +90,12 @@ extension MovieDetailView {
             $0.top.equalTo(infoView.snp.bottom).offset(spacing)
         }
         
-        productionView.snp.makeConstraints {
-            $0.width.equalToSuperview()
-            $0.centerX.equalToSuperview()
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(UIScreen.main.bounds.height * 0.28)
-            $0.top.equalTo(descriptionView.snp.bottom).offset(spacing)
-        }
-        
         castView.snp.makeConstraints {
             $0.width.equalToSuperview()
             $0.centerX.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(UIScreen.main.bounds.height * 0.46)
-            $0.top.equalTo(productionView.snp.bottom).offset(spacing)
+            $0.top.equalTo(descriptionView.snp.bottom).offset(spacing)
         }
         
         crewView.snp.makeConstraints {
@@ -112,10 +105,11 @@ extension MovieDetailView {
             $0.top.equalTo(castView.snp.bottom).offset(spacing)
         }
         
-        statusView.snp.makeConstraints {
+        productionView.snp.makeConstraints {
             $0.width.equalToSuperview()
             $0.centerX.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(UIScreen.main.bounds.height * 0.28)
             $0.top.equalTo(crewView.snp.bottom).offset(spacing)
         }
         
@@ -123,8 +117,15 @@ extension MovieDetailView {
             $0.width.equalToSuperview()
             $0.centerX.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(UIScreen.main.bounds.height * 0.4)
-            $0.top.equalTo(statusView.snp.bottom).offset(spacing)
+            $0.height.equalTo(UIScreen.main.bounds.height * 0.38)
+            $0.top.equalTo(productionView.snp.bottom).offset(spacing)
+        }
+        
+        statusView.snp.makeConstraints {
+            $0.width.equalToSuperview()
+            $0.centerX.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
+            $0.top.equalTo(recommendationView.snp.bottom).offset(spacing)
             $0.bottom.equalToSuperview() // Bottom
         }
     }
