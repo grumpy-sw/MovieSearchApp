@@ -18,13 +18,13 @@ enum NetworkError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .unknownError: return "알 수 없는 에러입니다."
-        case .invalidHttpStatusCodeError(let statusCode): return "status코드가 200~299가 아닌, \(statusCode)입니다."
-        case .urlComponentError: return "URL components 생성 에러가 발생했습니다."
-        case .emptyDataError: return "data가 비어있습니다."
-        case .decodeError: return "decode 에러가 발생했습니다."
-        case .encodeError: return "encode 에러가 발생했습니다."
-        case .responseError: return "response 수신을 실패 했습니다."
+        case .unknownError: return "Unknowned Error."
+        case .invalidHttpStatusCodeError(let statusCode): return "Invalid Http Status Code, \(statusCode)."
+        case .urlComponentError: return "URL components Error."
+        case .emptyDataError: return "Data is Empty."
+        case .decodeError: return "Decode Error."
+        case .encodeError: return "Encode Error."
+        case .responseError: return "Response Error."
         }
     }
 }
