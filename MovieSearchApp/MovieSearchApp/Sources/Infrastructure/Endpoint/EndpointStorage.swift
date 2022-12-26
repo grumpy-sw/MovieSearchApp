@@ -8,19 +8,6 @@
 import Foundation
 
 enum EndpointStorage {
-    fileprivate enum Constants {
-        static let baseURL = "https://api.themoviedb.org/3"
-        static let imageURL = "https://image.tmdb.org/t/p"
-        static let moviePath = "/movie"
-        static let tvPath = "/tv"
-        static let personPath = "/person"
-        
-        static let trendingPath = "/trending"
-        static let upcomingPath = "/upcoming"
-        static let popularPath = "/popular"
-        static let searchPath = "/search"
-    }
-    
     case trendingAPI(_ media: MediaType, _ timeWindow: TimeWindow)
     case upcomingAPI(_ media: MediaType)
     case popularAPI(_ media: MediaType)
@@ -63,4 +50,17 @@ extension EndpointStorage {
                 method: .get)
         }
     }
+}
+
+fileprivate extension Constants {
+    static let baseURL = "https://api.themoviedb.org/3"
+    static let imageURL = "https://image.tmdb.org/t/p"
+    static let moviePath = "/movie"
+    static let tvPath = "/tv"
+    static let personPath = "/person"
+    
+    static let trendingPath = "/trending"
+    static let upcomingPath = "/upcoming"
+    static let popularPath = "/popular"
+    static let searchPath = "/search"
 }
