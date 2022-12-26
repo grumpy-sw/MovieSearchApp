@@ -31,11 +31,11 @@ extension DetailProductionView {
             let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
             
-            let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(170), heightDimension: .absolute(150))
+            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.1))
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
             
             let section = NSCollectionLayoutSection(group: group)
-            section.orthogonalScrollingBehavior = .continuous
+            
             section.interGroupSpacing = 20
             section.contentInsets = NSDirectionalEdgeInsets(top: 30, leading: 20, bottom: 30, trailing: 20)
             
@@ -47,7 +47,6 @@ extension DetailProductionView {
         }
         
         let config = UICollectionViewCompositionalLayoutConfiguration()
-        config.interSectionSpacing = 20
         
         let layout = UICollectionViewCompositionalLayout(
             sectionProvider: sectionProvider, configuration: config)
@@ -61,6 +60,13 @@ extension DetailProductionView {
     private func setLayoutConstraints() {
         collectionView.snp.makeConstraints {
             $0.directionalEdges.equalToSuperview()
+        }
+    }
+    
+    func setContentHeight(rows: Int) {
+        collectionView.snp.makeConstraints {
+            $0.directionalEdges.equalToSuperview()
+            $0.height.equalTo(70 + UIScreen.main.bounds.width * 0.1 * CGFloat(rows))
         }
     }
 }

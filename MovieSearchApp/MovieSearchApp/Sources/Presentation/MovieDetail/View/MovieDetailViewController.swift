@@ -183,7 +183,7 @@ extension MovieDetailViewController {
     
     private func configureProductionDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<ProductionCompanyCollectionViewCell, ProductionCompany> { [weak self] (cell, indexPath, company) in
-            cell.fill(with: company, logoImageRepository: self?.imageRepository)
+            cell.fill(with: company)
         }
         productionDataSource = ProductionDataSource(collectionView: movieDetailView.productionView.collectionView) { [weak self] (collectionView: UICollectionView, indexPath: IndexPath, company: ProductionCompany) -> UICollectionViewCell? in
             return self?.movieDetailView.productionView.collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: company)

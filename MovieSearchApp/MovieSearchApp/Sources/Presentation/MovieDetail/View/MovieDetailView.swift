@@ -109,7 +109,6 @@ extension MovieDetailView {
             $0.width.equalToSuperview()
             $0.centerX.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(UIScreen.main.bounds.height * 0.28)
             $0.top.equalTo(crewView.snp.bottom).offset(spacing)
         }
         
@@ -134,6 +133,11 @@ extension MovieDetailView {
         infoView.setContent(movie.title, movie.releaseDate, movie.runtime, movie.genres, movie.posterPath, movie.voteAverage)
         descriptionView.setContent(movie.tagline, movie.overview)
         statusView.setContent(movie.status, movie.originalLanguage, movie.budget, movie.revenue)
+        
+        if !movie.productionCompanies.isEmpty {
+            productionView.setContentHeight(rows: (movie.productionCompanies.count))
+        }
+        
         if let recommendations = movie.recommendations {
             if recommendations.movies.isEmpty {
                 recommendationView.showNoRecommendations(for: movie.title)
