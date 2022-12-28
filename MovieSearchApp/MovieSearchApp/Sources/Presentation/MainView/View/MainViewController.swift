@@ -77,6 +77,7 @@ class MainViewController: UIViewController, Alertable {
         configureDataSource()
         title = "MovieSearchApp"
         navigationItem.rightBarButtonItem = searchIconButton
+        navigationItem.backButtonDisplayMode = .minimal
         viewModel.viewDidLoad()
         bind()
     }
@@ -85,7 +86,6 @@ class MainViewController: UIViewController, Alertable {
         title = nil
         self.navigationItem.titleView = searchController.searchBar
         self.navigationItem.rightBarButtonItem = cancelSearchButton
-//        navigationController?.navigationBar.setNeedsLayout()
     }
     
     @objc func hideSearchBar() {
