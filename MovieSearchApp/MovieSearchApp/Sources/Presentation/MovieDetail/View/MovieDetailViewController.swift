@@ -78,6 +78,16 @@ final class MovieDetailViewController: UIViewController, Alertable {
         movieDetailView.baseScrollView.delegate = self
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if movieDetailView.baseScrollView.contentOffset.y > 300 {
+            setNavigationBarOpaquely()
+        } else {
+            setNavigationBarTransparently()
+        }
+    }
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         self.coordinator?.dismissMoviesDetailViewController()
