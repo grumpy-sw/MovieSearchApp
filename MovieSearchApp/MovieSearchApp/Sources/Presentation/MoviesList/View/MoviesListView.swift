@@ -38,14 +38,12 @@ extension MoviesListView {
             let section = NSCollectionLayoutSection(group: group)
             section.orthogonalScrollingBehavior = .none
             section.interGroupSpacing = 0
-            section.contentInsets = NSDirectionalEdgeInsets(top: 40, leading: 10, bottom: 80, trailing: 10)
+            section.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 10, bottom: 80, trailing: 10)
             
             return section
         }
         
         let config = UICollectionViewCompositionalLayoutConfiguration()
-        config.interSectionSpacing = 20
-
         let layout = UICollectionViewCompositionalLayout(
             sectionProvider: sectionProvider, configuration: config)
         return layout
