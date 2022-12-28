@@ -122,6 +122,7 @@ extension MovieDetailViewController {
     }
     
     private func setViewContent(with movieDetail: MovieDetail) {
+        setViewTitle(movieDetail.title)
         movieDetailView.setContent(movieDetail)
         configureProductionSnapshot(movieDetail.productionCompanies)
         if let credits = movieDetail.credits {
@@ -144,6 +145,10 @@ extension MovieDetailViewController {
         }
         
         coordinator?.presentMovieDetailViewController(id)
+    }
+    
+    private func setViewTitle(_ title: String) {
+        self.title = title
     }
 }
 
