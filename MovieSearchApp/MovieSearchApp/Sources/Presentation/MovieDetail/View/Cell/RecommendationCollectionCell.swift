@@ -21,7 +21,7 @@ final class RecommendationCollectionCell: UICollectionViewCell {
         $0.layer.borderColor = UIColor.black.cgColor
         $0.layer.borderWidth = 1
         $0.layer.cornerRadius = 4
-        $0.backgroundColor = UIColor.systemBlue
+        $0.image = UIImage(named: Constants.defaultBackdropImage)
     }
     private let titleLabel = UILabel().then {
         $0.font = UIFont.preferredFont(forTextStyle: .subheadline)
@@ -115,7 +115,7 @@ extension RecommendationCollectionCell {
     }
     
     private func updateImage() {
-        self.imageView.image = nil
+        self.imageView.image = UIImage(named: Constants.defaultBackdropImage)
         
         guard !moviePage.posterPath.isEmpty else {
             return

@@ -16,7 +16,10 @@ final class CastCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - UI Elements
-    private let imageView = UIImageView()
+    private let imageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFit
+        $0.image = UIImage(named: Constants.defaultPersonImage)
+    }
     private let nameLabel = UILabel().then {
         $0.font = UIFont.preferredFont(for: .footnote, weight: .bold)
         $0.adjustsFontForContentSizeCategory = true
@@ -84,7 +87,7 @@ extension CastCollectionViewCell {
     }
     
     private func updateImage() {
-        self.imageView.image = nil
+        self.imageView.image = UIImage(named: Constants.defaultPersonImage)
         
         guard !cast.profilePath.isEmpty else {
             return

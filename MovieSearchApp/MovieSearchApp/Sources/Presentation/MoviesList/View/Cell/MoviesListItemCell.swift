@@ -26,7 +26,7 @@ final class MoviesListItemCell: UICollectionViewListCell {
     }
     
     private let imageView = UIImageView().then {
-        $0.backgroundColor = UIColor.cornflowerBlue
+        $0.image = UIImage(named: Constants.defaultPosterImage)
     }
     
     private let baseLabelStackView = UIStackView().then {
@@ -125,7 +125,7 @@ extension MoviesListItemCell {
     }
     
     private func updateImage() {
-        self.imageView.image = nil
+        self.imageView.image = UIImage(named: Constants.defaultPosterImage)
         
         guard !movieCard.posterPath.isEmpty else {
             return

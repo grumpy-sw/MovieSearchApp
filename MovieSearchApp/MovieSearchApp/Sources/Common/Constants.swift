@@ -17,4 +17,8 @@ enum Constants {
     static let searchPlaceholderText = "Search"
     static let cancelButtonText = "Cancel"
     static let searchIconText = "magnifyingglass"
+    
+    static let defaultPosterImage = "default-movie"
+    static let defaultBackdropImage = "default-backdrop"
+    static let defaultPersonImage = "default-person"
 }
