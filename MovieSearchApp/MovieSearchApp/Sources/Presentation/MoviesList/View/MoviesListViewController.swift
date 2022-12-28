@@ -28,9 +28,7 @@ final class MoviesListViewController: UIViewController, Alertable {
     
     fileprivate typealias DataSource = UICollectionViewDiffableDataSource<Section, MovieCard>
     fileprivate typealias Snapshot = NSDiffableDataSourceSnapshot<Section, MovieCard>
-    
-    private lazy var searchIconButton = UIBarButtonItem(image: UIImage(systemName: Constants.searchIconText), style: .plain, target: self, action: nil)
-    private lazy var cancelSearchButton = UIBarButtonItem(title: Constants.cancelButtonText, style: .plain, target: self, action: nil)
+
     private let viewModel: MoviesListViewModel
     
     private weak var coordinator: MoviesListFlowDependencies?
@@ -48,6 +46,13 @@ final class MoviesListViewController: UIViewController, Alertable {
         $0.placeholder = Constants.searchPlaceholderText
         $0.isTranslucent = false
         $0.backgroundImage = UIImage()
+    }
+    
+    private let searchController = UISearchController(searchResultsController: nil).then{
+        $0.searchBar.placeholder = Constants.searchPlaceholderText
+        $0.obscuresBackgroundDuringPresentation = false
+        $0.automaticallyShowsCancelButton = false
+        $0.hidesNavigationBarDuringPresentation = false
     }
     
     init(_ coordinator: MoviesListFlowDependencies, _ viewModel: MoviesListViewModel, _ query: String, _ posterImageRepository: ImageRepository) {
@@ -68,8 +73,10 @@ final class MoviesListViewController: UIViewController, Alertable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: searchBar)
-        searchBar.text = query
+        title = query
+        searchController.searchBar.text = query
+        navigationItem.titleView = searchController.searchBar
+        
         
         configureDataSource()
         viewModel.viewDidLoad()
@@ -101,12 +108,11 @@ extension MoviesListViewController {
 
 extension MoviesListViewController {
     private func bind() {
-        searchBar.rx.searchButtonClicked
+        searchController.searchBar.rx.searchButtonClicked
             .asObservable()
             .observe(on: MainScheduler.instance)
             .bind(with: self) { [weak self] _,_  in
-                self?.searchBar.endEditing(true)
-                self?.viewModel.searchButtonClicked(by: self?.searchBar.text ?? "")
+                self?.viewModel.searchButtonClicked(by: self?.searchController.searchBar.text ?? "")
             }
             .disposed(by: disposeBag)
         
