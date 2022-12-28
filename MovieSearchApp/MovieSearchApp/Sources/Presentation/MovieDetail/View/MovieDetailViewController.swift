@@ -75,6 +75,7 @@ final class MovieDetailViewController: UIViewController, Alertable {
         configureDataSource()
         viewModel.viewDidLoad()
         bind()
+        movieDetailView.baseScrollView.delegate = self
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -149,6 +150,16 @@ extension MovieDetailViewController {
     
     private func setViewTitle(_ title: String) {
         self.title = title
+    }
+    
+    private func setNavigationBarTransparently() {
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.clear]
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+    }
+    
+    private func setNavigationBarOpaquely() {
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
+        navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
     }
 }
 
@@ -258,5 +269,15 @@ extension MovieDetailViewController {
         recommendationSnapshot.appendSections([.recommendations])
         recommendationSnapshot.appendItems(recommendations)
         recommendationDataSource.apply(recommendationSnapshot, animatingDifferences: true)
+    }
+}
+
+extension MovieDetailViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y > 300 {
+            setNavigationBarOpaquely()
+        } else {
+            setNavigationBarTransparently()
+        }
     }
 }
