@@ -82,6 +82,12 @@ class MainViewController: UIViewController, Alertable {
         bind()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
+        navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+    }
+    
     @objc func showSearchBar() {
         title = nil
         self.navigationItem.titleView = searchController.searchBar
