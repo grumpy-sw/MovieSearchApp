@@ -20,6 +20,11 @@ extension Alertable where Self: UIViewController {
             style: .default
         )
         alertController.addAction(okAction)
-        self.present(alertController, animated: true)
+        
+        if let presentedVC = presentedViewController {
+            presentedVC.present(alertController, animated: true, completion: nil)
+        } else {
+            present(alertController, animated: true, completion: nil)
+        }
     }
 }
