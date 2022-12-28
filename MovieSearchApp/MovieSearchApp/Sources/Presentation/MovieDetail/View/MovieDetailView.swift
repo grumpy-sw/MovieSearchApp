@@ -15,6 +15,7 @@ final class MovieDetailView: UIView {
         $0.showsVerticalScrollIndicator = false
         $0.showsHorizontalScrollIndicator = false
         $0.isScrollEnabled = true
+        $0.contentInsetAdjustmentBehavior = .never
     }
     
     let contentView = UIStackView().then {
@@ -72,7 +73,7 @@ extension MovieDetailView {
             $0.width.equalToSuperview()
             $0.centerX.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(200)
+            $0.height.equalTo(250)
             $0.top.equalToSuperview() // Top
         }
 
