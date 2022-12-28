@@ -35,11 +35,12 @@ enum CollectionKind: Int {
 class MainViewController: UIViewController, Alertable {
     
     private let mainView = MainView()
-    private lazy var searchBar = UISearchBar().then {
-        $0.frame = .init(x: 0, y: 0, width: UIScreen.main.bounds.size.width * 0.8, height: 0)
-        $0.placeholder = Constants.searchPlaceholderText
-        $0.isTranslucent = false
-        $0.backgroundImage = UIImage()
+    
+    private let searchController = UISearchController(searchResultsController: nil).then{
+        $0.searchBar.placeholder = Constants.searchPlaceholderText
+        $0.obscuresBackgroundDuringPresentation = false
+        $0.automaticallyShowsCancelButton = false
+        $0.hidesNavigationBarDuringPresentation = false
     }
     
     private lazy var searchIconButton = UIBarButtonItem(image: UIImage(systemName: Constants.searchIconText), style: .plain, target: self, action: #selector(showSearchBar))
@@ -74,24 +75,22 @@ class MainViewController: UIViewController, Alertable {
         self.view.backgroundColor = .systemBackground
 
         configureDataSource()
-        
         title = "MovieSearchApp"
         navigationItem.rightBarButtonItem = searchIconButton
-        
         viewModel.viewDidLoad()
         bind()
     }
     
     @objc func showSearchBar() {
         title = nil
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: searchBar)
+        self.navigationItem.titleView = searchController.searchBar
         self.navigationItem.rightBarButtonItem = cancelSearchButton
+//        navigationController?.navigationBar.setNeedsLayout()
     }
     
     @objc func hideSearchBar() {
-        searchBar.text = nil
-        self.navigationItem.leftBarButtonItem = nil
         title = "MovieSearchApp"
+        self.navigationItem.titleView = nil
         self.navigationItem.rightBarButtonItem = searchIconButton
     }
 }
@@ -128,11 +127,11 @@ extension MainViewController {
 
 extension MainViewController {
     private func bind() {
-        searchBar.rx.searchButtonClicked
+        searchController.searchBar.rx.searchButtonClicked
             .asObservable()
             .observe(on: MainScheduler.instance)
             .bind(with: self) { [weak self] _,_  in
-                self?.viewModel.searchButtonClicked(self?.searchBar.text)
+                self?.viewModel.searchButtonClicked(self?.searchController.searchBar.text)
             }
             .disposed(by: disposeBag)
         
@@ -202,7 +201,6 @@ extension MainViewController {
     }
     
     private func presentMoviesListView(_ query: String) {
-        searchBar.endEditing(true)
         hideSearchBar()
         coordinator?.presentMoviesListViewController(query)
     }
