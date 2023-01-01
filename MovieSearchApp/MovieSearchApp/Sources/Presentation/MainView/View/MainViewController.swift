@@ -51,9 +51,9 @@ class MainViewController: UIViewController, Alertable {
     private let viewModel: MainViewModel
     private let posterImageRepository: ImageRepository?
     
-    let disposeBag = DisposeBag()
-    var dataSource: UICollectionViewDiffableDataSource<CollectionKind, MoviePage>! = nil
-    var currentSnapshot: NSDiffableDataSourceSnapshot<CollectionKind, MoviePage>! = nil
+    private let disposeBag = DisposeBag()
+    private var dataSource: UICollectionViewDiffableDataSource<CollectionKind, MoviePage>! = nil
+    private var currentSnapshot: NSDiffableDataSourceSnapshot<CollectionKind, MoviePage>! = nil
     
     init(_ coordinator: MainViewFlowDependencies, _ viewModel: MainViewModel, _ posterImageRepository: ImageRepository) {
         self.coordinator = coordinator
@@ -87,20 +87,9 @@ class MainViewController: UIViewController, Alertable {
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
         navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
     }
-    
-    @objc func showSearchBar() {
-        title = nil
-        self.navigationItem.titleView = searchController.searchBar
-        self.navigationItem.rightBarButtonItem = cancelSearchButton
-    }
-    
-    @objc func hideSearchBar() {
-        title = "MovieSearchApp"
-        self.navigationItem.titleView = nil
-        self.navigationItem.rightBarButtonItem = searchIconButton
-    }
 }
 
+// MARK: - DataSource and Snapshot Method
 extension MainViewController {
     func configureDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<MovieCollectionCell, MoviePage> { [weak self] (cell, indexPath, movie) in
@@ -129,10 +118,37 @@ extension MainViewController {
         currentSnapshot.appendSections([.trending])
         currentSnapshot.appendSections([.upcoming])
     }
+    
+    private func configureSnapshot(with movies: [MoviePage], in section: CollectionKind) {
+        guard !movies.isEmpty else {
+            return
+        }
+        appendSnapshot(with: movies, in: section)
+    }
+    
+    private func configureInitialSnapshot(with movies: [MoviePage], in section: CollectionKind) {
+        currentSnapshot = NSDiffableDataSourceSnapshot<CollectionKind, MoviePage>()
+        currentSnapshot.appendSections([section])
+        currentSnapshot.appendItems(movies)
+        dataSource.apply(currentSnapshot, animatingDifferences: true)
+    }
+    
+    private func appendSnapshot(with movies: [MoviePage], in section: CollectionKind) {
+        currentSnapshot.appendItems(movies, toSection: section)
+        dataSource.apply(currentSnapshot, animatingDifferences: true)
+    }
 }
 
+// MARK: - Binding Functions
 extension MainViewController {
     private func bind() {
+        bindSearch()
+        bindMovieCollections()
+        bindCollectionItem()
+        bindErrorAlert()
+    }
+    
+    private func bindSearch() {
         searchController.searchBar.rx.searchButtonClicked
             .asObservable()
             .observe(on: MainScheduler.instance)
@@ -147,7 +163,9 @@ extension MainViewController {
                 self?.presentMoviesListView(query)
             })
             .disposed(by: disposeBag)
-        
+    }
+    
+    private func bindMovieCollections() {
         viewModel.popularMovies
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] movies in
@@ -168,7 +186,9 @@ extension MainViewController {
                 self?.configureSnapshot(with: movies, in: .upcoming)
             })
             .disposed(by: disposeBag)
-        
+    }
+    
+    private func bindCollectionItem() {
         mainView.collectionView.rx.itemSelected
             .subscribe(onNext: { [weak self] content in
                 if let section = CollectionKind(rawValue: content.section) {
@@ -183,27 +203,29 @@ extension MainViewController {
                 self?.presentMovieDetailView(id)
             })
             .disposed(by: disposeBag)
-        
-        bindErrorAlert()
     }
     
-    private func configureSnapshot(with movies: [MoviePage], in section: CollectionKind) {
-        guard !movies.isEmpty else {
-            return
-        }
-        appendSnapshot(with: movies, in: section)
+    private func bindErrorAlert() {
+        viewModel.errorOccured
+            .subscribe(onNext: { [weak self] error in
+                self?.showAlert(message: error.errorDescription!)
+            })
+            .disposed(by: disposeBag)
+    }
+}
+
+// MARK: - Private Functions
+extension MainViewController {
+    @objc private func showSearchBar() {
+        title = nil
+        self.navigationItem.titleView = searchController.searchBar
+        self.navigationItem.rightBarButtonItem = cancelSearchButton
     }
     
-    private func configureInitialSnapshot(with movies: [MoviePage], in section: CollectionKind) {
-        currentSnapshot = NSDiffableDataSourceSnapshot<CollectionKind, MoviePage>()
-        currentSnapshot.appendSections([section])
-        currentSnapshot.appendItems(movies)
-        dataSource.apply(currentSnapshot, animatingDifferences: true)
-    }
-    
-    private func appendSnapshot(with movies: [MoviePage], in section: CollectionKind) {
-        currentSnapshot.appendItems(movies, toSection: section)
-        dataSource.apply(currentSnapshot, animatingDifferences: true)
+    @objc private func hideSearchBar() {
+        title = "MovieSearchApp"
+        self.navigationItem.titleView = nil
+        self.navigationItem.rightBarButtonItem = searchIconButton
     }
     
     private func presentMoviesListView(_ query: String) {
@@ -216,13 +238,5 @@ extension MainViewController {
             return
         }
         coordinator?.presentMovieDetailViewController(id)
-    }
-    
-    private func bindErrorAlert() {
-        viewModel.errorOccured
-            .subscribe(onNext: { [weak self] error in
-                self?.showAlert(message: error.errorDescription!)
-            })
-            .disposed(by: disposeBag)
     }
 }
