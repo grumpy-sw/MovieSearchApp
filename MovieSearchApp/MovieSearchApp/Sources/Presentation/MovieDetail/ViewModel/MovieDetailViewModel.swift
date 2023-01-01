@@ -12,6 +12,7 @@ import RxRelay
 protocol MovieDetailViewModelInput {
     func viewDidLoad()
     func itemSelected(_ index: Int)
+    func scrolled(to offset: CGFloat)
 }
 
 protocol MovieDetailViewModelOutput {
@@ -19,6 +20,7 @@ protocol MovieDetailViewModelOutput {
     var backdropImage: PublishRelay<Data?> { get }
     var selectedMovieId: PublishRelay<Int> { get }
     var errorOccured: PublishRelay<NetworkError> { get }
+    var isTransparentTopBar: BehaviorRelay<Bool> { get }
 }
 
 protocol MovieDetailViewModelable: MovieDetailViewModelInput, MovieDetailViewModelOutput { }
@@ -32,6 +34,7 @@ final class MovieDetailViewModel: MovieDetailViewModelable {
     var backdropImage: PublishRelay<Data?> = .init()
     var selectedMovieId: PublishRelay<Int> = .init()
     var errorOccured: PublishRelay<NetworkError> = .init()
+    var isTransparentTopBar: BehaviorRelay<Bool> = .init(value: true)
     
     private var recommendations: [Int] = []
     
@@ -51,8 +54,13 @@ final class MovieDetailViewModel: MovieDetailViewModelable {
     }
     
     func itemSelected(_ index: Int) {
-        
         self.selectedMovieId.accept(recommendations[index])
+    }
+    
+    func scrolled(to offset: CGFloat) {
+        self.isTransparentTopBar.accept(
+            offset > 300 ? false : true
+        )
     }
 }
 

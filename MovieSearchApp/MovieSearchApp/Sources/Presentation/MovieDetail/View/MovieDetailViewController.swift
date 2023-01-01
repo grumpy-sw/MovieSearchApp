@@ -75,17 +75,14 @@ final class MovieDetailViewController: UIViewController, Alertable {
         configureDataSource()
         viewModel.viewDidLoad()
         bind()
-        movieDetailView.baseScrollView.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if movieDetailView.baseScrollView.contentOffset.y > 300 {
-            setNavigationBarOpaquely()
-        } else {
-            setNavigationBarTransparently()
-        }
+        setNavigationBar(
+            movieDetailView.baseScrollView.contentOffset.y > 300 ? false : true
+        )
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -118,6 +115,19 @@ extension MovieDetailViewController {
         viewModel.selectedMovieId.observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] id in
                 self?.presentMovieDetailView(id)
+            })
+            .disposed(by: disposeBag)
+        
+        movieDetailView.baseScrollView.rx.contentOffset
+            .map{ $0.y }
+            .subscribe(onNext: { [weak self] offset in
+                self?.viewModel.scrolled(to: offset)
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.isTransparentTopBar.observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] isHidden in
+                self?.setNavigationBar(isHidden)
             })
             .disposed(by: disposeBag)
         
@@ -160,6 +170,14 @@ extension MovieDetailViewController {
     
     private func setViewTitle(_ title: String) {
         self.title = title
+    }
+    
+    private func setNavigationBar(_ isHidden: Bool) {
+        if isHidden {
+            setNavigationBarTransparently()
+        } else {
+            setNavigationBarOpaquely()
+        }
     }
     
     private func setNavigationBarTransparently() {
@@ -279,15 +297,5 @@ extension MovieDetailViewController {
         recommendationSnapshot.appendSections([.recommendations])
         recommendationSnapshot.appendItems(recommendations)
         recommendationDataSource.apply(recommendationSnapshot, animatingDifferences: true)
-    }
-}
-
-extension MovieDetailViewController: UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y > 300 {
-            setNavigationBarOpaquely()
-        } else {
-            setNavigationBarTransparently()
-        }
     }
 }
