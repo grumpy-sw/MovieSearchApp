@@ -28,7 +28,7 @@ final class MoviesListViewController: UIViewController, Alertable {
     
     fileprivate typealias DataSource = UICollectionViewDiffableDataSource<Section, MovieCard>
     fileprivate typealias Snapshot = NSDiffableDataSourceSnapshot<Section, MovieCard>
-
+    
     private let viewModel: MoviesListViewModel
     
     private weak var coordinator: MoviesListFlowDependencies?
@@ -77,12 +77,10 @@ final class MoviesListViewController: UIViewController, Alertable {
         searchController.searchBar.text = query
         navigationItem.titleView = searchController.searchBar
         
-        
         configureDataSource()
         viewModel.viewDidLoad()
         viewModel.searchButtonClicked(by: query)
         bind()
-        
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -93,12 +91,12 @@ final class MoviesListViewController: UIViewController, Alertable {
 
 extension MoviesListViewController {
     private func configureDataSource() {
-
+        
         // MARK: - Cell Registration
         let cellRegistration = UICollectionView.CellRegistration<MoviesListItemCell, MovieCard> { [weak self] (cell, indexPath, movie) in
             cell.fill(with: movie, posterImageRepository: self?.posterImageRepository)
         }
-
+        
         dataSource = DataSource(collectionView: moviesListView.collectionView) {
             (collectionView: UICollectionView, indexPath: IndexPath, item: MovieCard) -> UICollectionViewCell? in
             return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
@@ -106,8 +104,16 @@ extension MoviesListViewController {
     }
 }
 
+// MARK: - Binding Functions
 extension MoviesListViewController {
     private func bind() {
+        bindSearch()
+        bindMoviesListResult()
+        bindMoviesListItem()
+        bindErrorAlert()
+    }
+    
+    private func bindSearch() {
         searchController.searchBar.rx.searchButtonClicked
             .asObservable()
             .observe(on: MainScheduler.instance)
@@ -115,7 +121,9 @@ extension MoviesListViewController {
                 self?.viewModel.searchButtonClicked(by: self?.searchController.searchBar.text ?? "")
             }
             .disposed(by: disposeBag)
-        
+    }
+    
+    private func bindMoviesListResult() {
         viewModel.queriedMovies
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] movies in
@@ -142,7 +150,9 @@ extension MoviesListViewController {
                 self?.fetching = result
             })
             .disposed(by: disposeBag)
-        
+    }
+    
+    private func bindMoviesListItem() {
         moviesListView.collectionView.rx.itemSelected
             .asObservable()
             .observe(on: MainScheduler.instance)
@@ -157,10 +167,19 @@ extension MoviesListViewController {
                 self?.presentMovieDetailView(id)
             })
             .disposed(by: disposeBag)
-        
-        bindErrorAlert()
     }
     
+    private func bindErrorAlert() {
+        viewModel.errorOccured
+            .subscribe(onNext: { [weak self] error in
+                self?.showAlert(message: error.errorDescription!)
+            })
+            .disposed(by: disposeBag)
+    }
+}
+
+// MARK: - Configuring Snapshot
+extension MoviesListViewController {
     private func configureSnapshot(with movies: [MovieCard]) {
         guard !movies.isEmpty else {
             configureInitialSnapshot(with: [])
@@ -188,19 +207,13 @@ extension MoviesListViewController {
         
         dataSource.apply(currentSnapshot, animatingDifferences: true)
     }
-    
+}
+
+extension MoviesListViewController {
     private func presentMovieDetailView(_ id: Int?) {
         guard let id = id else {
             return
         }
         coordinator?.presentMovieDetailViewController(id)
-    }
-    
-    private func bindErrorAlert() {
-        viewModel.errorOccured
-            .subscribe(onNext: { [weak self] error in
-                self?.showAlert(message: error.errorDescription!)
-            })
-            .disposed(by: disposeBag)
     }
 }
