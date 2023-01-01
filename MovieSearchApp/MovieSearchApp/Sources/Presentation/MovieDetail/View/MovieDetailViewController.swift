@@ -91,8 +91,16 @@ final class MovieDetailViewController: UIViewController, Alertable {
     }
 }
 
+// MARK: - Binding Functions
 extension MovieDetailViewController {
     func bind() {
+        bindMovieDetailInfos()
+        bindRecommendations()
+        bindScrollOffset()
+        bindErrorAlert()
+    }
+    
+    private func bindMovieDetailInfos() {
         viewModel.outputMovie
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] movieDetail in
@@ -105,7 +113,9 @@ extension MovieDetailViewController {
                 self?.setBackdropContent(data: data)
             })
             .disposed(by: disposeBag)
-        
+    }
+    
+    private func bindRecommendations() {
         movieDetailView.recommendationView.collectionView.rx.itemSelected
             .subscribe(onNext: { [weak self] content in
                 self?.viewModel.itemSelected(content.item)
@@ -117,7 +127,9 @@ extension MovieDetailViewController {
                 self?.presentMovieDetailView(id)
             })
             .disposed(by: disposeBag)
-        
+    }
+    
+    private func bindScrollOffset() {
         movieDetailView.baseScrollView.rx.contentOffset
             .map{ $0.y }
             .subscribe(onNext: { [weak self] offset in
@@ -130,8 +142,6 @@ extension MovieDetailViewController {
                 self?.setNavigationBar(isHidden)
             })
             .disposed(by: disposeBag)
-        
-        bindErrorAlert()
     }
     
     private func bindErrorAlert() {
@@ -141,7 +151,10 @@ extension MovieDetailViewController {
             })
             .disposed(by: disposeBag)
     }
-    
+}
+
+// MARK: - Private Functions
+extension MovieDetailViewController {
     private func setViewContent(with movieDetail: MovieDetail) {
         setViewTitle(movieDetail.title)
         movieDetailView.setContent(movieDetail)
