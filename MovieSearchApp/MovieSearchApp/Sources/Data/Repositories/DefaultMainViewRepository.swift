@@ -17,33 +17,45 @@ final class DefaultMainViewRepository {
 }
 
 extension DefaultMainViewRepository: MainViewRepository {
-    public func fetchPopularList(media: MediaType, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask? {
-        dataTransferService.apiProvider.request(endpoint: EndpointStorage.popularAPI(media).endpoint) { result in
+    public func fetchPopularList(media: MediaType, completion: @escaping (Result<MovieCollectionDTO, NetworkError>) -> Void) -> URLSessionDataTask? {
+        dataTransferService.apiProvider.request(endpoint: EndpointStorage.popularAPI(media).endpoint) { [weak self] result in
             switch result {
             case .success(let data):
-                completion(.success(data))
+                guard let movieCollection = try? self?.dataTransferService.decoder.decode(MovieCollectionDTO.self, from: data) else {
+                    completion(.failure(.decodeError))
+                    return
+                }
+                completion(.success(movieCollection))
             case .failure(let error):
                 completion(.failure(error))
             }
         }
     }
     
-    public func fetchTrendingList(media: MediaType, timeWindow: TimeWindow, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask? {
-        dataTransferService.apiProvider.request(endpoint: EndpointStorage.trendingAPI(media, timeWindow).endpoint) { result in
+    public func fetchTrendingList(media: MediaType, timeWindow: TimeWindow, completion: @escaping (Result<MovieCollectionDTO, NetworkError>) -> Void) -> URLSessionDataTask? {
+        dataTransferService.apiProvider.request(endpoint: EndpointStorage.trendingAPI(media, timeWindow).endpoint) { [weak self] result in
             switch result {
             case .success(let data):
-                completion(.success(data))
+                guard let movieCollection = try? self?.dataTransferService.decoder.decode(MovieCollectionDTO.self, from: data) else {
+                    completion(.failure(.decodeError))
+                    return
+                }
+                completion(.success(movieCollection))
             case .failure(let error):
                 completion(.failure(error))
             }
         }
     }
     
-    public func fetchUpcomingList(media: MediaType, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask? {
-        dataTransferService.apiProvider.request(endpoint: EndpointStorage.upcomingAPI(.movie).endpoint) { result in
+    public func fetchUpcomingList(media: MediaType, completion: @escaping (Result<MovieCollectionDTO, NetworkError>) -> Void) -> URLSessionDataTask? {
+        dataTransferService.apiProvider.request(endpoint: EndpointStorage.upcomingAPI(.movie).endpoint) { [weak self] result in
             switch result {
             case .success(let data):
-                completion(.success(data))
+                guard let movieCollection = try? self?.dataTransferService.decoder.decode(MovieCollectionDTO.self, from: data) else {
+                    completion(.failure(.decodeError))
+                    return
+                }
+                completion(.success(movieCollection))
             case .failure(let error):
                 completion(.failure(error))
             }
