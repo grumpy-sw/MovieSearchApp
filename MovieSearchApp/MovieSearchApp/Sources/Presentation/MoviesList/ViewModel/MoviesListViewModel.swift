@@ -44,7 +44,6 @@ final class MoviesListViewModel: MoviesListViewModelable {
     var hasMorePages: Bool { currentPage < totalPageCount }
     var nextPage: Int { hasMorePages ? currentPage + 1 : currentPage }
     var isLoading: Bool = false
-    let decoder = JSONDecoder()
     
     init(_ searchMoviesUseCase: SearchMoviesUseCase) {
         self.searchMoviesUseCase = searchMoviesUseCase

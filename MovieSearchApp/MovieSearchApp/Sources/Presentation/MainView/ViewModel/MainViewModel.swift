@@ -35,7 +35,6 @@ final class MainViewModel: MainViewModelable {
     var search: PublishRelay<String> = .init()
     
     let mainViewUseCase: MainViewUseCase
-    let decoder = JSONDecoder()
     
     init(_ mainViewUseCase: MainViewUseCase) {
         self.mainViewUseCase = mainViewUseCase

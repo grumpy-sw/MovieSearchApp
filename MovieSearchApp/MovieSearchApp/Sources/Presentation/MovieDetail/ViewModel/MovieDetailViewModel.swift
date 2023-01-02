@@ -28,7 +28,6 @@ protocol MovieDetailViewModelable: MovieDetailViewModelInput, MovieDetailViewMod
 final class MovieDetailViewModel: MovieDetailViewModelable {
     private let movieDetailUseCase: MovieDetailUseCase
     private let movieId: Int
-    private let decoder = JSONDecoder()
     
     var outputMovie: PublishRelay<MovieDetail> = .init()
     var backdropImage: PublishRelay<Data?> = .init()
