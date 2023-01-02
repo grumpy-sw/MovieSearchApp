@@ -8,7 +8,7 @@
 import Foundation
 
 protocol MovieDetailUseCase {
-    func execute(id: Int, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask?
+    func execute(id: Int, completion: @escaping (Result<MovieDetail, NetworkError>) -> Void) -> URLSessionDataTask?
     func execute(width: Int, path: String, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask?
 }
 
@@ -19,9 +19,14 @@ final class DefaultMovieDetailUseCase: MovieDetailUseCase {
         self.movieDetailRepository = movieDetailRepository
     }
     
-    func execute(id: Int, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask? {
+    func execute(id: Int, completion: @escaping (Result<MovieDetail, NetworkError>) -> Void) -> URLSessionDataTask? {
         return movieDetailRepository.fetchMovieDetails(id: id) { result in
-            completion(result)
+            switch result {
+            case .success(let movieDetailDTO):
+                completion(.success(movieDetailDTO.toDomain()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
         }
     }
     

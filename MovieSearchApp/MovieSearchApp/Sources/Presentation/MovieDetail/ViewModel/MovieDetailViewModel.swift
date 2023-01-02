@@ -69,9 +69,7 @@ extension MovieDetailViewModel {
         _ = movieDetailUseCase.execute(id: movieId) { [weak self] result in
             switch result {
             case .success(let data):
-                if let response = try? self?.decoder.decode(MovieDetailDTO.self, from: data) {
-                    self?.setObservableValues(response.toDomain())
-                }
+                self?.setObservableValues(data)
             case .failure(let error):
                 self?.errorOccured.accept(error)
             }
