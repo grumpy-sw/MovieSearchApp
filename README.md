@@ -4,10 +4,10 @@
 - Period: 2022.12.16 ~ 2022.12.26
 
 ### Index
-- [About](#-About)
-- [Running](#-Running)
-- [Development](#-Development)
-- [Structures](#-Structures)
+- [About](#about)
+- [Running](#running)
+- [Development](#development)
+- [Structures](#structures)
 
 ### About
 #### Using TMDB API
