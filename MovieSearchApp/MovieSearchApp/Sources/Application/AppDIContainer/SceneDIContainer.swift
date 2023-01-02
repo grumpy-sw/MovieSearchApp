@@ -12,6 +12,7 @@ final class SceneDIContainer {
     struct Dependencies {
         let apiProvider: APIProvider
         let imageProvider: APIProvider
+        let decoder: JSONDecoder
     }
     
     private let dependencies: Dependencies

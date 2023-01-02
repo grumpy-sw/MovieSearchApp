@@ -13,8 +13,10 @@ final class AppDIContainer {
     var apiProvider: APIProvider = APIProvider(session: .shared)
     var imageProvider: APIProvider = APIProvider(session: .shared)
     
+    let decoder: JSONDecoder = JSONDecoder()
+    
     func makeSceneDIContainer() -> SceneDIContainer {
-        let dependencies = SceneDIContainer.Dependencies(apiProvider: apiProvider, imageProvider: imageProvider)
+        let dependencies = SceneDIContainer.Dependencies(apiProvider: apiProvider, imageProvider: imageProvider, decoder: decoder)
         return SceneDIContainer(dependencies: dependencies)
     }
 }
