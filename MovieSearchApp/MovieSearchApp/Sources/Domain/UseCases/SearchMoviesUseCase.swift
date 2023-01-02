@@ -22,8 +22,8 @@ final class DefaultSearchMoviesUseCase: SearchMoviesUseCase {
     func execute(requestQuery: String, page: Int, completion: @escaping (Result<MoviesList, NetworkError>) -> Void) -> URLSessionDataTask? {
         return moviesRepository.fetchMoviesList(query: requestQuery, page: page) { result in
             switch result {
-            case .success(let moviesListDTO):
-                completion(.success(moviesListDTO.toDomain()))
+            case .success(let moviesList):
+                completion(.success(moviesList))
             case .failure(let error):
                 completion(.failure(error))
             }

@@ -9,7 +9,7 @@ import Foundation
 
 protocol MainViewRepository {
     @discardableResult
-    func fetchPopularList(media: MediaType, completion: @escaping (Result<MovieCollectionDTO, NetworkError>) -> Void) -> URLSessionDataTask?
-    func fetchTrendingList(media: MediaType, timeWindow: TimeWindow, completion: @escaping (Result<MovieCollectionDTO, NetworkError>) -> Void) -> URLSessionDataTask?
-    func fetchUpcomingList(media: MediaType, completion: @escaping (Result<MovieCollectionDTO, NetworkError>) -> Void) -> URLSessionDataTask?
+    func fetchPopularList(media: MediaType, completion: @escaping (Result<MovieCollection, NetworkError>) -> Void) -> URLSessionDataTask?
+    func fetchTrendingList(media: MediaType, timeWindow: TimeWindow, completion: @escaping (Result<MovieCollection, NetworkError>) -> Void) -> URLSessionDataTask?
+    func fetchUpcomingList(media: MediaType, completion: @escaping (Result<MovieCollection, NetworkError>) -> Void) -> URLSessionDataTask?
 }

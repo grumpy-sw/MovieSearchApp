@@ -78,8 +78,8 @@ final class MoviesListViewModel: MoviesListViewModelable {
         isLoading = true
         _ = searchMoviesUseCase.execute(requestQuery: query, page: currentPage) { [weak self] result in
             switch result {
-            case .success(let data):
-                self?.appendPage(data)
+            case .success(let response):
+                self?.appendPage(response)
             case .failure(let error):
                 self?.errorOccured.accept(error)
             }

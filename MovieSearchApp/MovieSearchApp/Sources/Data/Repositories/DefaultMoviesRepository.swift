@@ -18,7 +18,7 @@ final class DefaultMoviesRepository {
 
 extension DefaultMoviesRepository: MoviesRepository {
     
-    public func fetchMoviesList(query: String, page: Int, completion: @escaping (Result<MoviesListDTO, NetworkError>) -> Void) -> URLSessionDataTask? {
+    public func fetchMoviesList(query: String, page: Int, completion: @escaping (Result<MoviesList, NetworkError>) -> Void) -> URLSessionDataTask? {
         dataTransferService.apiProvider.request(endpoint: EndpointStorage.searchAPI(.movie, query, page).endpoint) { [weak self] result in
             switch result {
             case .success(let data):
@@ -26,7 +26,7 @@ extension DefaultMoviesRepository: MoviesRepository {
                     completion(.failure(.decodeError))
                     return
                 }
-                completion(.success(moviesList))
+                completion(.success(moviesList.toDomain()))
             case .failure(let error):
                 completion(.failure(error))
             }

@@ -22,8 +22,8 @@ final class DefaultMovieDetailUseCase: MovieDetailUseCase {
     func execute(id: Int, completion: @escaping (Result<MovieDetail, NetworkError>) -> Void) -> URLSessionDataTask? {
         return movieDetailRepository.fetchMovieDetails(id: id) { result in
             switch result {
-            case .success(let movieDetailDTO):
-                completion(.success(movieDetailDTO.toDomain()))
+            case .success(let movieDetail):
+                completion(.success(movieDetail))
             case .failure(let error):
                 completion(.failure(error))
             }

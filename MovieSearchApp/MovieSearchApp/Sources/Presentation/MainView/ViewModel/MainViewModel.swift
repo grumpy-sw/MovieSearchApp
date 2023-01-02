@@ -62,8 +62,8 @@ extension MainViewModel {
     private func fetchPopularMoviesList() {
         _ = mainViewUseCase.executeFetchPopular(media: .movie) { [weak self] result in
             switch result {
-            case .success(let data):
-                self?.popularMovies.accept(data.movies)
+            case .success(let response):
+                self?.popularMovies.accept(response.movies)
             case .failure(let error):
                 self?.errorOccured.accept(error)
             }

@@ -67,8 +67,8 @@ extension MovieDetailViewModel {
     private func fetchMovieDetails(by movieId: Int) {
         _ = movieDetailUseCase.execute(id: movieId) { [weak self] result in
             switch result {
-            case .success(let data):
-                self?.setObservableValues(data)
+            case .success(let response):
+                self?.setObservableValues(response)
             case .failure(let error):
                 self?.errorOccured.accept(error)
             }
@@ -98,10 +98,10 @@ extension MovieDetailViewModel {
         }
     }
     
-    private func setObservableValues(_ movieDetails: MovieDetail) {
-        outputMovie.accept(movieDetails)
-        backdropImagePath = movieDetails.backdropPath
-        guard let recommendations = movieDetails.recommendations else {
+    private func setObservableValues(_ response: MovieDetail) {
+        outputMovie.accept(response)
+        backdropImagePath = response.backdropPath
+        guard let recommendations = response.recommendations else {
             return
         }
         self.recommendations = recommendations.movies.map { $0.id }
