@@ -80,9 +80,7 @@ final class MoviesListViewModel: MoviesListViewModelable {
         _ = searchMoviesUseCase.execute(requestQuery: query, page: currentPage) { [weak self] result in
             switch result {
             case .success(let data):
-                if let response = try? self?.decoder.decode(MoviesListDTO.self, from: data) {
-                    self?.appendPage(response.toDomain())
-                }
+                self?.appendPage(data)
             case .failure(let error):
                 self?.errorOccured.accept(error)
             }

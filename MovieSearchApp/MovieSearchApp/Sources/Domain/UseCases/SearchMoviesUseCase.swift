@@ -8,7 +8,7 @@
 import Foundation
 
 protocol SearchMoviesUseCase {
-    func execute(requestQuery: String, page: Int, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask?
+    func execute(requestQuery: String, page: Int, completion: @escaping (Result<MoviesList, NetworkError>) -> Void) -> URLSessionDataTask?
 }
 
 final class DefaultSearchMoviesUseCase: SearchMoviesUseCase {
@@ -19,9 +19,14 @@ final class DefaultSearchMoviesUseCase: SearchMoviesUseCase {
         self.moviesRepository = moviesRepository
     }
     
-    func execute(requestQuery: String, page: Int, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask? {
+    func execute(requestQuery: String, page: Int, completion: @escaping (Result<MoviesList, NetworkError>) -> Void) -> URLSessionDataTask? {
         return moviesRepository.fetchMoviesList(query: requestQuery, page: page) { result in
-            completion(result)
+            switch result {
+            case .success(let moviesListDTO):
+                completion(.success(moviesListDTO.toDomain()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
         }
     }
 }
