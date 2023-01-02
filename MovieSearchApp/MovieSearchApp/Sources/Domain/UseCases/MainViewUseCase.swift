@@ -8,9 +8,9 @@
 import Foundation
 
 protocol MainViewUseCase {
-    func executeFetchPopular(media: MediaType, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask?
-    func executeFetchTrending(media: MediaType, timeWindow: TimeWindow, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask?
-    func executeFetchUpcoming(media: MediaType, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask?
+    func executeFetchPopular(media: MediaType, completion: @escaping (Result<MovieCollection, NetworkError>) -> Void) -> URLSessionDataTask?
+    func executeFetchTrending(media: MediaType, timeWindow: TimeWindow, completion: @escaping (Result<MovieCollection, NetworkError>) -> Void) -> URLSessionDataTask?
+    func executeFetchUpcoming(media: MediaType, completion: @escaping (Result<MovieCollection, NetworkError>) -> Void) -> URLSessionDataTask?
 }
 
 final class DefaultMainViewUseCase: MainViewUseCase {
@@ -21,21 +21,36 @@ final class DefaultMainViewUseCase: MainViewUseCase {
         self.mainViewRepository = mainViewRepository
     }
     
-    func executeFetchPopular(media: MediaType, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask? {
+    func executeFetchPopular(media: MediaType, completion: @escaping (Result<MovieCollection, NetworkError>) -> Void) -> URLSessionDataTask? {
         mainViewRepository.fetchPopularList(media: media) { result in
-            completion(result)
+            switch result {
+            case .success(let movieCollectionDTO):
+                completion(.success(movieCollectionDTO.toDomain()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
         }
     }
     
-    func executeFetchTrending(media: MediaType, timeWindow: TimeWindow, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask? {
+    func executeFetchTrending(media: MediaType, timeWindow: TimeWindow, completion: @escaping (Result<MovieCollection, NetworkError>) -> Void) -> URLSessionDataTask? {
         mainViewRepository.fetchTrendingList(media: media, timeWindow: timeWindow) { result in
-            completion(result)
+            switch result {
+            case .success(let movieCollectionDTO):
+                completion(.success(movieCollectionDTO.toDomain()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
         }
     }
     
-    func executeFetchUpcoming(media: MediaType, completion: @escaping (Result<Data, NetworkError>) -> Void) -> URLSessionDataTask? {
+    func executeFetchUpcoming(media: MediaType, completion: @escaping (Result<MovieCollection, NetworkError>) -> Void) -> URLSessionDataTask? {
         mainViewRepository.fetchUpcomingList(media: media) { result in
-            completion(result)
+            switch result {
+            case .success(let movieCollectionDTO):
+                completion(.success(movieCollectionDTO.toDomain()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
         }
     }
 }

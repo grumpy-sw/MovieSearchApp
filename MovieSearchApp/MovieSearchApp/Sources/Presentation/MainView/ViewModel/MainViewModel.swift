@@ -64,9 +64,7 @@ extension MainViewModel {
         _ = mainViewUseCase.executeFetchPopular(media: .movie) { [weak self] result in
             switch result {
             case .success(let data):
-                if let response = try? self?.decoder.decode(MovieCollectionDTO.self, from: data) {
-                    self?.popularMovies.accept(response.toDomain().movies)
-                }
+                self?.popularMovies.accept(data.movies)
             case .failure(let error):
                 self?.errorOccured.accept(error)
             }
@@ -77,9 +75,7 @@ extension MainViewModel {
         _ = mainViewUseCase.executeFetchTrending(media: .movie, timeWindow: .day) { [weak self] result in
             switch result {
             case .success(let data):
-                if let response = try? self?.decoder.decode(MovieCollectionDTO.self, from: data) {
-                    self?.trendingMovies.accept(response.toDomain().movies)
-                }
+                self?.trendingMovies.accept(data.movies)
             case .failure(let error):
                 self?.errorOccured.accept(error)
             }
@@ -90,9 +86,7 @@ extension MainViewModel {
         _ = mainViewUseCase.executeFetchUpcoming(media: .movie) { [weak self] result in
             switch result {
             case .success(let data):
-                if let response = try? self?.decoder.decode(MovieCollectionDTO.self, from: data) {
-                    self?.upcomingMovies.accept(response.toDomain().movies)
-                }
+                self?.upcomingMovies.accept(data.movies)
             case .failure(let error):
                 self?.errorOccured.accept(error)
             }
