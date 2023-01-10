@@ -19,6 +19,7 @@ enum CollectionKind: Int {
     case popular = 0
     case trending
     case upcoming
+    case favorite
     
     var title: String {
         switch self {
@@ -28,6 +29,8 @@ enum CollectionKind: Int {
             return "Trending"
         case .upcoming:
             return "Upcoming"
+        case .favorite:
+            return "Your Favorites"
         }
     }
 }

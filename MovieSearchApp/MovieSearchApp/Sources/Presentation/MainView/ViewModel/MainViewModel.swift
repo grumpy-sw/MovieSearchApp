@@ -18,6 +18,7 @@ protocol MainViewModelOutput {
     var popularMovies: BehaviorRelay<[MoviePage]> { get }
     var trendingMovies: BehaviorRelay<[MoviePage]> { get }
     var upcomingMovies: BehaviorRelay<[MoviePage]> { get }
+    var favoriteMovies: BehaviorRelay<[MoviePage]> { get }
     var errorOccured: PublishRelay<NetworkError> { get }
     var selectedMovieId: BehaviorRelay<Int?> { get }
     var search: PublishRelay<String> { get }
@@ -30,6 +31,7 @@ final class MainViewModel: MainViewModelable {
     var popularMovies: BehaviorRelay<[MoviePage]> = .init(value: [])
     var trendingMovies: BehaviorRelay<[MoviePage]> = .init(value: [])
     var upcomingMovies: BehaviorRelay<[MoviePage]> = .init(value: [])
+    var favoriteMovies: BehaviorRelay<[MoviePage]> = .init(value: [])
     var errorOccured: PublishRelay<NetworkError> = .init()
     var selectedMovieId: BehaviorRelay<Int?> = .init(value: nil)
     var search: PublishRelay<String> = .init()
@@ -101,6 +103,8 @@ extension MainViewModel {
             id = trendingMovies.value[index].id
         case .upcoming:
             id = upcomingMovies.value[index].id
+        case .favorite:
+            id = favoriteMovies.value[index].id
         }
         
         guard let id = id else {
