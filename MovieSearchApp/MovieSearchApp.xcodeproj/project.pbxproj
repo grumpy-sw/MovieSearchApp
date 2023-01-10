@@ -88,7 +88,9 @@
 		4ED29D5629518D3100760A97 /* MoviesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED29D5529518D3100760A97 /* MoviesRepository.swift */; };
 		4ED29D5829518EDD00760A97 /* DefaultMoviesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED29D5729518EDD00760A97 /* DefaultMoviesRepository.swift */; };
 		4EDA8F98296DB1800019D3F6 /* MoviePageRMO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDA8F97296DB1800019D3F6 /* MoviePageRMO.swift */; };
+		4EDA8F9B296DBB690019D3F6 /* RealmMoviePagesStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDA8F9A296DBB690019D3F6 /* RealmMoviePagesStorage.swift */; };
 		4EDA8F9D296DBCC00019D3F6 /* RealmStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDA8F9C296DBCC00019D3F6 /* RealmStorage.swift */; };
+		4EDA8F9F296DCC6E0019D3F6 /* MoviePagesStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDA8F9E296DCC6E0019D3F6 /* MoviePagesStorage.swift */; };
 		4EEBFD45294C4AEC00188F1F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EEBFD44294C4AEC00188F1F /* Constants.swift */; };
 		4EEBFD48294CB41000188F1F /* APIRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EEBFD47294CB41000188F1F /* APIRequestTests.swift */; };
 		92A57E6DF1AA4077FACA8877 /* Pods_MovieSearchAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACFAC095525312E26153AAE3 /* Pods_MovieSearchAppTests.framework */; };
@@ -191,7 +193,9 @@
 		4ED29D5529518D3100760A97 /* MoviesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesRepository.swift; sourceTree = "<group>"; };
 		4ED29D5729518EDD00760A97 /* DefaultMoviesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultMoviesRepository.swift; sourceTree = "<group>"; };
 		4EDA8F97296DB1800019D3F6 /* MoviePageRMO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviePageRMO.swift; sourceTree = "<group>"; };
+		4EDA8F9A296DBB690019D3F6 /* RealmMoviePagesStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmMoviePagesStorage.swift; sourceTree = "<group>"; };
 		4EDA8F9C296DBCC00019D3F6 /* RealmStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmStorage.swift; sourceTree = "<group>"; };
+		4EDA8F9E296DCC6E0019D3F6 /* MoviePagesStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviePagesStorage.swift; sourceTree = "<group>"; };
 		4EEBFD44294C4AEC00188F1F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		4EEBFD47294CB41000188F1F /* APIRequestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequestTests.swift; sourceTree = "<group>"; };
 		ACFAC095525312E26153AAE3 /* Pods_MovieSearchAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieSearchAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -739,7 +743,9 @@
 		4EDA8F99296DBB2D0019D3F6 /* PersistentStorages */ = {
 			isa = PBXGroup;
 			children = (
+				4EDA8F9A296DBB690019D3F6 /* RealmMoviePagesStorage.swift */,
 				4EDA8F9C296DBCC00019D3F6 /* RealmStorage.swift */,
+				4EDA8F9E296DCC6E0019D3F6 /* MoviePagesStorage.swift */,
 			);
 			path = PersistentStorages;
 			sourceTree = "<group>";
@@ -1008,6 +1014,7 @@
 				4EAC89282955874800B9AD9D /* CastCollectionViewCell.swift in Sources */,
 				4EAC895D2959648F00B9AD9D /* UIViewController+.swift in Sources */,
 				4EC546DD29507A2900A6E4C9 /* FlowCoordinator.swift in Sources */,
+				4EDA8F9B296DBB690019D3F6 /* RealmMoviePagesStorage.swift in Sources */,
 				4EC546CB2950699C00A6E4C9 /* SceneDIContainer.swift in Sources */,
 				4ED29D5429518C9100760A97 /* SearchMoviesUseCase.swift in Sources */,
 				4EBFC024294C3B5100064937 /* Encodable+.swift in Sources */,
@@ -1047,6 +1054,7 @@
 				4EAC89522958CDFC00B9AD9D /* UIColor+.swift in Sources */,
 				4EBFC021294C3B1600064937 /* NetworkError.swift in Sources */,
 				4EB55E7429546457007AC682 /* MoviePageDTO.swift in Sources */,
+				4EDA8F9F296DCC6E0019D3F6 /* MoviePagesStorage.swift in Sources */,
 				4EAC89362955FF0300B9AD9D /* DetailProductionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
