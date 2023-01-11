@@ -226,8 +226,8 @@ extension MovieDetailViewController {
             supplementaryView.setTitleLabel("Cast", .preferredFont(forTextStyle: .headline))
         }
         
-        castDataSource.supplementaryViewProvider = { (view, kind, index) in
-            return self.movieDetailView.castView.collectionView.dequeueConfiguredReusableSupplementary(using: supplementaryRegistration, for: index)
+        castDataSource.supplementaryViewProvider = { [weak self] (view, kind, index) in
+            return self?.movieDetailView.castView.collectionView.dequeueConfiguredReusableSupplementary(using: supplementaryRegistration, for: index)
         }
     }
     
@@ -243,8 +243,8 @@ extension MovieDetailViewController {
             supplementaryView.setTitleLabel("Crew", .preferredFont(forTextStyle: .headline))
         }
         
-        crewDataSource.supplementaryViewProvider = { (view, kind, index) in
-            return self.movieDetailView.crewView.collectionView.dequeueConfiguredReusableSupplementary(using: supplementaryRegistration, for: index)
+        crewDataSource.supplementaryViewProvider = { [weak self] (view, kind, index) in
+            return self?.movieDetailView.crewView.collectionView.dequeueConfiguredReusableSupplementary(using: supplementaryRegistration, for: index)
         }
     }
     
@@ -260,8 +260,8 @@ extension MovieDetailViewController {
             supplementaryView.setTitleLabel("Production", .preferredFont(forTextStyle: .headline))
         }
         
-        productionDataSource.supplementaryViewProvider = { (view, kind, index) in
-            return self.movieDetailView.productionView.collectionView.dequeueConfiguredReusableSupplementary(using: supplementaryRegistration, for: index)
+        productionDataSource.supplementaryViewProvider = { [weak self] (view, kind, index) in
+            return self?.movieDetailView.productionView.collectionView.dequeueConfiguredReusableSupplementary(using: supplementaryRegistration, for: index)
         }
     }
     
@@ -278,8 +278,8 @@ extension MovieDetailViewController {
             supplementaryView.setTitleLabel("Recommendations", .preferredFont(forTextStyle: .headline))
         }
         
-        recommendationDataSource.supplementaryViewProvider = { (view, kind, index) in
-            return self.movieDetailView.recommendationView.collectionView.dequeueConfiguredReusableSupplementary(using: supplementaryRegistration, for: index)
+        recommendationDataSource.supplementaryViewProvider = { [weak self] (view, kind, index) in
+            return self?.movieDetailView.recommendationView.collectionView.dequeueConfiguredReusableSupplementary(using: supplementaryRegistration, for: index)
         }
     }
     
