@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+   PrivacyInfo.xcprivacy
+   MovieSearchApp
+
+   Created by 박세웅 on 5/30/25.
+   Copyright (c) 2025 ___ORGANIZATIONNAME___. All rights reserved.
+-->
+<plist version="1.0">
+  <dict>
+      <key>privacyManifestVersion</key>
+      <string>1.0</string>
+
+      <!-- 앱 및 포함된 SDK가 사용자 데이터를 수집하지 않는 경우 -->
+      <key>dataCategories</key>
+      <array/>
+
+      <key>purposeStrings</key>
+      <dict/>
+
+      <key>trackingDomains</key>
+      <array/>
+
+      <!-- 제3자 SDK가 사용자 데이터를 수집하지 않음을 명시 -->
+      <key>thirdPartyDataCollection</key>
+      <false/>
+
+      <key>thirdPartyDataUse</key>
+      <false/>
+  </dict>
+</plist>

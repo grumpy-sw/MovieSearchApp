@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4E789BCE2DE9A7F100049762 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4E789BCD2DE9A7F100049762 /* PrivacyInfo.xcprivacy */; };
 		4EAC892629557D0800B9AD9D /* RecommendationCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAC892529557D0800B9AD9D /* RecommendationCollectionCell.swift */; };
 		4EAC89282955874800B9AD9D /* CastCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAC89272955874800B9AD9D /* CastCollectionViewCell.swift */; };
 		4EAC892A295598C000B9AD9D /* CrewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAC8929295598C000B9AD9D /* CrewCollectionViewCell.swift */; };
@@ -106,6 +107,7 @@
 /* Begin PBXFileReference section */
 		4A73D2BB27C26B6E80EBE120 /* Pods_MovieSearchApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieSearchApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E789BCC2DE9A05500049762 /* MovieSearchAppRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MovieSearchAppRelease.entitlements; sourceTree = "<group>"; };
+		4E789BCD2DE9A7F100049762 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		4EAC892529557D0800B9AD9D /* RecommendationCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationCollectionCell.swift; sourceTree = "<group>"; };
 		4EAC89272955874800B9AD9D /* CastCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastCollectionViewCell.swift; sourceTree = "<group>"; };
 		4EAC8929295598C000B9AD9D /* CrewCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -466,6 +468,7 @@
 				4EBFBFF2294AFBA700064937 /* Assets.xcassets */,
 				4EBFBFF4294AFBA700064937 /* LaunchScreen.storyboard */,
 				4EBFBFF7294AFBA700064937 /* Info.plist */,
+				4E789BCD2DE9A7F100049762 /* PrivacyInfo.xcprivacy */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -833,6 +836,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E789BCE2DE9A7F100049762 /* PrivacyInfo.xcprivacy in Resources */,
 				4EBFBFF6294AFBA700064937 /* LaunchScreen.storyboard in Resources */,
 				4EBFBFF3294AFBA700064937 /* Assets.xcassets in Resources */,
 			);
@@ -1184,7 +1188,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1214,7 +1218,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
