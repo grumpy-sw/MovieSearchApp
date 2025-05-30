@@ -105,6 +105,7 @@
 
 /* Begin PBXFileReference section */
 		4A73D2BB27C26B6E80EBE120 /* Pods_MovieSearchApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieSearchApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4E789BCC2DE9A05500049762 /* MovieSearchAppRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MovieSearchAppRelease.entitlements; sourceTree = "<group>"; };
 		4EAC892529557D0800B9AD9D /* RecommendationCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationCollectionCell.swift; sourceTree = "<group>"; };
 		4EAC89272955874800B9AD9D /* CastCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastCollectionViewCell.swift; sourceTree = "<group>"; };
 		4EAC8929295598C000B9AD9D /* CrewCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -452,6 +453,7 @@
 		4EBFBFE8294AFBA600064937 /* MovieSearchApp */ = {
 			isa = PBXGroup;
 			children = (
+				4E789BCC2DE9A05500049762 /* MovieSearchAppRelease.entitlements */,
 				4EBFC00A294B0B3300064937 /* Resources */,
 				4EBFC00B294B0B3900064937 /* Sources */,
 			);
@@ -1192,6 +1194,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MovieSearchApp/MovieSearchAppRelease.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8VU5Z7JG7C;
